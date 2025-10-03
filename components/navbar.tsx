@@ -33,7 +33,7 @@ export const Navbar = () => {
             </Link>
           </div>
 
-          <div className="hidden items-center gap-6 md:flex">
+          {/* <div className="hidden items-center gap-6 md:flex">
             <Link
               href="/"
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -58,7 +58,7 @@ export const Navbar = () => {
             >
               Contact
             </Link>
-          </div>
+          </div> */}
 
           <div className="flex items-center gap-4">
             <Button asChild size="sm" className="hidden sm:flex">
