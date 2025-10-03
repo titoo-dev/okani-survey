@@ -65,8 +65,6 @@ export default function StageSelectionPage() {
                   <SelectItem value="bornage">PV et plan de bornage</SelectItem>
                   <SelectItem value="evaluation">Rapport d'évaluation</SelectItem>
                   <SelectItem value="decision">Décision</SelectItem>
-                  <SelectItem value="encours">En cours</SelectItem>
-                  <SelectItem value="litigieux">Litigieux</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -83,8 +81,7 @@ export default function StageSelectionPage() {
                     sur les phases que vous avez effectivement traversées.
                   </p>
                   <p className="text-xs">
-                    💡 L'enquête affichera : votre profil + l'étape que vous sélectionnez + toutes les étapes suivantes + l'évaluation globale.
-                    Les étapes précédentes seront automatiquement ignorées.
+                    💡 L'enquête affichera : votre profil + toutes les étapes depuis le début jusqu'à celle que vous sélectionnez + l'évaluation globale.
                   </p>
                 </div>
               </div>

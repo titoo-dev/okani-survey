@@ -36,9 +36,7 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     { id: 4, key: "bornage", label: "PV et plan de bornage" },
     { id: 5, key: "evaluation", label: "Rapport d'évaluation" },
     { id: 6, key: "decision", label: "Décision finale" },
-    { id: 7, key: "encours", label: "Dossier en cours" },
-    { id: 8, key: "litigieux", label: "Dossier litigieux" },
-    { id: 9, key: "global", label: "Évaluation globale" },
+    { id: 7, key: "global", label: "Évaluation globale" },
   ];
 
   const getVisibleSteps = (stageReached: string) => {
@@ -46,14 +44,14 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
       return [];
     }
 
-    const stageOrder = ["depot", "enquete", "affichage", "bornage", "evaluation", "decision", "encours", "litigieux"];
+    const stageOrder = ["depot", "enquete", "affichage", "bornage", "evaluation", "decision"];
     const stageIndex = stageOrder.indexOf(stageReached);
     
     if (stageIndex === -1) {
       return allSteps;
     }
 
-    const visibleKeys = ["profile", ...stageOrder.slice(stageIndex), "global"];
+    const visibleKeys = ["profile", ...stageOrder.slice(0, stageIndex + 1), "global"];
     return allSteps.filter(step => visibleKeys.includes(step.key)).map((step, index) => ({
       ...step,
       id: index

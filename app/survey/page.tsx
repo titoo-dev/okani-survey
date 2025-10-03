@@ -13,9 +13,7 @@ import {
   Map, 
   FileCheck, 
   CheckCircle, 
-  BarChart,
-  Clock,
-  AlertTriangle
+  BarChart
 } from "lucide-react";
 
 import { StepIndicator } from "../../components/step-indicator";
@@ -65,9 +63,7 @@ export default function SurveyPage() {
     { id: 4, key: "bornage", title: "Bornage", icon: <Map className="w-4 h-4" /> },
     { id: 5, key: "evaluation", title: "Évaluation", icon: <FileCheck className="w-4 h-4" /> },
     { id: 6, key: "decision", title: "Décision", icon: <CheckCircle className="w-4 h-4" /> },
-    { id: 7, key: "encours", title: "En cours", icon: <Clock className="w-4 h-4" /> },
-    { id: 8, key: "litigieux", title: "Litigieux", icon: <AlertTriangle className="w-4 h-4" /> },
-    { id: 9, key: "global", title: "Global", icon: <BarChart className="w-4 h-4" /> },
+    { id: 7, key: "global", title: "Global", icon: <BarChart className="w-4 h-4" /> },
   ];
 
   const allStepDetails = [
@@ -78,8 +74,6 @@ export default function SurveyPage() {
     { key: "bornage", title: "PV et plan de bornage", description: "Évaluation étape 4", estimatedTime: "2 min" },
     { key: "evaluation", title: "Rapport d'évaluation", description: "Évaluation étape 5", estimatedTime: "2 min" },
     { key: "decision", title: "Décision finale", description: "Évaluation étape 6", estimatedTime: "2 min" },
-    { key: "encours", title: "Dossier en cours", description: "Évaluation de votre dossier en cours", estimatedTime: "2 min" },
-    { key: "litigieux", title: "Dossier litigieux", description: "Évaluation de votre dossier litigieux", estimatedTime: "2 min" },
     { key: "global", title: "Évaluation globale", description: "Impressions générales", estimatedTime: "1 min" },
   ];
 
@@ -88,14 +82,14 @@ export default function SurveyPage() {
       return [];
     }
 
-    const stageOrder = ["depot", "enquete", "affichage", "bornage", "evaluation", "decision", "encours", "litigieux"];
+    const stageOrder = ["depot", "enquete", "affichage", "bornage", "evaluation", "decision"];
     const stageIndex = stageOrder.indexOf(stageReached);
     
     if (stageIndex === -1) {
       return allSteps;
     }
 
-    const visibleKeys = ["profile", ...stageOrder.slice(stageIndex), "global"];
+    const visibleKeys = ["profile", ...stageOrder.slice(0, stageIndex + 1), "global"];
     return allSteps.filter(step => visibleKeys.includes(step.key)).map((step, index) => ({
       ...step,
       id: index
@@ -194,8 +188,6 @@ export default function SurveyPage() {
                 {formData.stageReached === "bornage" && "PV et plan de bornage"}
                 {formData.stageReached === "evaluation" && "Rapport d'évaluation"}
                 {formData.stageReached === "decision" && "Décision finale"}
-                {formData.stageReached === "encours" && "En cours"}
-                {formData.stageReached === "litigieux" && "Litigieux"}
               </p>
               <Link 
                 href="/stage-selection" 
