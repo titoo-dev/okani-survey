@@ -36,9 +36,12 @@ export default function Home() {
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
             <div className="mb-8">
               <div className="inline-flex items-center rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary ring-1 ring-inset ring-primary/20">
-                <span>Enquête en cours</span>
-                <span className="mx-2 text-primary/40">·</span>
-                <span className="text-muted-foreground">10 oct - 9 nov 2025</span>
+                <span className="flex items-center gap-2">
+                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                    <circle cx="10" cy="10" r="3" className="animate-pulse" />
+                  </svg>
+                  Enquête officielle DGCBF
+                </span>
               </div>
             </div>
 
@@ -205,11 +208,11 @@ export default function Home() {
               <div className="flex flex-col items-start">
                 <div className="rounded-lg bg-card/50 p-2 ring-1 ring-border/50">
                   <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
                   </svg>
                 </div>
-                <dt className="mt-4 font-semibold text-foreground">Période d'enquête</dt>
-                <dd className="mt-2 leading-7 text-muted-foreground">10 octobre - 9 novembre 2025</dd>
+                <dt className="mt-4 font-semibold text-foreground">Participation</dt>
+                <dd className="mt-2 leading-7 text-muted-foreground">Ouverte à tous les usagers</dd>
               </div>
 
               <div className="flex flex-col items-start">
