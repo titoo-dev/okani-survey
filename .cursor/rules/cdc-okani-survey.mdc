@@ -1,0 +1,119 @@
+---
+alwaysApply: true
+---
+    # Cahier de charge — Okani Survey
+
+    ## 1. Introduction et Contexte  
+    La **Direction Générale du Contrôle Budgétaire et Financier (DGCBF)** mandate le cabinet **OKANI** pour évaluer la satisfaction des citoyens gabonais concernant le service rendu dans les procédures foncières gérées par l’**Agence Nationale de l’Urbanisme, des Travaux Topographiques et du Cadastre (ANUTTC)**.  
+
+    - **Méthode :** Enquête via une application mobile et un site Next.js.  
+    - **Population cible :** Usagers ayant initié une procédure d’attribution ou de régularisation foncière à Libreville, Lambaréné, et Mouila.  
+    - **Période :** du **10 octobre au 9 novembre 2025**.  
+    - **Étapes évaluées :**  
+        1. Dépôt de dossier  
+        2. Enquête foncière  
+        3. Avis d’affichage  
+        4. PV et plan de bornage  
+        5. Rapport d’évaluation  
+        6. Décision (prix de cession + droits d’enregistrement)  
+
+    L’application intègre une logique conditionnelle : les questions affichées dépendent de l’étape atteinte par l’usager, garantissant une expérience fluide.  
+    Les procédures en cours ou litigieuses sont incluses, sans limite temporelle.  
+    Une **identification optionnelle** (numéro de dossier) permet de contextualiser les réponses sans compromettre l’anonymat.  
+
+    ---
+
+    ## 2. Objectifs de l’Enquête  
+
+    ### Objectifs généraux  
+    - Mesurer la satisfaction des usagers vis-à-vis du service rendu par l’ANUTTC.  
+    - Évaluer la clarté, l’efficacité, la transparence et la courtoisie à chaque étape.  
+
+    ### Objectifs spécifiques  
+    - Identifier les obstacles (délais, coûts, communication, accessibilité).  
+    - Comparer les perceptions entre Libreville, Lambaréné et Mouila.  
+    - Fournir des recommandations à la DGCBF pour améliorer la gouvernance foncière.  
+
+    ---
+
+    ## 3. Portée et Limites  
+
+    ### Portée  
+    - **Cible :** Citoyens gabonais (personnes physiques ou morales) ayant initié une procédure foncière avec l’ANUTTC, sans limite d’année, dans Libreville, Lambaréné et Mouila.  
+    - **Plateforme :** Application mobile (Android/iOS) et application Next.js avec formulaire stratifié   
+
+    ### Limites  
+    - Dépendance à l’accès aux smartphones et à la connectivité (fiable à Libreville, limitée à Lambaréné/Mouila).  
+    - Résultats indicatifs, non généralisables sans échantillon représentatif.  
+    - Identification optionnelle limitant la traçabilité des dossiers litigieux.  
+
+    ---
+
+    ## 4. Back-end  
+
+    - **Tableau de bord** pour OKANI/DGCBF avec :  
+    - Visualisation par **ville** et par **étape**  
+    - Export **CSV**  
+    - **Filtres disponibles :**  
+        - Ville : Libreville / Lambaréné / Mouila  
+        - Étape : dépôt, enquête, affichage, etc.  
+    - **Statistiques :** par ville et par étape.  
+
+    ---
+
+    ## 5. Chronologie des Questions (Formulaire Stratifié)  
+
+    Le questionnaire est **conditionnel** : une question initiale détermine l’étape atteinte, seules les sections pertinentes s’affichent.  
+    - **Durée moyenne :** 5 à 10 minutes.  
+    - **Types de questions :** échelles de satisfaction, QCM, questions ouvertes.
+
+    ### Section 0 : Étape atteinte (30 sec)  
+    - Jusqu’à quelle étape votre procédure est-elle arrivée ?  
+    - Dépôt de dossier  
+    - Enquête foncière  
+    - Avis d’affichage  
+    - PV et plan de bornage  
+    - Rapport d’évaluation  
+    - Décision  
+    - En cours  
+    - Litigieux  
+
+    ### Section 1 : Profil de l’usager (1 min)  
+    - Numéro de dossier (optionnel)  
+    - Ville de la procédure  
+    - Type de procédure  
+    - Année de début  
+    - Âge  
+    - Sexe  
+    - Nationalité  
+    - Personnalité juridique (physique/morale)  
+    - Email (unique)  
+
+    ### Section 2 → Section 7 : Évaluation par étape  
+    Chaque étape évalue :  
+    - **Satisfaction (1-5)**  
+    - **Délais (QCM)**  
+    - **Courtoisie / qualité du service**  
+    - **Difficultés rencontrées (ouverte)**  
+    - **Suggestions (ouverte, max. 50 mots)**  
+
+    Les étapes couvrent successivement :  
+    1. Dépôt de dossier  
+    2. Enquête foncière  
+    3. Avis d’affichage  
+    4. PV et plan de bornage  
+    5. Rapport d’évaluation  
+    6. Décision (prix de cession + droits)  
+
+    ### Section 8 : Évaluation Globale (1 min, toutes étapes)  
+    - Satisfaction globale (1-5)  
+    - Recommandation ANUTTC (Oui / Non / Peut-être + raison)  
+    - Suggestions générales (max. 100 mots)  
+
+    ---
+
+    ## Page de Confirmation  
+
+    **Message affiché :**  
+    > Merci pour votre participation ! Vos réponses aideront la DGCBF à améliorer le service foncier au Gabon.  
+    > Contact : support@okanisurvey.com  
