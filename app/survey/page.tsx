@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import Link from "next/link";
 import { 
   FileText, 
@@ -16,12 +16,12 @@ import {
   BarChart 
 } from "lucide-react";
 
-import { StepIndicator } from "./components/step-indicator";
-import { SurveySummary, type SurveyFormData } from "./components/survey-summary";
-import { StageReachedStep, validateStageReachedStep } from "./steps/stage-reached-step";
-import { UserProfileStep, validateUserProfileStep } from "./steps/user-profile-step";
-import { EvaluationStep, validateEvaluationStep } from "./steps/evaluation-step";
-import { GlobalEvaluationStep, validateGlobalEvaluationStep } from "./steps/global-evaluation-step";
+import { StepIndicator } from "../../components/step-indicator";
+import { SurveySummary, type SurveyFormData } from "../../components/survey-summary";
+import { StageReachedStep, validateStageReachedStep } from "../../components/steps/stage-reached-step";
+import { UserProfileStep, validateUserProfileStep } from "../../components/steps/user-profile-step";
+import { EvaluationStep, validateEvaluationStep } from "../../components/steps/evaluation-step";
+import { GlobalEvaluationStep, validateGlobalEvaluationStep } from "../../components/steps/global-evaluation-step";
 
 export default function SurveyPage() {
   const [currentStep, setCurrentStep] = useState(0);
