@@ -56,7 +56,7 @@ export default function Home() {
 
             <div className="mt-10 flex flex-col gap-6">
               <Button asChild size="lg" className="shadow-lg max-w-xs">
-                <Link href="/survey">
+                <Link href="/stage-selection">
                   Commencer l'enquête
                 </Link>
               </Button>
@@ -223,7 +223,7 @@ export default function Home() {
               </p>
               <div className="mt-6 flex max-w-md gap-x-4">
                 <Button asChild size="lg" className="flex-none">
-                  <Link href="/survey">
+                  <Link href="/stage-selection">
                     Participer maintenant
                   </Link>
                 </Button>

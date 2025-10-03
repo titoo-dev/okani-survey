@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { 
-  FileText, 
   User, 
   FolderOpen, 
   Search, 
@@ -13,17 +13,19 @@ import {
   Map, 
   FileCheck, 
   CheckCircle, 
-  BarChart 
+  BarChart,
+  Clock,
+  AlertTriangle
 } from "lucide-react";
 
 import { StepIndicator } from "../../components/step-indicator";
 import { SurveySummary, type SurveyFormData } from "../../components/survey-summary";
-import { StageReachedStep, validateStageReachedStep } from "../../components/steps/stage-reached-step";
 import { UserProfileStep, validateUserProfileStep } from "../../components/steps/user-profile-step";
 import { EvaluationStep, validateEvaluationStep } from "../../components/steps/evaluation-step";
 import { GlobalEvaluationStep, validateGlobalEvaluationStep } from "../../components/steps/global-evaluation-step";
 
 export default function SurveyPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<SurveyFormData>({
     stageReached: "",
@@ -46,29 +48,68 @@ export default function SurveyPage() {
     generalSuggestions: "",
   });
 
-  const steps = [
-    { id: 0, title: "Étape atteinte", icon: <FileText className="w-4 h-4" /> },
-    { id: 1, title: "Profil", icon: <User className="w-4 h-4" /> },
-    { id: 2, title: "Dépôt", icon: <FolderOpen className="w-4 h-4" /> },
-    { id: 3, title: "Enquête", icon: <Search className="w-4 h-4" /> },
-    { id: 4, title: "Affichage", icon: <Eye className="w-4 h-4" /> },
-    { id: 5, title: "Bornage", icon: <Map className="w-4 h-4" /> },
-    { id: 6, title: "Évaluation", icon: <FileCheck className="w-4 h-4" /> },
-    { id: 7, title: "Décision", icon: <CheckCircle className="w-4 h-4" /> },
-    { id: 8, title: "Global", icon: <BarChart className="w-4 h-4" /> },
+  useEffect(() => {
+    const stageReached = sessionStorage.getItem("stageReached");
+    if (!stageReached) {
+      router.push("/stage-selection");
+    } else {
+      setFormData((prev) => ({ ...prev, stageReached }));
+    }
+  }, [router]);
+
+  const allSteps = [
+    { id: 0, key: "profile", title: "Profil", icon: <User className="w-4 h-4" /> },
+    { id: 1, key: "depot", title: "Dépôt", icon: <FolderOpen className="w-4 h-4" /> },
+    { id: 2, key: "enquete", title: "Enquête", icon: <Search className="w-4 h-4" /> },
+    { id: 3, key: "affichage", title: "Affichage", icon: <Eye className="w-4 h-4" /> },
+    { id: 4, key: "bornage", title: "Bornage", icon: <Map className="w-4 h-4" /> },
+    { id: 5, key: "evaluation", title: "Évaluation", icon: <FileCheck className="w-4 h-4" /> },
+    { id: 6, key: "decision", title: "Décision", icon: <CheckCircle className="w-4 h-4" /> },
+    { id: 7, key: "encours", title: "En cours", icon: <Clock className="w-4 h-4" /> },
+    { id: 8, key: "litigieux", title: "Litigieux", icon: <AlertTriangle className="w-4 h-4" /> },
+    { id: 9, key: "global", title: "Global", icon: <BarChart className="w-4 h-4" /> },
   ];
 
-  const stepDetails = [
-    { title: "Étape atteinte", description: "Identification de votre situation", estimatedTime: "30 sec" },
-    { title: "Profil de l'usager", description: "Informations de base", estimatedTime: "1 min" },
-    { title: "Dépôt de dossier", description: "Évaluation étape 1", estimatedTime: "2 min" },
-    { title: "Enquête foncière", description: "Évaluation étape 2", estimatedTime: "2 min" },
-    { title: "Avis d'affichage", description: "Évaluation étape 3", estimatedTime: "2 min" },
-    { title: "PV et plan de bornage", description: "Évaluation étape 4", estimatedTime: "2 min" },
-    { title: "Rapport d'évaluation", description: "Évaluation étape 5", estimatedTime: "2 min" },
-    { title: "Décision finale", description: "Évaluation étape 6", estimatedTime: "2 min" },
-    { title: "Évaluation globale", description: "Impressions générales", estimatedTime: "1 min" },
+  const allStepDetails = [
+    { key: "profile", title: "Profil de l'usager", description: "Informations de base", estimatedTime: "1 min" },
+    { key: "depot", title: "Dépôt de dossier", description: "Évaluation étape 1", estimatedTime: "2 min" },
+    { key: "enquete", title: "Enquête foncière", description: "Évaluation étape 2", estimatedTime: "2 min" },
+    { key: "affichage", title: "Avis d'affichage", description: "Évaluation étape 3", estimatedTime: "2 min" },
+    { key: "bornage", title: "PV et plan de bornage", description: "Évaluation étape 4", estimatedTime: "2 min" },
+    { key: "evaluation", title: "Rapport d'évaluation", description: "Évaluation étape 5", estimatedTime: "2 min" },
+    { key: "decision", title: "Décision finale", description: "Évaluation étape 6", estimatedTime: "2 min" },
+    { key: "encours", title: "Dossier en cours", description: "Évaluation de votre dossier en cours", estimatedTime: "2 min" },
+    { key: "litigieux", title: "Dossier litigieux", description: "Évaluation de votre dossier litigieux", estimatedTime: "2 min" },
+    { key: "global", title: "Évaluation globale", description: "Impressions générales", estimatedTime: "1 min" },
   ];
+
+  const getVisibleSteps = (stageReached: string) => {
+    if (!stageReached) {
+      return [];
+    }
+
+    const stageOrder = ["depot", "enquete", "affichage", "bornage", "evaluation", "decision", "encours", "litigieux"];
+    const stageIndex = stageOrder.indexOf(stageReached);
+    
+    if (stageIndex === -1) {
+      return allSteps;
+    }
+
+    const visibleKeys = ["profile", ...stageOrder.slice(stageIndex), "global"];
+    return allSteps.filter(step => visibleKeys.includes(step.key)).map((step, index) => ({
+      ...step,
+      id: index
+    }));
+  };
+
+  const steps = getVisibleSteps(formData.stageReached);
+  const stepDetails = allStepDetails.filter(detail => 
+    steps.some(step => step.key === detail.key)
+  );
+
+  if (steps.length === 0) {
+    return null;
+  }
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -93,90 +134,37 @@ export default function SurveyPage() {
   };
 
   const isCurrentStepValid = (): boolean => {
-    switch (currentStep) {
-      case 0:
-        return validateStageReachedStep(formData);
-      case 1:
-        return validateUserProfileStep(formData);
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
-      case 7:
-        return validateEvaluationStep(formData);
-      case 8:
-        return validateGlobalEvaluationStep(formData);
-      default:
-        return false;
+    const currentStepKey = steps[currentStep]?.key;
+    
+    if (currentStepKey === "profile") {
+      return validateUserProfileStep(formData);
     }
+    if (currentStepKey === "global") {
+      return validateGlobalEvaluationStep(formData);
+    }
+    return validateEvaluationStep(formData);
   };
 
   const renderStepContent = () => {
-    switch (currentStep) {
-      case 0:
-        return <StageReachedStep formData={formData} updateFormData={updateFormData} />;
-      case 1:
-        return <UserProfileStep formData={formData} updateFormData={updateFormData} />;
-      case 2:
-        return (
-          <EvaluationStep
-            formData={formData}
-            updateFormData={updateFormData}
-            stepTitle="Dépôt de dossier"
-            stepDescription="Évaluez votre expérience lors du dépôt de dossier"
-          />
-        );
-      case 3:
-        return (
-          <EvaluationStep
-            formData={formData}
-            updateFormData={updateFormData}
-            stepTitle="Enquête foncière"
-            stepDescription="Évaluez votre expérience lors de l'enquête foncière"
-          />
-        );
-      case 4:
-        return (
-          <EvaluationStep
-            formData={formData}
-            updateFormData={updateFormData}
-            stepTitle="Avis d'affichage"
-            stepDescription="Évaluez votre expérience lors de l'avis d'affichage"
-          />
-        );
-      case 5:
-        return (
-          <EvaluationStep
-            formData={formData}
-            updateFormData={updateFormData}
-            stepTitle="PV et plan de bornage"
-            stepDescription="Évaluez votre expérience lors du PV et plan de bornage"
-          />
-        );
-      case 6:
-        return (
-          <EvaluationStep
-            formData={formData}
-            updateFormData={updateFormData}
-            stepTitle="Rapport d'évaluation"
-            stepDescription="Évaluez votre expérience lors du rapport d'évaluation"
-          />
-        );
-      case 7:
-        return (
-          <EvaluationStep
-            formData={formData}
-            updateFormData={updateFormData}
-            stepTitle="Décision finale"
-            stepDescription="Évaluez votre expérience lors de la décision finale"
-          />
-        );
-      case 8:
-        return <GlobalEvaluationStep formData={formData} updateFormData={updateFormData} />;
-      default:
-        return null;
+    const currentStepKey = steps[currentStep]?.key;
+    const currentStepDetail = stepDetails[currentStep];
+
+    if (currentStepKey === "profile") {
+      return <UserProfileStep formData={formData} updateFormData={updateFormData} />;
     }
+    
+    if (currentStepKey === "global") {
+      return <GlobalEvaluationStep formData={formData} updateFormData={updateFormData} />;
+    }
+
+    return (
+      <EvaluationStep
+        formData={formData}
+        updateFormData={updateFormData}
+        stepTitle={currentStepDetail?.title || ""}
+        stepDescription={`Évaluez votre expérience lors ${currentStepDetail?.title.toLowerCase() || ""}`}
+      />
+    );
   };
 
   return (
@@ -195,6 +183,28 @@ export default function SurveyPage() {
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-3xl font-bold">Enquête de satisfaction</h1>
           </div>
+          
+          {formData.stageReached && (
+            <div className="mb-4 p-3 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-between">
+              <p className="text-sm text-muted-foreground">
+                <span className="font-medium text-foreground">Étape sélectionnée:</span>{" "}
+                {formData.stageReached === "depot" && "Dépôt de dossier"}
+                {formData.stageReached === "enquete" && "Enquête foncière"}
+                {formData.stageReached === "affichage" && "Avis d'affichage"}
+                {formData.stageReached === "bornage" && "PV et plan de bornage"}
+                {formData.stageReached === "evaluation" && "Rapport d'évaluation"}
+                {formData.stageReached === "decision" && "Décision finale"}
+                {formData.stageReached === "encours" && "En cours"}
+                {formData.stageReached === "litigieux" && "Litigieux"}
+              </p>
+              <Link 
+                href="/stage-selection" 
+                className="text-xs text-primary hover:underline whitespace-nowrap ml-4"
+              >
+                Modifier
+              </Link>
+            </div>
+          )}
           
           <StepIndicator steps={steps} currentStepIndex={currentStep} />
         </div>

@@ -28,17 +28,43 @@ type SurveySummaryProps = {
 };
 
 export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
-  const steps = [
-    { id: 0, label: "Étape atteinte" },
-    { id: 1, label: "Profil de l'usager" },
-    { id: 2, label: "Dépôt de dossier" },
-    { id: 3, label: "Enquête foncière" },
-    { id: 4, label: "Avis d'affichage" },
-    { id: 5, label: "PV et plan de bornage" },
-    { id: 6, label: "Rapport d'évaluation" },
-    { id: 7, label: "Décision finale" },
-    { id: 8, label: "Évaluation globale" },
+  const allSteps = [
+    { id: 0, key: "profile", label: "Profil de l'usager" },
+    { id: 1, key: "depot", label: "Dépôt de dossier" },
+    { id: 2, key: "enquete", label: "Enquête foncière" },
+    { id: 3, key: "affichage", label: "Avis d'affichage" },
+    { id: 4, key: "bornage", label: "PV et plan de bornage" },
+    { id: 5, key: "evaluation", label: "Rapport d'évaluation" },
+    { id: 6, key: "decision", label: "Décision finale" },
+    { id: 7, key: "encours", label: "Dossier en cours" },
+    { id: 8, key: "litigieux", label: "Dossier litigieux" },
+    { id: 9, key: "global", label: "Évaluation globale" },
   ];
+
+  const getVisibleSteps = (stageReached: string) => {
+    if (!stageReached) {
+      return [];
+    }
+
+    const stageOrder = ["depot", "enquete", "affichage", "bornage", "evaluation", "decision", "encours", "litigieux"];
+    const stageIndex = stageOrder.indexOf(stageReached);
+    
+    if (stageIndex === -1) {
+      return allSteps;
+    }
+
+    const visibleKeys = ["profile", ...stageOrder.slice(stageIndex), "global"];
+    return allSteps.filter(step => visibleKeys.includes(step.key)).map((step, index) => ({
+      ...step,
+      id: index
+    }));
+  };
+
+  const steps = getVisibleSteps(formData.stageReached);
+
+  if (steps.length === 0) {
+    return null;
+  }
 
   const getStepStatus = (stepId: number) => {
     if (stepId < currentStep) return "completed";
@@ -46,37 +72,27 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     return "pending";
   };
 
-  const isStepCompleted = (stepId: number) => {
-    switch (stepId) {
-      case 0:
-        return !!formData.stageReached;
-      case 1:
-        return !!(
-          formData.city &&
-          formData.procedureType &&
-          formData.startYear &&
-          formData.age &&
-          formData.gender &&
-          formData.legalEntity &&
-          formData.email
-        );
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
-      case 7:
-        return !!(formData.satisfaction1[0] && formData.delays1 && formData.courtesy1[0]);
-      case 8:
-        return !!formData.satisfaction1[0];
-      default:
-        return false;
+  const isStepCompleted = (step: { key: string }) => {
+    if (step.key === "profile") {
+      return !!(
+        formData.city &&
+        formData.procedureType &&
+        formData.startYear &&
+        formData.age &&
+        formData.gender &&
+        formData.legalEntity &&
+        formData.email
+      );
     }
+    if (step.key === "global") {
+      return !!formData.satisfaction1[0];
+    }
+    return !!(formData.satisfaction1[0] && formData.delays1 && formData.courtesy1[0]);
   };
 
-  const renderStepIcon = (stepId: number) => {
-    const status = getStepStatus(stepId);
-    const isCompleted = isStepCompleted(stepId);
+  const renderStepIcon = (step: { id: number; key: string }) => {
+    const status = getStepStatus(step.id);
+    const isCompleted = isStepCompleted(step);
 
     if (isCompleted || status === "completed") {
       return <CheckCircle className="w-4 h-4 text-green-500" />;
@@ -85,31 +101,21 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     return <Clock className="w-4 h-4 text-gray-400" />;
   };
 
-  const renderStepContent = (stepId: number) => {
-    switch (stepId) {
-      case 0:
-        return formData.stageReached ? (
-          <p className="text-sm text-gray-600">{formData.stageReached}</p>
-        ) : null;
-      case 1:
-        return (
-          <div className="space-y-1 text-sm text-gray-600">
-            {formData.city && <p>{formData.city}</p>}
-            {formData.email && <p className="truncate">{formData.email}</p>}
-          </div>
-        );
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
-      case 7:
-        return formData.satisfaction1[0] ? (
-          <p className="text-sm text-gray-600">Satisfaction: {formData.satisfaction1[0]}/5</p>
-        ) : null;
-      default:
-        return null;
+  const renderStepContent = (step: { key: string }) => {
+    if (step.key === "profile") {
+      return (
+        <div className="space-y-1 text-sm text-gray-600">
+          {formData.city && <p>{formData.city}</p>}
+          {formData.email && <p className="truncate">{formData.email}</p>}
+        </div>
+      );
     }
+    
+    if (step.key !== "global" && formData.satisfaction1[0]) {
+      return <p className="text-sm text-gray-600">Satisfaction: {formData.satisfaction1[0]}/5</p>;
+    }
+    
+    return null;
   };
 
   return (
@@ -121,7 +127,7 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
         <CardContent className="space-y-4">
           {steps.map((step) => {
             const status = getStepStatus(step.id);
-            const isCompleted = isStepCompleted(step.id);
+            const isCompleted = isStepCompleted(step);
 
             return (
               <div
@@ -135,7 +141,7 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  {renderStepIcon(step.id)}
+                  {renderStepIcon(step)}
                   <div className="flex-1 min-w-0">
                     <h4
                       className={`text-sm font-medium ${
@@ -148,7 +154,7 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
                     >
                       {step.label}
                     </h4>
-                    {renderStepContent(step.id)}
+                    {renderStepContent(step)}
                   </div>
                 </div>
               </div>
