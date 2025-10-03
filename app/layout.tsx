@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Navbar } from "@/components/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Okani Survey - Enquête de Satisfaction ANUTTC",
-  description: "Évaluation de la satisfaction des citoyens gabonais concernant les procédures foncières gérées par l'ANUTTC. Période du 10 octobre au 9 novembre 2025.",
+  description: "Évaluation de la satisfaction des citoyens gabonais concernant les procédures foncières gérées par l'ANUTTC.",
 };
 
 export default function RootLayout({
@@ -23,10 +24,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Navbar />
         {children}
       </body>
     </html>
