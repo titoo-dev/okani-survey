@@ -32,36 +32,36 @@ export default function Home() {
           </svg>
         </div>
 
-        <div className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40">
-          <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-xl lg:flex-shrink-0 lg:pt-8">
-            <div className="mb-8">
-              <div className="inline-flex items-center rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary ring-1 ring-inset ring-primary/20">
+        <div className="mx-auto max-w-7xl px-6 pb-12 pt-10 sm:pb-16 lg:px-8 lg:py-20">
+          <div className="mx-auto max-w-4xl text-center">
+            <div className="mb-8 flex justify-center">
+              <div className="inline-flex items-center rounded-full bg-primary/10 px-5 py-2.5 text-sm font-semibold text-primary ring-1 ring-inset ring-primary/20">
                 <span className="flex items-center gap-2">
-                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                    <circle cx="10" cy="10" r="3" className="animate-pulse" />
+                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
                   </svg>
-                  Enquête officielle DGCBF
+                  Initiative Gouvernementale Officielle
                 </span>
               </div>
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-              Enquête de Satisfaction ANUTTC
+            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+              Sondage de Satisfaction 
+              <span className="block text-primary mt-2">Service Public Foncier</span>
             </h1>
             
-            <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              La Direction Générale du Contrôle Budgétaire et Financier mandate le cabinet OKANI pour évaluer 
-              votre satisfaction concernant les procédures foncières gérées par l'ANUTTC.
+            <p className="mt-8 text-xl leading-8 text-muted-foreground max-w-3xl mx-auto">
+              Bienvenue sur la plateforme dédiée au sondage sur la satisfaction des usagers du service public foncier, confiée à l'ANUTTC.
             </p>
 
-            <div className="mt-10 flex flex-col gap-6">
-              <Button asChild size="lg" className="shadow-lg max-w-xs">
+            <div className="mt-12 flex flex-col items-center gap-6">
+              <Button asChild size="lg" className="shadow-lg px-12 py-6 text-lg">
                 <Link href="/stage-selection">
-                  Commencer l'enquête
+                  Commencer le sondage
                 </Link>
               </Button>
               
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col items-center gap-4">
                 <p className="text-sm font-medium text-muted-foreground">Ou télécharger l'application mobile :</p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
@@ -93,7 +93,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="mt-10 flex items-center gap-x-6 text-sm">
+            <div className="mt-12 flex items-center justify-center gap-x-8 text-sm flex-wrap">
               <div className="flex items-center gap-x-2 text-muted-foreground">
                 <svg className="h-5 w-5 text-secondary" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -106,65 +106,77 @@ export default function Home() {
                 </svg>
                 <span>Anonyme & sécurisé</span>
               </div>
-            </div>
-          </div>
-
-          <div className="mx-auto mt-16 flex max-w-2xl sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:max-w-none lg:flex-none xl:ml-32">
-            <div className="max-w-3xl flex-none sm:max-w-5xl lg:max-w-none">
-              <div className="rounded-3xl bg-card/50 backdrop-blur-sm p-8 shadow-2xl ring-1 ring-border/50">
-                <div className="grid grid-cols-1 gap-6">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground">Trois villes ciblées</h3>
-                      <p className="text-sm text-muted-foreground">Libreville, Lambaréné et Mouila</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-secondary-foreground">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground">6 étapes évaluées</h3>
-                      <p className="text-sm text-muted-foreground">De la demande à la décision finale</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
-                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-foreground">Enquête conditionnelle</h3>
-                      <p className="text-sm text-muted-foreground">Questions adaptées à votre situation</p>
-                    </div>
-                  </div>
-                </div>
+              <div className="flex items-center gap-x-2 text-muted-foreground">
+                <svg className="h-5 w-5 text-secondary" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+                <span>Libreville, Lambaréné, Mouila</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <section className="py-24 sm:py-32">
+      <section className="py-16 sm:py-20 border-y border-border/40">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center rounded-full bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary mb-4">
+                Vision du Chef de l'État
+              </div>
+              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                Une initiative pour la modernisation
+              </h2>
+            </div>
+            
+            <div className="space-y-6 text-base leading-7 text-muted-foreground">
+              <p>
+                Dans le cadre de la <strong className="text-foreground font-semibold">vision du Chef de l'État</strong>, axée sur la modernisation de l'administration publique et l'amélioration continue des services rendus aux citoyens, la <strong className="text-foreground font-semibold">Direction Générale du Contrôle Budgétaire et Financier</strong> a déployé ce sondage.
+              </p>
+
+              <p>
+                Cette initiative s'inscrit dans les grandes orientations de l'État visant à renforcer la confiance des usagers, à promouvoir l'équité et à répondre aux besoins des citoyens avec diligence et professionnalisme.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 sm:py-20 bg-gradient-to-b from-primary/5 to-background">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="inline-flex items-center justify-center rounded-2xl bg-primary/10 p-3 mb-6">
+              <svg className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-4">
+              Votre avis est précieux !
+            </h2>
+            <p className="text-lg leading-8 text-muted-foreground">
+              En participant à ce sondage, vous contribuez directement à l'évaluation et à l'amélioration de la qualité des services publics fonciers.
+            </p>
+            <div className="mt-8">
+              <Button asChild size="lg" className="shadow-md">
+                <Link href="/stage-selection">
+                  Je participe maintenant
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 sm:py-32 bg-muted/30">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-primary">Processus simple</h2>
+            <h2 className="text-base font-semibold leading-7 text-primary">Processus simple et rapide</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Comment participer à l'enquête
+              Comment participer au sondage
             </p>
             <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Un processus simple et rapide pour partager votre expérience avec l'ANUTTC
+              Nous vous remercions pour votre engagement et vous invitons à partager vos retours d'expérience afin de bâtir ensemble un service public toujours plus performant et au plus près de vos attentes.
             </p>
           </div>
           
@@ -210,27 +222,20 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="relative isolate overflow-hidden bg-muted/30 py-24 sm:py-32">
+      <section className="relative isolate overflow-hidden py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
-            <div className="max-w-xl lg:max-w-lg">
-              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                Votre voix compte
-              </h2>
-              <p className="mt-4 text-lg leading-8 text-muted-foreground">
-                Cette enquête permettra d'identifier les obstacles et d'améliorer la transparence, l'efficacité 
-                et la qualité du service dans les procédures foncières.
-              </p>
-              <div className="mt-6 flex max-w-md gap-x-4">
-                <Button asChild size="lg" className="flex-none">
-                  <Link href="/stage-selection">
-                    Participer maintenant
-                  </Link>
-                </Button>
-              </div>
-            </div>
-            
-            <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">
+          <div className="mx-auto max-w-2xl text-center mb-16">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Pourquoi participer ?
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-muted-foreground">
+              Ce sondage permettra d'identifier les obstacles et d'améliorer la transparence, l'efficacité 
+              et la qualité du service dans les procédures foncières gérées par l'ANUTTC.
+            </p>
+          </div>
+
+          <div className="mx-auto max-w-5xl">
+            <dl className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
               <div className="flex flex-col items-start">
                 <div className="rounded-lg bg-card/50 p-2 ring-1 ring-border/50">
                   <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -268,9 +273,66 @@ export default function Home() {
                   </svg>
                 </div>
                 <dt className="mt-4 font-semibold text-foreground">Mandaté par</dt>
-                <dd className="mt-2 leading-7 text-muted-foreground">DGCBF</dd>
+                <dd className="mt-2 leading-7 text-muted-foreground">Direction Générale du Contrôle Budgétaire et Financier</dd>
               </div>
             </dl>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 sm:py-24 bg-gradient-to-b from-background via-primary/5 to-background">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="relative isolate overflow-hidden rounded-3xl bg-primary px-6 py-16 text-center shadow-2xl sm:px-16">
+            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary to-primary/90" />
+            <div className="absolute inset-0 -z-10 opacity-20">
+              <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+                    <path d="M0 32V.5M32 .5H0" fill="none" stroke="currentColor" strokeWidth="0.5" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+              </svg>
+            </div>
+            
+            <div className="mx-auto max-w-2xl">
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Prêt à partager votre expérience ?
+              </h2>
+              <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-primary-foreground/90">
+                Nous vous remercions pour votre engagement et vous invitons à partager vos retours d'expérience afin de bâtir ensemble un service public toujours plus performant et au plus près de vos attentes.
+              </p>
+              <div className="mt-10 flex items-center justify-center gap-x-6">
+                <Button asChild size="lg" variant="secondary" className="shadow-xl">
+                  <Link href="/stage-selection">
+                    Commencer maintenant
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-muted/30 py-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="rounded-2xl bg-card/80 backdrop-blur-sm p-8 shadow-lg ring-1 ring-border/50">
+              <svg className="h-12 w-12 mx-auto text-primary mb-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+              <p className="text-lg font-semibold text-foreground italic mb-2">
+                "La modernisation de l'administration publique et l'amélioration continue des services rendus aux citoyens"
+              </p>
+              <div className="mt-6 pt-6 border-t border-border">
+                <p className="text-base font-semibold text-foreground">
+                  La Direction Générale du Contrôle Budgétaire et Financier
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  République Gabonaise
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
