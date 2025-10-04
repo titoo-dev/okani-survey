@@ -1,17 +1,11 @@
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type UserProfileData = {
-  dossierNumber: string;
-  city: string;
-  procedureType: string;
-  startYear: string;
-  age: string;
-  gender: string;
+  userType: string;
+  nationality: string;
   legalEntity: string;
-  email: string;
 };
 
 type UserProfileStepProps = {
@@ -19,100 +13,62 @@ type UserProfileStepProps = {
   updateFormData: (updates: Partial<UserProfileData>) => void;
 };
 
+const countries = [
+  "Gabon",
+  "Cameroun",
+  "Congo-Brazzaville",
+  "Congo (RDC)",
+  "Guinée Équatoriale",
+  "Tchad",
+  "Centrafrique",
+  "Sénégal",
+  "Côte d'Ivoire",
+  "Bénin",
+  "Burkina Faso",
+  "Mali",
+  "Niger",
+  "Togo",
+  "France",
+  "États-Unis",
+  "Chine",
+  "Autre"
+];
+
 export function UserProfileStep({ formData, updateFormData }: UserProfileStepProps) {
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold mb-2">Profil de l'usager</h2>
-        <p className="text-gray-600 mb-6">
-          Informations de base pour mieux comprendre votre expérience
-        </p>
-      </div>
-
       <div className="space-y-2">
-        <Label htmlFor="dossierNumber">Numéro de dossier (optionnel)</Label>
-        <Input
-          id="dossierNumber"
-          placeholder="Ex: 2024-LBV-001234"
-          value={formData.dossierNumber}
-          onChange={(e) => updateFormData({ dossierNumber: e.target.value })}
-        />
-        <p className="text-sm text-muted-foreground">Pour contextualiser vos réponses (anonymat garanti)</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="city">Ville de la procédure*</Label>
-          <Select value={formData.city} onValueChange={(value) => updateFormData({ city: value })}>
-            <SelectTrigger>
-              <SelectValue placeholder="Sélectionnez une ville" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="libreville">Libreville</SelectItem>
-              <SelectItem value="lambarene">Lambaréné</SelectItem>
-              <SelectItem value="mouila">Mouila</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="procedureType">Type de procédure*</Label>
-          <Select value={formData.procedureType} onValueChange={(value) => updateFormData({ procedureType: value })}>
-            <SelectTrigger>
-              <SelectValue placeholder="Sélectionnez un type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="attribution">Attribution foncière</SelectItem>
-              <SelectItem value="regularisation">Régularisation foncière</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="startYear">Année de début*</Label>
-          <Input
-            id="startYear"
-            type="number"
-            placeholder="Ex: 2023"
-            value={formData.startYear}
-            onChange={(e) => updateFormData({ startYear: e.target.value })}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="age">Âge*</Label>
-          <Input
-            id="age"
-            type="number"
-            placeholder="Ex: 35"
-            value={formData.age}
-            onChange={(e) => updateFormData({ age: e.target.value })}
-          />
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label>Sexe*</Label>
-        <RadioGroup value={formData.gender} onValueChange={(value) => updateFormData({ gender: value })}>
+        <Label>Type d'usager ?*</Label>
+        <RadioGroup value={formData.userType} onValueChange={(value) => updateFormData({ userType: value })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="homme" id="homme" />
-            <Label htmlFor="homme" className="font-normal cursor-pointer">Homme</Label>
+            <RadioGroupItem value="usager" id="usager" />
+            <Label htmlFor="usager" className="font-normal cursor-pointer">Usager</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="femme" id="femme" />
-            <Label htmlFor="femme" className="font-normal cursor-pointer">Femme</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="autre" id="autre" />
-            <Label htmlFor="autre" className="font-normal cursor-pointer">Autre</Label>
+            <RadioGroupItem value="partenaire-anonyme" id="partenaire" />
+            <Label htmlFor="partenaire" className="font-normal cursor-pointer">Partenaire anonyme</Label>
           </div>
         </RadioGroup>
       </div>
 
       <div className="space-y-2">
-        <Label>Personnalité juridique*</Label>
+        <Label htmlFor="nationality">Nationalité*</Label>
+        <Select value={formData.nationality} onValueChange={(value) => updateFormData({ nationality: value })}>
+          <SelectTrigger>
+            <SelectValue placeholder="Sélectionnez votre nationalité" />
+          </SelectTrigger>
+          <SelectContent>
+            {countries.map((country) => (
+              <SelectItem key={country} value={country}>
+                {country}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Label>Personnalité juridique ?*</Label>
         <RadioGroup value={formData.legalEntity} onValueChange={(value) => updateFormData({ legalEntity: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="physique" id="physique" />
@@ -124,33 +80,17 @@ export function UserProfileStep({ formData, updateFormData }: UserProfileStepPro
           </div>
         </RadioGroup>
       </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="email">Email*</Label>
-        <Input
-          id="email"
-          type="email"
-          placeholder="votre.email@exemple.com"
-          value={formData.email}
-          onChange={(e) => updateFormData({ email: e.target.value })}
-        />
-        <p className="text-sm text-muted-foreground">Pour vous envoyer une copie de vos réponses</p>
-      </div>
     </div>
   );
 }
 
 export function validateUserProfileStep(
-  formData: Pick<UserProfileData, "city" | "procedureType" | "startYear" | "age" | "gender" | "legalEntity" | "email">
+  formData: Pick<UserProfileData, "userType" | "nationality" | "legalEntity">
 ): boolean {
   return !!(
-    formData.city &&
-    formData.procedureType &&
-    formData.startYear &&
-    formData.age &&
-    formData.gender &&
-    formData.legalEntity &&
-    formData.email
+    formData.userType &&
+    formData.nationality &&
+    formData.legalEntity
   );
 }
 

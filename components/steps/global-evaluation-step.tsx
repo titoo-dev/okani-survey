@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
 
 type GlobalEvaluationData = {
-  satisfaction1: number[];
+  globalSatisfaction: number[];
   recommendation: string;
   reason: string;
   generalSuggestions: string;
@@ -29,8 +29,8 @@ export function GlobalEvaluationStep({ formData, updateFormData }: GlobalEvaluat
         <Label>Satisfaction globale de votre expérience*</Label>
         <div className="space-y-2">
           <Slider
-            value={formData.satisfaction1}
-            onValueChange={(value) => updateFormData({ satisfaction1: value })}
+            value={formData.globalSatisfaction}
+            onValueChange={(value) => updateFormData({ globalSatisfaction: value })}
             min={1}
             max={5}
             step={1}
@@ -38,7 +38,7 @@ export function GlobalEvaluationStep({ formData, updateFormData }: GlobalEvaluat
           />
           <div className="flex justify-between text-sm text-muted-foreground">
             <span>Très insatisfait</span>
-            <span className="font-semibold text-foreground">{formData.satisfaction1[0]}/5</span>
+            <span className="font-semibold text-foreground">{formData.globalSatisfaction[0]}/5</span>
             <span>Très satisfait</span>
           </div>
         </div>
@@ -90,8 +90,8 @@ export function GlobalEvaluationStep({ formData, updateFormData }: GlobalEvaluat
 }
 
 export function validateGlobalEvaluationStep(
-  formData: Pick<GlobalEvaluationData, "satisfaction1" | "recommendation">
+  formData: Pick<GlobalEvaluationData, "globalSatisfaction" | "recommendation">
 ): boolean {
-  return !!(formData.satisfaction1[0] && formData.recommendation);
+  return !!(formData.globalSatisfaction[0] && formData.recommendation);
 }
 

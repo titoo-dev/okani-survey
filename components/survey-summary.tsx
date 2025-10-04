@@ -3,20 +3,17 @@ import { CheckCircle, Clock } from "lucide-react";
 
 export type SurveyFormData = {
   stageReached: string;
-  dossierNumber: string;
-  city: string;
-  procedureType: string;
-  startYear: string;
-  age: string;
-  gender: string;
+  userType: string;
   nationality: string;
   legalEntity: string;
-  email: string;
-  satisfaction1: number[];
-  delays1: string;
-  courtesy1: number[];
-  difficulties1: string;
-  suggestions1: string;
+  hasCompletedStep: string;
+  evaluation: string;
+  paymentMode: string;
+  paymentDate: string;
+  paymentRecipient: string;
+  hasReceipt: string;
+  otherPaymentMode: string;
+  globalSatisfaction: number[];
   recommendation: string;
   reason: string;
   generalSuggestions: string;
@@ -32,10 +29,10 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     { id: 0, key: "profile", label: "Profil de l'usager" },
     { id: 1, key: "depot", label: "Dépôt de dossier" },
     { id: 2, key: "enquete", label: "Enquête foncière" },
-    { id: 3, key: "affichage", label: "Avis d'affichage" },
-    { id: 4, key: "bornage", label: "PV et plan de bornage" },
-    { id: 5, key: "evaluation", label: "Rapport d'évaluation" },
-    { id: 6, key: "decision", label: "Décision finale" },
+    { id: 3, key: "etat-lieux", label: "État des lieux" },
+    { id: 4, key: "affichage", label: "Avis d'affichage" },
+    { id: 5, key: "bornage", label: "PV et plan de bornage" },
+    { id: 6, key: "evaluation", label: "Rapport d'évaluation" },
     { id: 7, key: "global", label: "Évaluation globale" },
   ];
 
@@ -44,7 +41,7 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
       return [];
     }
 
-    const stageOrder = ["depot", "enquete", "affichage", "bornage", "evaluation", "decision"];
+    const stageOrder = ["depot", "enquete", "etat-lieux", "affichage", "bornage", "evaluation"];
     const stageIndex = stageOrder.indexOf(stageReached);
     
     if (stageIndex === -1) {
@@ -73,19 +70,15 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
   const isStepCompleted = (step: { key: string }) => {
     if (step.key === "profile") {
       return !!(
-        formData.city &&
-        formData.procedureType &&
-        formData.startYear &&
-        formData.age &&
-        formData.gender &&
-        formData.legalEntity &&
-        formData.email
+        formData.userType &&
+        formData.nationality &&
+        formData.legalEntity
       );
     }
     if (step.key === "global") {
-      return !!formData.satisfaction1[0];
+      return !!(formData.globalSatisfaction[0] && formData.recommendation);
     }
-    return !!(formData.satisfaction1[0] && formData.delays1 && formData.courtesy1[0]);
+    return !!formData.hasCompletedStep;
   };
 
   const renderStepIcon = (step: { id: number; key: string }) => {
@@ -103,14 +96,18 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     if (step.key === "profile") {
       return (
         <div className="space-y-1 text-sm text-gray-600">
-          {formData.city && <p>{formData.city}</p>}
-          {formData.email && <p className="truncate">{formData.email}</p>}
+          {formData.userType && <p>{formData.userType === "usager" ? "Usager" : "Partenaire anonyme"}</p>}
+          {formData.nationality && <p className="truncate">{formData.nationality}</p>}
         </div>
       );
     }
     
-    if (step.key !== "global" && formData.satisfaction1[0]) {
-      return <p className="text-sm text-gray-600">Satisfaction: {formData.satisfaction1[0]}/5</p>;
+    if (step.key === "global" && formData.globalSatisfaction[0]) {
+      return <p className="text-sm text-gray-600">Satisfaction: {formData.globalSatisfaction[0]}/5</p>;
+    }
+    
+    if (step.key !== "global" && formData.hasCompletedStep) {
+      return <p className="text-sm text-gray-600">{formData.hasCompletedStep === "oui" ? "Complété" : "Non complété"}</p>;
     }
     
     return null;

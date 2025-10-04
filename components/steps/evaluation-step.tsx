@@ -1,116 +1,196 @@
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 type EvaluationData = {
-  satisfaction1: number[];
-  delays1: string;
-  courtesy1: number[];
-  difficulties1: string;
-  suggestions1: string;
+  hasCompletedStep: string;
+  evaluation: string;
+  paymentMode: string;
+  paymentDate: string;
+  paymentRecipient: string;
+  hasReceipt: string;
+  otherPaymentMode: string;
 };
 
 type EvaluationStepProps = {
   formData: EvaluationData;
   updateFormData: (updates: Partial<EvaluationData>) => void;
   stepTitle: string;
-  stepDescription: string;
+  stepKey: string;
 };
 
-export function EvaluationStep({ formData, updateFormData, stepTitle, stepDescription }: EvaluationStepProps) {
+const getStepQuestion = (stepKey: string) => {
+  const questions: Record<string, string> = {
+    depot: "Avez-vous procédé au règlement de votre dépôt de dossier à l'ANUTTC ?",
+    enquete: "Avez-vous fait l'enquête foncière ?",
+    "etat-lieux": "Avez-vous fait l'état des lieux ?",
+    affichage: "L'avis d'affichage est-il effectif ?",
+    bornage: "Le Procès-verbal et le plan de bornage ont-ils été réalisés ?",
+    evaluation: "Le rapport d'évaluation a-t-il été fait ?",
+  };
+  return questions[stepKey] || "Avez-vous complété cette étape ?";
+};
+
+const evaluationOptions = [
+  { value: "excellent", label: "Excellent" },
+  { value: "tres-bien", label: "Très bien" },
+  { value: "bien", label: "Bien" },
+  { value: "assez-bien", label: "Assez bien" },
+  { value: "passable", label: "Passable" },
+  { value: "mediocre", label: "Médiocre" },
+];
+
+export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }: EvaluationStepProps) {
+  const stepQuestion = getStepQuestion(stepKey);
+
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-bold mb-2">{stepTitle}</h2>
-        <p className="text-gray-600 mb-6">{stepDescription}</p>
-      </div>
-
-      <div className="space-y-4">
-        <Label>Niveau de satisfaction global*</Label>
+    <div className="space-y-6">
+      {stepKey === "enquete" && (
         <div className="space-y-2">
-          <Slider
-            value={formData.satisfaction1}
-            onValueChange={(value) => updateFormData({ satisfaction1: value })}
-            min={1}
-            max={5}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Très insatisfait</span>
-            <span className="font-semibold text-foreground">{formData.satisfaction1[0]}/5</span>
-            <span>Très satisfait</span>
-          </div>
+          <Label>Évaluation possible*</Label>
+          <Select value={formData.evaluation} onValueChange={(value) => updateFormData({ evaluation: value })}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sélectionnez une évaluation" />
+            </SelectTrigger>
+            <SelectContent>
+              {evaluationOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-      </div>
+      )}
 
-      <div className="space-y-2">
-        <Label htmlFor="delays1">Délais de traitement*</Label>
-        <Select value={formData.delays1} onValueChange={(value) => updateFormData({ delays1: value })}>
-          <SelectTrigger>
-            <SelectValue placeholder="Évaluez les délais" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="rapide">Moins de 1 mois</SelectItem>
-            <SelectItem value="acceptable">1 à 3 mois</SelectItem>
-            <SelectItem value="long">3 à 6 mois</SelectItem>
-            <SelectItem value="tres-long">Plus de 6 mois</SelectItem>
-            <SelectItem value="encours">Toujours en cours</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="space-y-4">
-        <Label>Courtoisie et qualité du service*</Label>
+      {stepKey === "depot" && (
         <div className="space-y-2">
-          <Slider
-            value={formData.courtesy1}
-            onValueChange={(value) => updateFormData({ courtesy1: value })}
-            min={1}
-            max={5}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Très mauvais</span>
-            <span className="font-semibold text-foreground">{formData.courtesy1[0]}/5</span>
-            <span>Excellent</span>
-          </div>
+          <Label>Comment évaluez-vous l'accueil à l'ANUTTC ?*</Label>
+          <Select value={formData.evaluation} onValueChange={(value) => updateFormData({ evaluation: value })}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sélectionnez une évaluation" />
+            </SelectTrigger>
+            <SelectContent>
+              {evaluationOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-      </div>
+      )}
 
       <div className="space-y-2">
-        <Label htmlFor="difficulties1">Principales difficultés rencontrées</Label>
-        <Textarea
-          id="difficulties1"
-          placeholder="Décrivez les obstacles ou problèmes..."
-          value={formData.difficulties1}
-          onChange={(e) => updateFormData({ difficulties1: e.target.value })}
-          rows={4}
-        />
-        <p className="text-sm text-muted-foreground">Optionnel</p>
+        <Label>{stepQuestion}*</Label>
+        <RadioGroup value={formData.hasCompletedStep} onValueChange={(value) => updateFormData({ hasCompletedStep: value })}>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="oui" id="completed-yes" />
+            <Label htmlFor="completed-yes" className="font-normal cursor-pointer">Oui</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="non" id="completed-no" />
+            <Label htmlFor="completed-no" className="font-normal cursor-pointer">Non</Label>
+          </div>
+        </RadioGroup>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="suggestions1">Suggestions d'amélioration</Label>
-        <Textarea
-          id="suggestions1"
-          placeholder="Comment améliorer cette étape ? (max. 50 mots)"
-          value={formData.suggestions1}
-          onChange={(e) => updateFormData({ suggestions1: e.target.value })}
-          rows={3}
-          maxLength={250}
-        />
-        <p className="text-sm text-muted-foreground">Optionnel - Maximum 50 mots</p>
-      </div>
+      {formData.hasCompletedStep === "oui" && (
+        <>
+          <div className="space-y-2">
+            <Label>Quel était le mode de paiement ?*</Label>
+            <Select value={formData.paymentMode} onValueChange={(value) => updateFormData({ paymentMode: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Sélectionnez un mode de paiement" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="especes">Espèces</SelectItem>
+                <SelectItem value="cheque">Chèque</SelectItem>
+                <SelectItem value="virement">Virement</SelectItem>
+                <SelectItem value="money-banking">Money Banking</SelectItem>
+                <SelectItem value="autre">Autres (Préciser...)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {formData.paymentMode === "autre" && (
+            <div className="space-y-2">
+              <Label htmlFor="otherPaymentMode">Précisez le mode de paiement*</Label>
+              <Input
+                id="otherPaymentMode"
+                placeholder="Ex: Mobile money"
+                value={formData.otherPaymentMode}
+                onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
+              />
+            </div>
+          )}
+
+          <div className="space-y-2">
+            <Label htmlFor="paymentDate">Date ?*</Label>
+            <Input
+              id="paymentDate"
+              type="date"
+              value={formData.paymentDate}
+              onChange={(e) => updateFormData({ paymentDate: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label>À qui avez-vous réglé ce paiement ?*</Label>
+            <RadioGroup value={formData.paymentRecipient} onValueChange={(value) => updateFormData({ paymentRecipient: value })}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="agent-anuttc" id="agent-anuttc" />
+                <Label htmlFor="agent-anuttc" className="font-normal cursor-pointer">Agent de l'ANUTTC</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="agent-tresor" id="agent-tresor" />
+                <Label htmlFor="agent-tresor" className="font-normal cursor-pointer">Agent du Trésor</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="autre" id="recipient-autre" />
+                <Label htmlFor="recipient-autre" className="font-normal cursor-pointer">Autre (intermédiaire...)</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Avez-vous reçu un récépissé ou une quittance ?*</Label>
+            <RadioGroup value={formData.hasReceipt} onValueChange={(value) => updateFormData({ hasReceipt: value })}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="oui" id="receipt-yes" />
+                <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="non" id="receipt-no" />
+                <Label htmlFor="receipt-no" className="font-normal cursor-pointer">Non</Label>
+              </div>
+            </RadioGroup>
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
 export function validateEvaluationStep(
-  formData: Pick<EvaluationData, "satisfaction1" | "delays1" | "courtesy1">
+  formData: Pick<EvaluationData, "hasCompletedStep" | "paymentMode" | "paymentDate" | "paymentRecipient" | "hasReceipt" | "otherPaymentMode">
 ): boolean {
-  return !!(formData.satisfaction1[0] && formData.delays1 && formData.courtesy1[0]);
+  if (!formData.hasCompletedStep) return false;
+  
+  if (formData.hasCompletedStep === "non") return true;
+  
+  const baseValidation = !!(
+    formData.paymentMode &&
+    formData.paymentDate &&
+    formData.paymentRecipient &&
+    formData.hasReceipt
+  );
+  
+  if (formData.paymentMode === "autre") {
+    return baseValidation && !!formData.otherPaymentMode;
+  }
+  
+  return baseValidation;
 }
 

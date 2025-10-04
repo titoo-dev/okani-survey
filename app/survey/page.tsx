@@ -27,20 +27,17 @@ export default function SurveyPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<SurveyFormData>({
     stageReached: "",
-    dossierNumber: "",
-    city: "",
-    procedureType: "",
-    startYear: "",
-    age: "",
-    gender: "",
-    nationality: "Gabonaise",
+    userType: "",
+    nationality: "",
     legalEntity: "",
-    email: "",
-    satisfaction1: [3],
-    delays1: "",
-    courtesy1: [4],
-    difficulties1: "",
-    suggestions1: "",
+    hasCompletedStep: "",
+    evaluation: "",
+    paymentMode: "",
+    paymentDate: "",
+    paymentRecipient: "",
+    hasReceipt: "",
+    otherPaymentMode: "",
+    globalSatisfaction: [3],
     recommendation: "",
     reason: "",
     generalSuggestions: "",
@@ -59,21 +56,21 @@ export default function SurveyPage() {
     { id: 0, key: "profile", title: "Profil", icon: <User className="w-4 h-4" /> },
     { id: 1, key: "depot", title: "Dépôt", icon: <FolderOpen className="w-4 h-4" /> },
     { id: 2, key: "enquete", title: "Enquête", icon: <Search className="w-4 h-4" /> },
-    { id: 3, key: "affichage", title: "Affichage", icon: <Eye className="w-4 h-4" /> },
-    { id: 4, key: "bornage", title: "Bornage", icon: <Map className="w-4 h-4" /> },
-    { id: 5, key: "evaluation", title: "Évaluation", icon: <FileCheck className="w-4 h-4" /> },
-    { id: 6, key: "decision", title: "Décision", icon: <CheckCircle className="w-4 h-4" /> },
+    { id: 3, key: "etat-lieux", title: "État des lieux", icon: <FileCheck className="w-4 h-4" /> },
+    { id: 4, key: "affichage", title: "Affichage", icon: <Eye className="w-4 h-4" /> },
+    { id: 5, key: "bornage", title: "Bornage", icon: <Map className="w-4 h-4" /> },
+    { id: 6, key: "evaluation", title: "Évaluation", icon: <FileCheck className="w-4 h-4" /> },
     { id: 7, key: "global", title: "Global", icon: <BarChart className="w-4 h-4" /> },
   ];
 
   const allStepDetails = [
     { key: "profile", title: "Profil de l'usager", description: "Informations de base", estimatedTime: "1 min" },
-    { key: "depot", title: "Dépôt de dossier", description: "Évaluation étape 1", estimatedTime: "2 min" },
-    { key: "enquete", title: "Enquête foncière", description: "Évaluation étape 2", estimatedTime: "2 min" },
-    { key: "affichage", title: "Avis d'affichage", description: "Évaluation étape 3", estimatedTime: "2 min" },
-    { key: "bornage", title: "PV et plan de bornage", description: "Évaluation étape 4", estimatedTime: "2 min" },
-    { key: "evaluation", title: "Rapport d'évaluation", description: "Évaluation étape 5", estimatedTime: "2 min" },
-    { key: "decision", title: "Décision finale", description: "Évaluation étape 6", estimatedTime: "2 min" },
+    { key: "depot", title: "Dépôt de dossier", description: "Étape 2", estimatedTime: "2 min" },
+    { key: "enquete", title: "Enquête foncière", description: "Étape 3", estimatedTime: "2 min" },
+    { key: "etat-lieux", title: "État des lieux", description: "Étape 4", estimatedTime: "2 min" },
+    { key: "affichage", title: "Avis d'affichage", description: "Étape 5", estimatedTime: "2 min" },
+    { key: "bornage", title: "PV et plan de bornage", description: "Étape 6", estimatedTime: "2 min" },
+    { key: "evaluation", title: "Rapport d'évaluation", description: "Étape 7", estimatedTime: "2 min" },
     { key: "global", title: "Évaluation globale", description: "Impressions générales", estimatedTime: "1 min" },
   ];
 
@@ -82,7 +79,7 @@ export default function SurveyPage() {
       return [];
     }
 
-    const stageOrder = ["depot", "enquete", "affichage", "bornage", "evaluation", "decision"];
+    const stageOrder = ["depot", "enquete", "etat-lieux", "affichage", "bornage", "evaluation"];
     const stageIndex = stageOrder.indexOf(stageReached);
     
     if (stageIndex === -1) {
@@ -156,7 +153,7 @@ export default function SurveyPage() {
         formData={formData}
         updateFormData={updateFormData}
         stepTitle={currentStepDetail?.title || ""}
-        stepDescription={`Évaluez votre expérience lors ${currentStepDetail?.title.toLowerCase() || ""}`}
+        stepKey={currentStepKey || ""}
       />
     );
   };
@@ -184,10 +181,10 @@ export default function SurveyPage() {
                 <span className="font-medium text-foreground">Étape sélectionnée:</span>{" "}
                 {formData.stageReached === "depot" && "Dépôt de dossier"}
                 {formData.stageReached === "enquete" && "Enquête foncière"}
+                {formData.stageReached === "etat-lieux" && "État des lieux"}
                 {formData.stageReached === "affichage" && "Avis d'affichage"}
                 {formData.stageReached === "bornage" && "PV et plan de bornage"}
                 {formData.stageReached === "evaluation" && "Rapport d'évaluation"}
-                {formData.stageReached === "decision" && "Décision finale"}
               </p>
               <Link 
                 href="/stage-selection" 
