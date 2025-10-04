@@ -74,8 +74,6 @@ alwaysApply: true
     - PV et plan de bornage  
     - Rapport d’évaluation  
     - Décision  
-    - En cours  
-    - Litigieux  
 
     ### Section 1 : Profil de l’usager (1 min)  
     - Numéro de dossier (optionnel)  
