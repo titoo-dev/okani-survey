@@ -13,9 +13,49 @@ export type SurveyFormData = {
   paymentRecipient: string;
   hasReceipt: string;
   otherPaymentMode: string;
+  amountPaid: string;
+  hasAcknowledgment: string;
+  delayPerceived: string;
+  satisfaction: number[];
+  priceUnderstanding: string;
+  affichageInTime: string;
+  wasInformed: string;
+  informationChannel: string;
+  sufficientDelay: string;
+  hasOpposition: string;
+  affichageFees: string;
+  decisionDelay: string;
+  decisionPaymentMode: string;
+  decisionOtherPaymentMode: string;
+  decisionHasReceipt: string;
+  wasTransmitted: string;
+  hasActeCession: string;
+  hasTitrePropriete: string;
+  decisionSatisfaction: number[];
+  hasUnofficialPayment: string;
+  hasFavoritism: string;
+  trustTransparency: number[];
+  hadOpposition: string;
+  oppositionDate: string;
+  oppositionNature: string;
+  oppositionNatureOther: string;
+  litigeDelay: string;
+  paidLitigeFees: string;
+  litigePaymentMode: string;
+  litigePaymentAmount: string;
+  litigeHasReceipt: string;
+  wasInformedProcedure: string;
+  sentFormalLetter: string;
+  letterReference: string;
+  litigeCause: string;
+  litigeCauseOther: string;
+  litigeSatisfaction: number[];
+  litigeOutcome: string;
+  litigeOutcomeOther: string;
+  litigeComments: string;
+  totalDelay: string;
+  totalCost: string;
   globalSatisfaction: number[];
-  recommendation: string;
-  reason: string;
   generalSuggestions: string;
 };
 
@@ -33,7 +73,10 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     { id: 4, key: "affichage", label: "Avis d'affichage" },
     { id: 5, key: "bornage", label: "PV et plan de bornage" },
     { id: 6, key: "evaluation", label: "Rapport d'évaluation" },
-    { id: 7, key: "global", label: "Évaluation globale" },
+    { id: 7, key: "decision", label: "Décision et transmission" },
+    { id: 8, key: "governance", label: "Gouvernance et probité" },
+    { id: 9, key: "disputes", label: "Litiges et oppositions" },
+    { id: 10, key: "global", label: "Évaluation globale" },
   ];
 
   const getVisibleSteps = (stageReached: string) => {
@@ -41,14 +84,14 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
       return [];
     }
 
-    const stageOrder = ["depot", "enquete", "etat-lieux", "affichage", "bornage", "evaluation"];
+    const stageOrder = ["depot", "enquete", "etat-lieux", "affichage", "bornage", "evaluation", "decision"];
     const stageIndex = stageOrder.indexOf(stageReached);
     
     if (stageIndex === -1) {
       return allSteps;
     }
 
-    const visibleKeys = ["profile", ...stageOrder.slice(0, stageIndex + 1), "global"];
+    const visibleKeys = ["profile", ...stageOrder.slice(0, stageIndex + 1), "governance", "disputes", "global"];
     return allSteps.filter(step => visibleKeys.includes(step.key)).map((step, index) => ({
       ...step,
       id: index
@@ -75,10 +118,35 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
         formData.legalEntity
       );
     }
-    if (step.key === "global") {
-      return !!(formData.globalSatisfaction[0] && formData.recommendation);
+    if (step.key === "decision") {
+      return !!(
+        formData.decisionDelay &&
+        formData.decisionPaymentMode &&
+        formData.decisionHasReceipt &&
+        formData.wasTransmitted &&
+        formData.hasActeCession &&
+        formData.hasTitrePropriete &&
+        formData.decisionSatisfaction[0]
+      );
     }
-    return !!formData.hasCompletedStep;
+    if (step.key === "governance") {
+      return !!(
+        formData.hasUnofficialPayment &&
+        formData.hasFavoritism &&
+        formData.trustTransparency[0]
+      );
+    }
+    if (step.key === "disputes") {
+      return !!formData.hadOpposition;
+    }
+    if (step.key === "global") {
+      return !!(
+        formData.totalDelay &&
+        formData.totalCost &&
+        formData.globalSatisfaction[0]
+      );
+    }
+    return !!formData.satisfaction?.[0] || !!formData.evaluation;
   };
 
   const renderStepIcon = (step: { id: number; key: string }) => {
@@ -96,18 +164,30 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     if (step.key === "profile") {
       return (
         <div className="space-y-1 text-sm text-gray-600">
-          {formData.userType && <p>{formData.userType === "usager" ? "Usager" : "Partenaire anonyme"}</p>}
+          {formData.userType && <p>{formData.userType === "usager" ? "Usager" : formData.userType === "partenaire" ? "Partenaire" : "Intermédiaire"}</p>}
           {formData.nationality && <p className="truncate">{formData.nationality}</p>}
         </div>
       );
     }
     
-    if (step.key === "global" && formData.globalSatisfaction[0]) {
-      return <p className="text-sm text-gray-600">Satisfaction: {formData.globalSatisfaction[0]}/5</p>;
+    if (step.key === "decision" && formData.decisionSatisfaction[0]) {
+      return <p className="text-sm text-gray-600">Satisfaction: {formData.decisionSatisfaction[0]}/10</p>;
     }
     
-    if (step.key !== "global" && formData.hasCompletedStep) {
-      return <p className="text-sm text-gray-600">{formData.hasCompletedStep === "oui" ? "Complété" : "Non complété"}</p>;
+    if (step.key === "governance" && formData.trustTransparency[0]) {
+      return <p className="text-sm text-gray-600">Confiance: {formData.trustTransparency[0]}/5</p>;
+    }
+    
+    if (step.key === "disputes" && formData.hadOpposition) {
+      return <p className="text-sm text-gray-600">{formData.hadOpposition === "oui" ? "Opposition déclarée" : "Aucune opposition"}</p>;
+    }
+    
+    if (step.key === "global" && formData.globalSatisfaction[0]) {
+      return <p className="text-sm text-gray-600">Satisfaction: {formData.globalSatisfaction[0]}/10</p>;
+    }
+    
+    if (formData.satisfaction?.[0] && !["profile", "decision", "governance", "disputes", "global"].includes(step.key)) {
+      return <p className="text-sm text-gray-600">Satisfaction: {formData.satisfaction[0]}/5</p>;
     }
     
     return null;

@@ -112,41 +112,69 @@ export default function StageSelectionPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="parcelLocation">Localisation de la parcelle*</Label>
+                  <Label htmlFor="parcelLocation">Ville de dépôt du dossier*</Label>
                   <Select value={parcelLocation} onValueChange={setParcelLocation}>
                     <SelectTrigger>
                       <SelectValue placeholder="Sélectionnez une ville" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="libreville">Libreville</SelectItem>
+                      <SelectItem value="franceville">Franceville</SelectItem>
                       <SelectItem value="lambarene">Lambaréné</SelectItem>
                       <SelectItem value="mouila">Mouila</SelectItem>
+                      <SelectItem value="tchibanga">Tchibanga</SelectItem>
+                      <SelectItem value="makokou">Makokou</SelectItem>
+                      <SelectItem value="koulamoutou">Koulamoutou</SelectItem>
+                      <SelectItem value="port-gentil">Port-Gentil</SelectItem>
+                      <SelectItem value="oyem">Oyem</SelectItem>
+                      <SelectItem value="mitzic">Mitzic</SelectItem>
+                      <SelectItem value="autres">Autres</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="initiationCity">Ville où la demande a été initiée (si différente)</Label>
+                  <Label htmlFor="initiationCity">Ville de régularisation foncière (si différente)</Label>
                   <Select value={initiationCity} onValueChange={setInitiationCity}>
                     <SelectTrigger>
                       <SelectValue placeholder="Optionnel - Sélectionnez une ville" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="libreville">Libreville</SelectItem>
+                      <SelectItem value="franceville">Franceville</SelectItem>
                       <SelectItem value="lambarene">Lambaréné</SelectItem>
                       <SelectItem value="mouila">Mouila</SelectItem>
+                      <SelectItem value="tchibanga">Tchibanga</SelectItem>
+                      <SelectItem value="makokou">Makokou</SelectItem>
+                      <SelectItem value="koulamoutou">Koulamoutou</SelectItem>
+                      <SelectItem value="port-gentil">Port-Gentil</SelectItem>
+                      <SelectItem value="oyem">Oyem</SelectItem>
+                      <SelectItem value="mitzic">Mitzic</SelectItem>
+                      <SelectItem value="autres">Autres</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="residenceCity">Ville de résidence</Label>
-                  <Input
-                    id="residenceCity"
-                    placeholder="Ex: Port-Gentil"
-                    value={residenceCity}
-                    onChange={(e) => setResidenceCity(e.target.value)}
-                  />
+                  <Label htmlFor="residenceCity">Ville de résidence de l'usager</Label>
+                  <Select value={residenceCity} onValueChange={setResidenceCity}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Optionnel - Sélectionnez une ville" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="libreville">Libreville</SelectItem>
+                      <SelectItem value="franceville">Franceville</SelectItem>
+                      <SelectItem value="lambarene">Lambaréné</SelectItem>
+                      <SelectItem value="mouila">Mouila</SelectItem>
+                      <SelectItem value="tchibanga">Tchibanga</SelectItem>
+                      <SelectItem value="makokou">Makokou</SelectItem>
+                      <SelectItem value="koulamoutou">Koulamoutou</SelectItem>
+                      <SelectItem value="port-gentil">Port-Gentil</SelectItem>
+                      <SelectItem value="oyem">Oyem</SelectItem>
+                      <SelectItem value="mitzic">Mitzic</SelectItem>
+                      <SelectItem value="autres">Autres</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="space-y-2">
@@ -162,6 +190,7 @@ export default function StageSelectionPage() {
                       <SelectItem value="affichage">Étape 5 : Avis d'affichage</SelectItem>
                       <SelectItem value="bornage">Étape 6 : PV et plan de bornage</SelectItem>
                       <SelectItem value="evaluation">Étape 7 : Rapport d'évaluation</SelectItem>
+                      <SelectItem value="decision">Étape 8 : Décision et transmission</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

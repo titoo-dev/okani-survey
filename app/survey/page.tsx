@@ -12,14 +12,19 @@ import {
   Eye, 
   Map, 
   FileCheck, 
-  CheckCircle, 
-  BarChart
+  BarChart,
+  Shield,
+  Scale,
+  Gavel
 } from "lucide-react";
 
 import { StepIndicator } from "../../components/step-indicator";
 import { SurveySummary, type SurveyFormData } from "../../components/survey-summary";
 import { UserProfileStep, validateUserProfileStep } from "../../components/steps/user-profile-step";
 import { EvaluationStep, validateEvaluationStep } from "../../components/steps/evaluation-step";
+import { DecisionStep, validateDecisionStep } from "../../components/steps/decision-step";
+import { GovernanceStep, validateGovernanceStep } from "../../components/steps/governance-step";
+import { DisputesStep, validateDisputesStep } from "../../components/steps/disputes-step";
 import { GlobalEvaluationStep, validateGlobalEvaluationStep } from "../../components/steps/global-evaluation-step";
 
 export default function SurveyPage() {
@@ -37,9 +42,49 @@ export default function SurveyPage() {
     paymentRecipient: "",
     hasReceipt: "",
     otherPaymentMode: "",
-    globalSatisfaction: [3],
-    recommendation: "",
-    reason: "",
+    amountPaid: "",
+    hasAcknowledgment: "",
+    delayPerceived: "",
+    satisfaction: [3],
+    priceUnderstanding: "",
+    affichageInTime: "",
+    wasInformed: "",
+    informationChannel: "",
+    sufficientDelay: "",
+    hasOpposition: "",
+    affichageFees: "",
+    decisionDelay: "",
+    decisionPaymentMode: "",
+    decisionOtherPaymentMode: "",
+    decisionHasReceipt: "",
+    wasTransmitted: "",
+    hasActeCession: "",
+    hasTitrePropriete: "",
+    decisionSatisfaction: [5],
+    hasUnofficialPayment: "",
+    hasFavoritism: "",
+    trustTransparency: [3],
+    hadOpposition: "",
+    oppositionDate: "",
+    oppositionNature: "",
+    oppositionNatureOther: "",
+    litigeDelay: "",
+    paidLitigeFees: "",
+    litigePaymentMode: "",
+    litigePaymentAmount: "",
+    litigeHasReceipt: "",
+    wasInformedProcedure: "",
+    sentFormalLetter: "",
+    letterReference: "",
+    litigeCause: "",
+    litigeCauseOther: "",
+    litigeSatisfaction: [3],
+    litigeOutcome: "",
+    litigeOutcomeOther: "",
+    litigeComments: "",
+    totalDelay: "",
+    totalCost: "",
+    globalSatisfaction: [5],
     generalSuggestions: "",
   });
 
@@ -60,7 +105,10 @@ export default function SurveyPage() {
     { id: 4, key: "affichage", title: "Affichage", icon: <Eye className="w-4 h-4" /> },
     { id: 5, key: "bornage", title: "Bornage", icon: <Map className="w-4 h-4" /> },
     { id: 6, key: "evaluation", title: "Évaluation", icon: <FileCheck className="w-4 h-4" /> },
-    { id: 7, key: "global", title: "Global", icon: <BarChart className="w-4 h-4" /> },
+    { id: 7, key: "decision", title: "Décision", icon: <Gavel className="w-4 h-4" /> },
+    { id: 8, key: "governance", title: "Gouvernance", icon: <Shield className="w-4 h-4" /> },
+    { id: 9, key: "disputes", title: "Litiges", icon: <Scale className="w-4 h-4" /> },
+    { id: 10, key: "global", title: "Global", icon: <BarChart className="w-4 h-4" /> },
   ];
 
   const allStepDetails = [
@@ -68,10 +116,13 @@ export default function SurveyPage() {
     { key: "depot", title: "Dépôt de dossier", description: "Étape 2", estimatedTime: "2 min" },
     { key: "enquete", title: "Enquête foncière", description: "Étape 3", estimatedTime: "2 min" },
     { key: "etat-lieux", title: "État des lieux", description: "Étape 4", estimatedTime: "2 min" },
-    { key: "affichage", title: "Avis d'affichage", description: "Étape 5", estimatedTime: "2 min" },
+    { key: "affichage", title: "Avis d'affichage", description: "Étape 5", estimatedTime: "3 min" },
     { key: "bornage", title: "PV et plan de bornage", description: "Étape 6", estimatedTime: "2 min" },
     { key: "evaluation", title: "Rapport d'évaluation", description: "Étape 7", estimatedTime: "2 min" },
-    { key: "global", title: "Évaluation globale", description: "Impressions générales", estimatedTime: "1 min" },
+    { key: "decision", title: "Décision et transmission", description: "Étape 8", estimatedTime: "3 min" },
+    { key: "governance", title: "Gouvernance et probité", description: "Transparence du processus", estimatedTime: "2 min" },
+    { key: "disputes", title: "Litiges et oppositions", description: "Si applicable", estimatedTime: "3 min" },
+    { key: "global", title: "Évaluation globale", description: "Impressions générales", estimatedTime: "2 min" },
   ];
 
   const getVisibleSteps = (stageReached: string) => {
@@ -79,14 +130,14 @@ export default function SurveyPage() {
       return [];
     }
 
-    const stageOrder = ["depot", "enquete", "etat-lieux", "affichage", "bornage", "evaluation"];
+    const stageOrder = ["depot", "enquete", "etat-lieux", "affichage", "bornage", "evaluation", "decision"];
     const stageIndex = stageOrder.indexOf(stageReached);
     
     if (stageIndex === -1) {
       return allSteps;
     }
 
-    const visibleKeys = ["profile", ...stageOrder.slice(0, stageIndex + 1), "global"];
+    const visibleKeys = ["profile", ...stageOrder.slice(0, stageIndex + 1), "governance", "disputes", "global"];
     return allSteps.filter(step => visibleKeys.includes(step.key)).map((step, index) => ({
       ...step,
       id: index
@@ -130,10 +181,19 @@ export default function SurveyPage() {
     if (currentStepKey === "profile") {
       return validateUserProfileStep(formData);
     }
+    if (currentStepKey === "decision") {
+      return validateDecisionStep(formData);
+    }
+    if (currentStepKey === "governance") {
+      return validateGovernanceStep(formData);
+    }
+    if (currentStepKey === "disputes") {
+      return validateDisputesStep(formData);
+    }
     if (currentStepKey === "global") {
       return validateGlobalEvaluationStep(formData);
     }
-    return validateEvaluationStep(formData);
+    return validateEvaluationStep(formData, currentStepKey);
   };
 
   const renderStepContent = () => {
@@ -142,6 +202,18 @@ export default function SurveyPage() {
 
     if (currentStepKey === "profile") {
       return <UserProfileStep formData={formData} updateFormData={updateFormData} />;
+    }
+    
+    if (currentStepKey === "decision") {
+      return <DecisionStep formData={formData} updateFormData={updateFormData} />;
+    }
+    
+    if (currentStepKey === "governance") {
+      return <GovernanceStep formData={formData} updateFormData={updateFormData} />;
+    }
+    
+    if (currentStepKey === "disputes") {
+      return <DisputesStep formData={formData} updateFormData={updateFormData} />;
     }
     
     if (currentStepKey === "global") {
@@ -185,6 +257,7 @@ export default function SurveyPage() {
                 {formData.stageReached === "affichage" && "Avis d'affichage"}
                 {formData.stageReached === "bornage" && "PV et plan de bornage"}
                 {formData.stageReached === "evaluation" && "Rapport d'évaluation"}
+                {formData.stageReached === "decision" && "Décision et transmission"}
               </p>
               <Link 
                 href="/stage-selection" 

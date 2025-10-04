@@ -45,8 +45,12 @@ export function UserProfileStep({ formData, updateFormData }: UserProfileStepPro
             <Label htmlFor="usager" className="font-normal cursor-pointer">Usager</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="partenaire-anonyme" id="partenaire" />
-            <Label htmlFor="partenaire" className="font-normal cursor-pointer">Partenaire anonyme</Label>
+            <RadioGroupItem value="partenaire" id="partenaire" />
+            <Label htmlFor="partenaire" className="font-normal cursor-pointer">Partenaire</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="intermediaire" id="intermediaire" />
+            <Label htmlFor="intermediaire" className="font-normal cursor-pointer">Intermédiaire</Label>
           </div>
         </RadioGroup>
       </div>
