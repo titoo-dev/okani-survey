@@ -8,10 +8,10 @@ type DecisionData = {
   decisionDelay: string;
   decisionPaymentMode: string;
   decisionOtherPaymentMode: string;
-  decisionHasReceipt: string;
-  wasTransmitted: string;
-  hasActeCession: string;
-  hasTitrePropriete: string;
+  decisionHasReceipt: boolean | undefined;
+  wasTransmitted: boolean | undefined;
+  hasActeCession: boolean | undefined;
+  hasTitrePropriete: boolean | undefined;
   decisionSatisfaction: number[];
 };
 
@@ -73,13 +73,13 @@ export function DecisionStep({ formData, updateFormData }: DecisionStepProps) {
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
-        <RadioGroup value={formData.decisionHasReceipt} onValueChange={(value) => updateFormData({ decisionHasReceipt: value })}>
+        <RadioGroup value={formData.decisionHasReceipt?.toString()} onValueChange={(value) => updateFormData({ decisionHasReceipt: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="decision-receipt-yes" />
+            <RadioGroupItem value="true" id="decision-receipt-yes" />
             <Label htmlFor="decision-receipt-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="decision-receipt-no" />
+            <RadioGroupItem value="false" id="decision-receipt-no" />
             <Label htmlFor="decision-receipt-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -87,13 +87,13 @@ export function DecisionStep({ formData, updateFormData }: DecisionStepProps) {
 
       <div className="space-y-2">
         <Label>Dossier effectivement transmis à la Conservation foncière ?*</Label>
-        <RadioGroup value={formData.wasTransmitted} onValueChange={(value) => updateFormData({ wasTransmitted: value })}>
+        <RadioGroup value={formData.wasTransmitted?.toString()} onValueChange={(value) => updateFormData({ wasTransmitted: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="transmitted-yes" />
+            <RadioGroupItem value="true" id="transmitted-yes" />
             <Label htmlFor="transmitted-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="transmitted-no" />
+            <RadioGroupItem value="false" id="transmitted-no" />
             <Label htmlFor="transmitted-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -101,13 +101,13 @@ export function DecisionStep({ formData, updateFormData }: DecisionStepProps) {
 
       <div className="space-y-2">
         <Label>Avez-vous reçu votre acte de cession/concession établi par l'ANUTTC ?*</Label>
-        <RadioGroup value={formData.hasActeCession} onValueChange={(value) => updateFormData({ hasActeCession: value })}>
+        <RadioGroup value={formData.hasActeCession?.toString()} onValueChange={(value) => updateFormData({ hasActeCession: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="acte-yes" />
+            <RadioGroupItem value="true" id="acte-yes" />
             <Label htmlFor="acte-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="acte-no" />
+            <RadioGroupItem value="false" id="acte-no" />
             <Label htmlFor="acte-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -115,13 +115,13 @@ export function DecisionStep({ formData, updateFormData }: DecisionStepProps) {
 
       <div className="space-y-2">
         <Label>Avez-vous effectivement reçu le titre de propriété remis par l'ANUTTC après établissement par la Conservation foncière ?*</Label>
-        <RadioGroup value={formData.hasTitrePropriete} onValueChange={(value) => updateFormData({ hasTitrePropriete: value })}>
+        <RadioGroup value={formData.hasTitrePropriete?.toString()} onValueChange={(value) => updateFormData({ hasTitrePropriete: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="titre-yes" />
+            <RadioGroupItem value="true" id="titre-yes" />
             <Label htmlFor="titre-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="titre-no" />
+            <RadioGroupItem value="false" id="titre-no" />
             <Label htmlFor="titre-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -146,10 +146,10 @@ export function validateDecisionStep(
   const baseValidation = !!(
     formData.decisionDelay &&
     formData.decisionPaymentMode &&
-    formData.decisionHasReceipt &&
-    formData.wasTransmitted &&
-    formData.hasActeCession &&
-    formData.hasTitrePropriete &&
+    formData.decisionHasReceipt !== undefined &&
+    formData.wasTransmitted !== undefined &&
+    formData.hasActeCession !== undefined &&
+    formData.hasTitrePropriete !== undefined &&
     formData.decisionSatisfaction?.[0]
   );
 

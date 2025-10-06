@@ -3,6 +3,15 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { 
@@ -27,10 +36,14 @@ import { DecisionStep, validateDecisionStep } from "../../components/steps/decis
 import { GovernanceStep, validateGovernanceStep } from "../../components/steps/governance-step";
 import { DisputesStep, validateDisputesStep } from "../../components/steps/disputes-step";
 import { GlobalEvaluationStep, validateGlobalEvaluationStep } from "../../components/steps/global-evaluation-step";
+import { surveyFormSchema } from "@/lib/schema";
+import { z } from "zod";
 
 export default function SurveyPage() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [formData, setFormData] = useState<SurveyFormData>({
     stageReached: "",
     dossierId: "",
@@ -44,58 +57,58 @@ export default function SurveyPage() {
     depotPaymentMode: "",
     depotOtherPaymentMode: "",
     depotAmountPaid: "",
-    depotHasReceipt: "",
-    depotHasAcknowledgment: "",
+    depotHasReceipt: undefined,
+    depotHasAcknowledgment: undefined,
     enqueteDelayPerceived: "",
     enquetePaymentMode: "",
     enqueteOtherPaymentMode: "",
-    enqueteHasReceipt: "",
+    enqueteHasReceipt: undefined,
     enqueteSatisfaction: [],
     etatLieuxDelayPerceived: "",
     etatLieuxPaymentMode: "",
     etatLieuxOtherPaymentMode: "",
-    etatLieuxHasReceipt: "",
+    etatLieuxHasReceipt: undefined,
     etatLieuxSatisfaction: [],
-    affichageInTime: "",
-    affichageWasInformed: "",
+    affichageInTime: undefined,
+    affichageWasInformed: undefined,
     affichageInformationChannel: "",
-    affichageSufficientDelay: "",
-    affichageHasOpposition: "",
+    affichageSufficientDelay: undefined,
+    affichageHasOpposition: undefined,
     affichageFees: "",
-    affichageHasReceipt: "",
+    affichageHasReceipt: undefined,
     affichageSatisfaction: [],
     bornageDelayPerceived: "",
     bornagePaymentMode: "",
     bornageOtherPaymentMode: "",
-    bornageHasReceipt: "",
+    bornageHasReceipt: undefined,
     bornageSatisfaction: [],
-    evaluationPriceUnderstanding: "",
+    evaluationPriceUnderstanding: undefined,
     evaluationPaymentMode: "",
     evaluationOtherPaymentMode: "",
-    evaluationHasReceipt: "",
+    evaluationHasReceipt: undefined,
     evaluationSatisfaction: [],
     decisionDelay: "",
     decisionPaymentMode: "",
     decisionOtherPaymentMode: "",
-    decisionHasReceipt: "",
-    wasTransmitted: "",
-    hasActeCession: "",
-    hasTitrePropriete: "",
+    decisionHasReceipt: undefined,
+    wasTransmitted: undefined,
+    hasActeCession: undefined,
+    hasTitrePropriete: undefined,
     decisionSatisfaction: [],
-    hasUnofficialPayment: "",
-    hasFavoritism: "",
+    hasUnofficialPayment: undefined,
+    hasFavoritism: undefined,
     trustTransparency: [2],
-    hadOpposition: "",
+    hadOpposition: undefined,
     oppositionDate: "",
     oppositionNature: "",
     oppositionNatureOther: "",
     litigeDelay: "",
-    paidLitigeFees: "",
+    paidLitigeFees: undefined,
     litigePaymentMode: "",
     litigePaymentAmount: "",
-    litigeHasReceipt: "",
-    wasInformedProcedure: "",
-    sentFormalLetter: "",
+    litigeHasReceipt: undefined,
+    wasInformedProcedure: undefined,
+    sentFormalLetter: undefined,
     letterReference: "",
     litigeCause: "",
     litigeCauseOther: "",
@@ -232,12 +245,24 @@ export default function SurveyPage() {
   };
 
   const handleSubmit = () => {
-    console.log("Form submitted:", formData);
-    
-    localStorage.removeItem("surveyFormData");
-    localStorage.removeItem("surveyCurrentStep");
-    
-    alert("Formulaire soumis avec succès! Merci pour votre participation.");
+    try {
+      const validatedData = surveyFormSchema.parse(formData);
+      console.log("Form submitted:", validatedData);
+      
+      localStorage.removeItem("surveyFormData");
+      localStorage.removeItem("surveyCurrentStep");
+      
+      alert("Formulaire soumis avec succès! Merci pour votre participation.");
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errors = error.issues.map((err: z.ZodIssue) => {
+          const field = err.path.join(".");
+          return `${field}: ${err.message}`;
+        });
+        setValidationErrors(errors);
+        setShowErrorDialog(true);
+      }
+    }
   };
 
   const handleResetForm = () => {
@@ -447,6 +472,29 @@ export default function SurveyPage() {
           <SurveySummary formData={formData} currentStep={currentStep} />
         </div>
       </div>
+
+      <AlertDialog open={showErrorDialog} onOpenChange={setShowErrorDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Données invalides</AlertDialogTitle>
+            <AlertDialogDescription>
+              Veuillez corriger les erreurs suivantes avant de soumettre le formulaire:
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="my-4 max-h-96 overflow-y-auto">
+            <ul className="list-disc list-inside space-y-1 text-sm text-red-600">
+              {validationErrors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setShowErrorDialog(false)}>
+              Compris
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   );
 }

@@ -9,35 +9,35 @@ type EvaluationData = {
   depotPaymentMode: string;
   depotOtherPaymentMode: string;
   depotAmountPaid: string;
-  depotHasReceipt: string;
-  depotHasAcknowledgment: string;
+  depotHasReceipt: boolean | undefined;
+  depotHasAcknowledgment: boolean | undefined;
   enqueteDelayPerceived: string;
   enquetePaymentMode: string;
   enqueteOtherPaymentMode: string;
-  enqueteHasReceipt: string;
+  enqueteHasReceipt: boolean | undefined;
   enqueteSatisfaction: number[];
   etatLieuxDelayPerceived: string;
   etatLieuxPaymentMode: string;
   etatLieuxOtherPaymentMode: string;
-  etatLieuxHasReceipt: string;
+  etatLieuxHasReceipt: boolean | undefined;
   etatLieuxSatisfaction: number[];
-  affichageInTime: string;
-  affichageWasInformed: string;
+  affichageInTime: boolean | undefined;
+  affichageWasInformed: boolean | undefined;
   affichageInformationChannel: string;
-  affichageSufficientDelay: string;
-  affichageHasOpposition: string;
+  affichageSufficientDelay: boolean | undefined;
+  affichageHasOpposition: boolean | undefined;
   affichageFees: string;
-  affichageHasReceipt: string;
+  affichageHasReceipt: boolean | undefined;
   affichageSatisfaction: number[];
   bornageDelayPerceived: string;
   bornagePaymentMode: string;
   bornageOtherPaymentMode: string;
-  bornageHasReceipt: string;
+  bornageHasReceipt: boolean | undefined;
   bornageSatisfaction: number[];
-  evaluationPriceUnderstanding: string;
+  evaluationPriceUnderstanding: boolean | undefined;
   evaluationPaymentMode: string;
   evaluationOtherPaymentMode: string;
-  evaluationHasReceipt: string;
+  evaluationHasReceipt: boolean | undefined;
   evaluationSatisfaction: number[];
 };
 
@@ -87,13 +87,13 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Avez-vous reçu un accusé de réception ?*</Label>
-        <RadioGroup value={formData.depotHasAcknowledgment} onValueChange={(value) => updateFormData({ depotHasAcknowledgment: value })}>
+        <RadioGroup value={formData.depotHasAcknowledgment?.toString()} onValueChange={(value) => updateFormData({ depotHasAcknowledgment: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="ack-yes" />
+            <RadioGroupItem value="true" id="ack-yes" />
             <Label htmlFor="ack-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="ack-no" />
+            <RadioGroupItem value="false" id="ack-no" />
             <Label htmlFor="ack-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -140,13 +140,13 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Avez-vous reçu une quittance ?*</Label>
-        <RadioGroup value={formData.depotHasReceipt} onValueChange={(value) => updateFormData({ depotHasReceipt: value })}>
+        <RadioGroup value={formData.depotHasReceipt?.toString()} onValueChange={(value) => updateFormData({ depotHasReceipt: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="receipt-yes" />
+            <RadioGroupItem value="true" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="receipt-no" />
+            <RadioGroupItem value="false" id="receipt-no" />
             <Label htmlFor="receipt-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -197,13 +197,13 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
-        <RadioGroup value={formData.enqueteHasReceipt} onValueChange={(value) => updateFormData({ enqueteHasReceipt: value })}>
+        <RadioGroup value={formData.enqueteHasReceipt?.toString()} onValueChange={(value) => updateFormData({ enqueteHasReceipt: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="receipt-yes" />
+            <RadioGroupItem value="true" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="receipt-no" />
+            <RadioGroupItem value="false" id="receipt-no" />
             <Label htmlFor="receipt-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -264,13 +264,13 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
-        <RadioGroup value={formData.etatLieuxHasReceipt} onValueChange={(value) => updateFormData({ etatLieuxHasReceipt: value })}>
+        <RadioGroup value={formData.etatLieuxHasReceipt?.toString()} onValueChange={(value) => updateFormData({ etatLieuxHasReceipt: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="receipt-yes" />
+            <RadioGroupItem value="true" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="receipt-no" />
+            <RadioGroupItem value="false" id="receipt-no" />
             <Label htmlFor="receipt-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -292,13 +292,13 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
     <>
       <div className="space-y-2">
         <Label>Affichage effectué dans les délais ?*</Label>
-        <RadioGroup value={formData.affichageInTime} onValueChange={(value) => updateFormData({ affichageInTime: value })}>
+        <RadioGroup value={formData.affichageInTime?.toString()} onValueChange={(value) => updateFormData({ affichageInTime: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="affichage-time-yes" />
+            <RadioGroupItem value="true" id="affichage-time-yes" />
             <Label htmlFor="affichage-time-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="affichage-time-no" />
+            <RadioGroupItem value="false" id="affichage-time-no" />
             <Label htmlFor="affichage-time-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -306,35 +306,35 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Avez-vous été informé de l'affichage ?*</Label>
-        <RadioGroup value={formData.affichageWasInformed} onValueChange={(value) => updateFormData({ affichageWasInformed: value })}>
+        <RadioGroup value={formData.affichageWasInformed?.toString()} onValueChange={(value) => updateFormData({ affichageWasInformed: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="informed-yes" />
+            <RadioGroupItem value="true" id="informed-yes" />
             <Label htmlFor="informed-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="informed-no" />
+            <RadioGroupItem value="false" id="informed-no" />
             <Label htmlFor="informed-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
       </div>
 
       <div className="space-y-2">
-        <Label>Canal d'information{formData.affichageWasInformed === "oui" && "*"}</Label>
+        <Label>Canal d'information{formData.affichageWasInformed === true && "*"}</Label>
         <RadioGroup 
           value={formData.affichageInformationChannel} 
           onValueChange={(value) => updateFormData({ affichageInformationChannel: value })}
-          disabled={formData.affichageWasInformed !== "oui"}
+          disabled={formData.affichageWasInformed !== true}
         >
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="affichage-physique" id="channel-physical" disabled={formData.affichageWasInformed !== "oui"} />
+            <RadioGroupItem value="affichage-physique" id="channel-physical" disabled={formData.affichageWasInformed !== true} />
             <Label htmlFor="channel-physical" className="font-normal cursor-pointer">Affichage physique</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="site-anuttc" id="channel-site" disabled={formData.affichageWasInformed !== "oui"} />
+            <RadioGroupItem value="site-anuttc" id="channel-site" disabled={formData.affichageWasInformed !== true} />
             <Label htmlFor="channel-site" className="font-normal cursor-pointer">Site ANUTTC</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="autre" id="channel-autre" disabled={formData.affichageWasInformed !== "oui"} />
+            <RadioGroupItem value="autre" id="channel-autre" disabled={formData.affichageWasInformed !== true} />
             <Label htmlFor="channel-autre" className="font-normal cursor-pointer">Autre</Label>
           </div>
         </RadioGroup>
@@ -342,13 +342,13 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Délai suffisant pour opposition ?*</Label>
-        <RadioGroup value={formData.affichageSufficientDelay} onValueChange={(value) => updateFormData({ affichageSufficientDelay: value })}>
+        <RadioGroup value={formData.affichageSufficientDelay?.toString()} onValueChange={(value) => updateFormData({ affichageSufficientDelay: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="delay-sufficient-yes" />
+            <RadioGroupItem value="true" id="delay-sufficient-yes" />
             <Label htmlFor="delay-sufficient-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="delay-sufficient-no" />
+            <RadioGroupItem value="false" id="delay-sufficient-no" />
             <Label htmlFor="delay-sufficient-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -356,13 +356,13 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Opposition introduite ?*</Label>
-        <RadioGroup value={formData.affichageHasOpposition} onValueChange={(value) => updateFormData({ affichageHasOpposition: value })}>
+        <RadioGroup value={formData.affichageHasOpposition?.toString()} onValueChange={(value) => updateFormData({ affichageHasOpposition: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="opposition-yes" />
+            <RadioGroupItem value="true" id="opposition-yes" />
             <Label htmlFor="opposition-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="opposition-no" />
+            <RadioGroupItem value="false" id="opposition-no" />
             <Label htmlFor="opposition-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -381,13 +381,13 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
-        <RadioGroup value={formData.affichageHasReceipt} onValueChange={(value) => updateFormData({ affichageHasReceipt: value })}>
+        <RadioGroup value={formData.affichageHasReceipt?.toString()} onValueChange={(value) => updateFormData({ affichageHasReceipt: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="receipt-yes" />
+            <RadioGroupItem value="true" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="receipt-no" />
+            <RadioGroupItem value="false" id="receipt-no" />
             <Label htmlFor="receipt-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -448,13 +448,13 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
-        <RadioGroup value={formData.bornageHasReceipt} onValueChange={(value) => updateFormData({ bornageHasReceipt: value })}>
+        <RadioGroup value={formData.bornageHasReceipt?.toString()} onValueChange={(value) => updateFormData({ bornageHasReceipt: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="receipt-yes" />
+            <RadioGroupItem value="true" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="receipt-no" />
+            <RadioGroupItem value="false" id="receipt-no" />
             <Label htmlFor="receipt-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -476,13 +476,13 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
     <>
       <div className="space-y-2">
         <Label>Compréhension du calcul du prix*</Label>
-        <RadioGroup value={formData.evaluationPriceUnderstanding} onValueChange={(value) => updateFormData({ evaluationPriceUnderstanding: value })}>
+        <RadioGroup value={formData.evaluationPriceUnderstanding?.toString()} onValueChange={(value) => updateFormData({ evaluationPriceUnderstanding: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="price-yes" />
+            <RadioGroupItem value="true" id="price-yes" />
             <Label htmlFor="price-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="price-no" />
+            <RadioGroupItem value="false" id="price-no" />
             <Label htmlFor="price-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -518,13 +518,13 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
-        <RadioGroup value={formData.evaluationHasReceipt} onValueChange={(value) => updateFormData({ evaluationHasReceipt: value })}>
+        <RadioGroup value={formData.evaluationHasReceipt?.toString()} onValueChange={(value) => updateFormData({ evaluationHasReceipt: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="receipt-yes" />
+            <RadioGroupItem value="true" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="receipt-no" />
+            <RadioGroupItem value="false" id="receipt-no" />
             <Label htmlFor="receipt-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -561,10 +561,10 @@ export function validateEvaluationStep(
   if (stepKey === "depot") {
     return !!(
       formData.depotEvaluation &&
-      formData.depotHasAcknowledgment &&
+      formData.depotHasAcknowledgment !== undefined &&
       formData.depotPaymentMode &&
       formData.depotAmountPaid &&
-      formData.depotHasReceipt &&
+      formData.depotHasReceipt !== undefined &&
       (formData.depotPaymentMode !== "autre" || formData.depotOtherPaymentMode)
     );
   }
@@ -573,7 +573,7 @@ export function validateEvaluationStep(
     return !!(
       formData.enqueteDelayPerceived &&
       formData.enquetePaymentMode &&
-      formData.enqueteHasReceipt &&
+      formData.enqueteHasReceipt !== undefined &&
       formData.enqueteSatisfaction?.[0] &&
       (formData.enquetePaymentMode !== "autre" || formData.enqueteOtherPaymentMode)
     );
@@ -583,7 +583,7 @@ export function validateEvaluationStep(
     return !!(
       formData.etatLieuxDelayPerceived &&
       formData.etatLieuxPaymentMode &&
-      formData.etatLieuxHasReceipt &&
+      formData.etatLieuxHasReceipt !== undefined &&
       formData.etatLieuxSatisfaction?.[0] &&
       (formData.etatLieuxPaymentMode !== "autre" || formData.etatLieuxOtherPaymentMode)
     );
@@ -593,7 +593,7 @@ export function validateEvaluationStep(
     return !!(
       formData.bornageDelayPerceived &&
       formData.bornagePaymentMode &&
-      formData.bornageHasReceipt &&
+      formData.bornageHasReceipt !== undefined &&
       formData.bornageSatisfaction?.[0] &&
       (formData.bornagePaymentMode !== "autre" || formData.bornageOtherPaymentMode)
     );
@@ -601,16 +601,16 @@ export function validateEvaluationStep(
 
   if (stepKey === "affichage") {
     const baseValidation = !!(
-      formData.affichageInTime &&
-      formData.affichageWasInformed &&
-      formData.affichageSufficientDelay &&
-      formData.affichageHasOpposition &&
+      formData.affichageInTime !== undefined &&
+      formData.affichageWasInformed !== undefined &&
+      formData.affichageSufficientDelay !== undefined &&
+      formData.affichageHasOpposition !== undefined &&
       formData.affichageFees &&
-      formData.affichageHasReceipt &&
+      formData.affichageHasReceipt !== undefined &&
       formData.affichageSatisfaction?.[0]
     );
     
-    if (formData.affichageWasInformed === "oui") {
+    if (formData.affichageWasInformed === true) {
       return baseValidation && !!formData.affichageInformationChannel;
     }
     
@@ -619,9 +619,9 @@ export function validateEvaluationStep(
 
   if (stepKey === "evaluation") {
     return !!(
-      formData.evaluationPriceUnderstanding &&
+      formData.evaluationPriceUnderstanding !== undefined &&
       formData.evaluationPaymentMode &&
-      formData.evaluationHasReceipt &&
+      formData.evaluationHasReceipt !== undefined &&
       formData.evaluationSatisfaction?.[0] &&
       (formData.evaluationPaymentMode !== "autre" || formData.evaluationOtherPaymentMode)
     );

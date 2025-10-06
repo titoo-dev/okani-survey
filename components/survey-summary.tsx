@@ -14,58 +14,58 @@ export type SurveyFormData = {
   depotPaymentMode: string;
   depotOtherPaymentMode: string;
   depotAmountPaid: string;
-  depotHasReceipt: string;
-  depotHasAcknowledgment: string;
+  depotHasReceipt: boolean | undefined;
+  depotHasAcknowledgment: boolean | undefined;
   enqueteDelayPerceived: string;
   enquetePaymentMode: string;
   enqueteOtherPaymentMode: string;
-  enqueteHasReceipt: string;
+  enqueteHasReceipt: boolean | undefined;
   enqueteSatisfaction: number[];
   etatLieuxDelayPerceived: string;
   etatLieuxPaymentMode: string;
   etatLieuxOtherPaymentMode: string;
-  etatLieuxHasReceipt: string;
+  etatLieuxHasReceipt: boolean | undefined;
   etatLieuxSatisfaction: number[];
-  affichageInTime: string;
-  affichageWasInformed: string;
+  affichageInTime: boolean | undefined;
+  affichageWasInformed: boolean | undefined;
   affichageInformationChannel: string;
-  affichageSufficientDelay: string;
-  affichageHasOpposition: string;
+  affichageSufficientDelay: boolean | undefined;
+  affichageHasOpposition: boolean | undefined;
   affichageFees: string;
-  affichageHasReceipt: string;
+  affichageHasReceipt: boolean | undefined;
   affichageSatisfaction: number[];
   bornageDelayPerceived: string;
   bornagePaymentMode: string;
   bornageOtherPaymentMode: string;
-  bornageHasReceipt: string;
+  bornageHasReceipt: boolean | undefined;
   bornageSatisfaction: number[];
-  evaluationPriceUnderstanding: string;
+  evaluationPriceUnderstanding: boolean | undefined;
   evaluationPaymentMode: string;
   evaluationOtherPaymentMode: string;
-  evaluationHasReceipt: string;
+  evaluationHasReceipt: boolean | undefined;
   evaluationSatisfaction: number[];
   decisionDelay: string;
   decisionPaymentMode: string;
   decisionOtherPaymentMode: string;
-  decisionHasReceipt: string;
-  wasTransmitted: string;
-  hasActeCession: string;
-  hasTitrePropriete: string;
+  decisionHasReceipt: boolean | undefined;
+  wasTransmitted: boolean | undefined;
+  hasActeCession: boolean | undefined;
+  hasTitrePropriete: boolean | undefined;
   decisionSatisfaction: number[];
-  hasUnofficialPayment: string;
-  hasFavoritism: string;
+  hasUnofficialPayment: boolean | undefined;
+  hasFavoritism: boolean | undefined;
   trustTransparency: number[];
-  hadOpposition: string;
+  hadOpposition: boolean | undefined;
   oppositionDate: string;
   oppositionNature: string;
   oppositionNatureOther: string;
   litigeDelay: string;
-  paidLitigeFees: string;
+  paidLitigeFees: boolean | undefined;
   litigePaymentMode: string;
   litigePaymentAmount: string;
-  litigeHasReceipt: string;
-  wasInformedProcedure: string;
-  sentFormalLetter: string;
+  litigeHasReceipt: boolean | undefined;
+  wasInformedProcedure: boolean | undefined;
+  sentFormalLetter: boolean | undefined;
   letterReference: string;
   litigeCause: string;
   litigeCauseOther: string;
@@ -162,7 +162,7 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
       );
     }
     if (step.key === "disputes") {
-      return !!formData.hadOpposition;
+      return formData.hadOpposition !== undefined;
     }
     if (step.key === "global") {
       return !!(
@@ -240,8 +240,8 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
       return <p className="text-sm text-gray-600">Confiance: {formData.trustTransparency[0]}/5</p>;
     }
     
-    if (step.key === "disputes" && formData.hadOpposition) {
-      return <p className="text-sm text-gray-600">{formData.hadOpposition === "oui" ? "Opposition déclarée" : "Aucune opposition"}</p>;
+    if (step.key === "disputes" && formData.hadOpposition !== undefined) {
+      return <p className="text-sm text-gray-600">{formData.hadOpposition === true ? "Opposition déclarée" : "Aucune opposition"}</p>;
     }
     
     if (step.key === "global" && formData.globalSatisfaction[0]) {

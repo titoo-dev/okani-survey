@@ -7,31 +7,56 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FileText, Phone } from "lucide-react";
+import { stageSelectionSchema } from "@/lib/schema";
+import { z } from "zod";
 
 export default function StageSelectionPage() {
-  const [hasFiledAtAnuttc, setHasFiledAtAnuttc] = useState<string>("");
+  const [hasFiledAtAnuttc, setHasFiledAtAnuttc] = useState<boolean | null>(null);
   const [email, setEmail] = useState("");
   const [stageReached, setStageReached] = useState("");
+  const [showErrorDialog, setShowErrorDialog] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const router = useRouter();
 
   const handleContinue = () => {
-    if (hasFiledAtAnuttc === "non") {
+    if (hasFiledAtAnuttc === false) {
       alert("Merci pour votre intérêt. Ce sondage est réservé aux usagers ayant introduit un dossier à l'ANUTTC.");
       router.push("/");
       return;
     }
     
-    if (stageReached && email) {
-      sessionStorage.setItem("stageReached", stageReached);
-      sessionStorage.setItem("introEmail", email);
+    try {
+      const validatedData = stageSelectionSchema.parse({
+        hasFiledAtAnuttc,
+        email,
+        stageReached,
+      });
+      
+      sessionStorage.setItem("stageReached", validatedData.stageReached);
+      sessionStorage.setItem("introEmail", validatedData.email);
       router.push("/survey");
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errors = error.issues.map((err: z.ZodIssue) => err.message);
+        setValidationErrors(errors);
+        setShowErrorDialog(true);
+      }
     }
   };
 
-  const isFormValid = hasFiledAtAnuttc === "oui" && email && stageReached;
+  const isFormValid = hasFiledAtAnuttc === true && email && stageReached;
 
   return (
     <main className="min-h-screen bg-gray-50 py-8">
@@ -67,19 +92,19 @@ export default function StageSelectionPage() {
           <CardContent className="space-y-6">
             <div className="space-y-2">
               <Label>Avez-vous introduit un dossier à l'ANUTTC ?*</Label>
-              <RadioGroup value={hasFiledAtAnuttc} onValueChange={setHasFiledAtAnuttc}>
+              <RadioGroup value={hasFiledAtAnuttc === null ? "" : String(hasFiledAtAnuttc)} onValueChange={(value) => setHasFiledAtAnuttc(value === "true")}>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="oui" id="filed-yes" />
+                  <RadioGroupItem value="true" id="filed-yes" />
                   <Label htmlFor="filed-yes" className="font-normal cursor-pointer">Oui</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="non" id="filed-no" />
+                  <RadioGroupItem value="false" id="filed-no" />
                   <Label htmlFor="filed-no" className="font-normal cursor-pointer">Non</Label>
                 </div>
               </RadioGroup>
             </div>
 
-            {hasFiledAtAnuttc === "oui" && (
+            {hasFiledAtAnuttc === true && (
               <>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email*</Label>
@@ -142,7 +167,7 @@ export default function StageSelectionPage() {
               </>
             )}
 
-            {hasFiledAtAnuttc === "non" && (
+            {hasFiledAtAnuttc === false && (
               <div className="bg-muted/50 rounded-lg p-6 text-center">
                 <p className="text-muted-foreground mb-4">
                   Merci pour votre intérêt. Ce sondage est réservé aux usagers ayant introduit un dossier à l'ANUTTC.
@@ -186,6 +211,29 @@ export default function StageSelectionPage() {
           </Card>
         </div>
       </div>
+
+      <AlertDialog open={showErrorDialog} onOpenChange={setShowErrorDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Données invalides</AlertDialogTitle>
+            <AlertDialogDescription>
+              Veuillez corriger les erreurs suivantes avant de continuer:
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="my-4">
+            <ul className="list-disc list-inside space-y-1 text-sm text-red-600">
+              {validationErrors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setShowErrorDialog(false)}>
+              Compris
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   );
 }

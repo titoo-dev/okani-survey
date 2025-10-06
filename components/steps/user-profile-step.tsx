@@ -46,7 +46,7 @@ export function UserProfileStep({ formData, updateFormData }: UserProfileStepPro
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Label htmlFor="dossierId">Numéro unique du dossier (QR Code scanné)*</Label>
+        <Label htmlFor="dossierId">Numéro unique du dossier*</Label>
         <Input
           id="dossierId"
           value={formData.dossierId || ""}

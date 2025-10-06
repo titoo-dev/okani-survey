@@ -3,8 +3,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { StarRating } from "@/components/ui/star-rating";
 
 type GovernanceData = {
-  hasUnofficialPayment: string;
-  hasFavoritism: string;
+  hasUnofficialPayment: boolean | undefined;
+  hasFavoritism: boolean | undefined;
   trustTransparency: number[];
 };
 
@@ -18,13 +18,13 @@ export function GovernanceStep({ formData, updateFormData }: GovernanceStepProps
     <div className="space-y-6">
       <div className="space-y-2">
         <Label>Avez-vous été sollicité pour un paiement non officiel ?*</Label>
-        <RadioGroup value={formData.hasUnofficialPayment} onValueChange={(value) => updateFormData({ hasUnofficialPayment: value })}>
+        <RadioGroup value={formData.hasUnofficialPayment?.toString()} onValueChange={(value) => updateFormData({ hasUnofficialPayment: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="unofficial-yes" />
+            <RadioGroupItem value="true" id="unofficial-yes" />
             <Label htmlFor="unofficial-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="unofficial-no" />
+            <RadioGroupItem value="false" id="unofficial-no" />
             <Label htmlFor="unofficial-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -32,13 +32,13 @@ export function GovernanceStep({ formData, updateFormData }: GovernanceStepProps
 
       <div className="space-y-2">
         <Label>Avez-vous constaté un favoritisme ou conflit d'intérêts ?*</Label>
-        <RadioGroup value={formData.hasFavoritism} onValueChange={(value) => updateFormData({ hasFavoritism: value })}>
+        <RadioGroup value={formData.hasFavoritism?.toString()} onValueChange={(value) => updateFormData({ hasFavoritism: value === "true" })}>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="oui" id="favoritism-yes" />
+            <RadioGroupItem value="true" id="favoritism-yes" />
             <Label htmlFor="favoritism-yes" className="font-normal cursor-pointer">Oui</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="non" id="favoritism-no" />
+            <RadioGroupItem value="false" id="favoritism-no" />
             <Label htmlFor="favoritism-no" className="font-normal cursor-pointer">Non</Label>
           </div>
         </RadioGroup>
@@ -77,8 +77,8 @@ export function validateGovernanceStep(
 ): boolean {
   const trustValue = formData.trustTransparency?.[0];
   return !!(
-    formData.hasUnofficialPayment &&
-    formData.hasFavoritism &&
+    formData.hasUnofficialPayment !== undefined &&
+    formData.hasFavoritism !== undefined &&
     trustValue !== undefined &&
     trustValue >= 2 &&
     trustValue <= 4
