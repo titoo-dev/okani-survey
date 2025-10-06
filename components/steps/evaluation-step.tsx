@@ -5,24 +5,40 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { StarRating } from "@/components/ui/star-rating";
 
 type EvaluationData = {
-  hasCompletedStep: string;
-  evaluation: string;
-  paymentMode: string;
-  paymentDate: string;
-  paymentRecipient: string;
-  hasReceipt: string;
-  otherPaymentMode: string;
-  amountPaid: string;
-  hasAcknowledgment: string;
-  delayPerceived: string;
-  satisfaction: number[];
-  priceUnderstanding: string;
+  depotEvaluation: string;
+  depotPaymentMode: string;
+  depotOtherPaymentMode: string;
+  depotAmountPaid: string;
+  depotHasReceipt: string;
+  depotHasAcknowledgment: string;
+  enqueteDelayPerceived: string;
+  enquetePaymentMode: string;
+  enqueteOtherPaymentMode: string;
+  enqueteHasReceipt: string;
+  enqueteSatisfaction: number[];
+  etatLieuxDelayPerceived: string;
+  etatLieuxPaymentMode: string;
+  etatLieuxOtherPaymentMode: string;
+  etatLieuxHasReceipt: string;
+  etatLieuxSatisfaction: number[];
   affichageInTime: string;
-  wasInformed: string;
-  informationChannel: string;
-  sufficientDelay: string;
-  hasOpposition: string;
+  affichageWasInformed: string;
+  affichageInformationChannel: string;
+  affichageSufficientDelay: string;
+  affichageHasOpposition: string;
   affichageFees: string;
+  affichageHasReceipt: string;
+  affichageSatisfaction: number[];
+  bornageDelayPerceived: string;
+  bornagePaymentMode: string;
+  bornageOtherPaymentMode: string;
+  bornageHasReceipt: string;
+  bornageSatisfaction: number[];
+  evaluationPriceUnderstanding: string;
+  evaluationPaymentMode: string;
+  evaluationOtherPaymentMode: string;
+  evaluationHasReceipt: string;
+  evaluationSatisfaction: number[];
 };
 
 type EvaluationStepProps = {
@@ -55,7 +71,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
     <>
       <div className="space-y-2">
         <Label>Comment évaluez-vous l'accueil à l'ANUTTC ?*</Label>
-        <Select value={formData.evaluation} onValueChange={(value) => updateFormData({ evaluation: value })}>
+        <Select value={formData.depotEvaluation} onValueChange={(value) => updateFormData({ depotEvaluation: value })}>
           <SelectTrigger>
             <SelectValue placeholder="Sélectionnez une évaluation" />
           </SelectTrigger>
@@ -71,7 +87,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Avez-vous reçu un accusé de réception ?*</Label>
-        <RadioGroup value={formData.hasAcknowledgment} onValueChange={(value) => updateFormData({ hasAcknowledgment: value })}>
+        <RadioGroup value={formData.depotHasAcknowledgment} onValueChange={(value) => updateFormData({ depotHasAcknowledgment: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="oui" id="ack-yes" />
             <Label htmlFor="ack-yes" className="font-normal cursor-pointer">Oui</Label>
@@ -85,7 +101,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Mode de paiement des frais de dépôt*</Label>
-        <Select value={formData.paymentMode} onValueChange={(value) => updateFormData({ paymentMode: value })}>
+        <Select value={formData.depotPaymentMode} onValueChange={(value) => updateFormData({ depotPaymentMode: value })}>
           <SelectTrigger>
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
@@ -99,31 +115,32 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </Select>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="otherPaymentMode">Précisez le mode de paiement{formData.paymentMode === "autre" && "*"}</Label>
-        <Input
-          id="otherPaymentMode"
-          placeholder="Ex: Autre moyen"
-          value={formData.otherPaymentMode}
-          onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
-          disabled={formData.paymentMode !== "autre"}
-        />
-      </div>
+      {formData.depotPaymentMode === "autre" && (
+        <div className="space-y-2">
+          <Label htmlFor="depotOtherPaymentMode">Précisez le mode de paiement*</Label>
+          <Input
+            id="depotOtherPaymentMode"
+            placeholder="Ex: Autre moyen"
+            value={formData.depotOtherPaymentMode}
+            onChange={(e) => updateFormData({ depotOtherPaymentMode: e.target.value })}
+          />
+        </div>
+      )}
 
       <div className="space-y-2">
-        <Label htmlFor="amountPaid">Montant payé*</Label>
+        <Label htmlFor="depotAmountPaid">Montant payé*</Label>
         <Input
-          id="amountPaid"
+          id="depotAmountPaid"
           type="number"
           placeholder="Montant en FCFA"
-          value={formData.amountPaid}
-          onChange={(e) => updateFormData({ amountPaid: e.target.value })}
+          value={formData.depotAmountPaid}
+          onChange={(e) => updateFormData({ depotAmountPaid: e.target.value })}
         />
       </div>
 
       <div className="space-y-2">
         <Label>Avez-vous reçu une quittance ?*</Label>
-        <RadioGroup value={formData.hasReceipt} onValueChange={(value) => updateFormData({ hasReceipt: value })}>
+        <RadioGroup value={formData.depotHasReceipt} onValueChange={(value) => updateFormData({ depotHasReceipt: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="oui" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
@@ -140,19 +157,19 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
   const renderEnqueteStep = () => (
     <>
       <div className="space-y-2">
-        <Label htmlFor="delayPerceived">Délais de réalisation perçus (en jours)*</Label>
+        <Label htmlFor="enqueteDelayPerceived">Délais de réalisation perçus (en jours)*</Label>
         <Input
-          id="delayPerceived"
+          id="enqueteDelayPerceived"
           type="number"
           placeholder="Nombre de jours"
-          value={formData.delayPerceived}
-          onChange={(e) => updateFormData({ delayPerceived: e.target.value })}
+          value={formData.enqueteDelayPerceived}
+          onChange={(e) => updateFormData({ enqueteDelayPerceived: e.target.value })}
         />
       </div>
 
       <div className="space-y-2">
         <Label>Mode de paiement*</Label>
-        <Select value={formData.paymentMode} onValueChange={(value) => updateFormData({ paymentMode: value })}>
+        <Select value={formData.enquetePaymentMode} onValueChange={(value) => updateFormData({ enquetePaymentMode: value })}>
           <SelectTrigger>
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
@@ -166,20 +183,21 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </Select>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="otherPaymentMode">Précisez le mode de paiement{formData.paymentMode === "autre" && "*"}</Label>
-        <Input
-          id="otherPaymentMode"
-          placeholder="Ex: Autre moyen"
-          value={formData.otherPaymentMode}
-          onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
-          disabled={formData.paymentMode !== "autre"}
-        />
-      </div>
+      {formData.enquetePaymentMode === "autre" && (
+        <div className="space-y-2">
+          <Label htmlFor="enqueteOtherPaymentMode">Précisez le mode de paiement*</Label>
+          <Input
+            id="enqueteOtherPaymentMode"
+            placeholder="Ex: Autre moyen"
+            value={formData.enqueteOtherPaymentMode}
+            onChange={(e) => updateFormData({ enqueteOtherPaymentMode: e.target.value })}
+          />
+        </div>
+      )}
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
-        <RadioGroup value={formData.hasReceipt} onValueChange={(value) => updateFormData({ hasReceipt: value })}>
+        <RadioGroup value={formData.enqueteHasReceipt} onValueChange={(value) => updateFormData({ enqueteHasReceipt: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="oui" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
@@ -194,8 +212,8 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
       <div className="space-y-2">
         <Label>Satisfaction enquête foncière*</Label>
         <StarRating
-          value={formData.satisfaction[0] || 0}
-          onChange={(value) => updateFormData({ satisfaction: [value] })}
+          value={formData.enqueteSatisfaction[0] || 0}
+          onChange={(value) => updateFormData({ enqueteSatisfaction: [value] })}
           max={5}
           size="lg"
         />
@@ -206,19 +224,19 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
   const renderEtatLieuxStep = () => (
     <>
       <div className="space-y-2">
-        <Label htmlFor="delayPerceived">Délais perçus (en jours)*</Label>
+        <Label htmlFor="etatLieuxDelayPerceived">Délais perçus (en jours)*</Label>
         <Input
-          id="delayPerceived"
+          id="etatLieuxDelayPerceived"
           type="number"
           placeholder="Nombre de jours"
-          value={formData.delayPerceived}
-          onChange={(e) => updateFormData({ delayPerceived: e.target.value })}
+          value={formData.etatLieuxDelayPerceived}
+          onChange={(e) => updateFormData({ etatLieuxDelayPerceived: e.target.value })}
         />
       </div>
 
       <div className="space-y-2">
         <Label>Mode de paiement*</Label>
-        <Select value={formData.paymentMode} onValueChange={(value) => updateFormData({ paymentMode: value })}>
+        <Select value={formData.etatLieuxPaymentMode} onValueChange={(value) => updateFormData({ etatLieuxPaymentMode: value })}>
           <SelectTrigger>
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
@@ -232,20 +250,21 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </Select>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="otherPaymentMode">Précisez le mode de paiement{formData.paymentMode === "autre" && "*"}</Label>
-        <Input
-          id="otherPaymentMode"
-          placeholder="Ex: Autre moyen"
-          value={formData.otherPaymentMode}
-          onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
-          disabled={formData.paymentMode !== "autre"}
-        />
-      </div>
+      {formData.etatLieuxPaymentMode === "autre" && (
+        <div className="space-y-2">
+          <Label htmlFor="etatLieuxOtherPaymentMode">Précisez le mode de paiement*</Label>
+          <Input
+            id="etatLieuxOtherPaymentMode"
+            placeholder="Ex: Autre moyen"
+            value={formData.etatLieuxOtherPaymentMode}
+            onChange={(e) => updateFormData({ etatLieuxOtherPaymentMode: e.target.value })}
+          />
+        </div>
+      )}
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
-        <RadioGroup value={formData.hasReceipt} onValueChange={(value) => updateFormData({ hasReceipt: value })}>
+        <RadioGroup value={formData.etatLieuxHasReceipt} onValueChange={(value) => updateFormData({ etatLieuxHasReceipt: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="oui" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
@@ -260,8 +279,8 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
       <div className="space-y-2">
         <Label>Satisfaction état des lieux*</Label>
         <StarRating
-          value={formData.satisfaction[0] || 0}
-          onChange={(value) => updateFormData({ satisfaction: [value] })}
+          value={formData.etatLieuxSatisfaction[0] || 0}
+          onChange={(value) => updateFormData({ etatLieuxSatisfaction: [value] })}
           max={5}
           size="lg"
         />
@@ -287,7 +306,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Avez-vous été informé de l'affichage ?*</Label>
-        <RadioGroup value={formData.wasInformed} onValueChange={(value) => updateFormData({ wasInformed: value })}>
+        <RadioGroup value={formData.affichageWasInformed} onValueChange={(value) => updateFormData({ affichageWasInformed: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="oui" id="informed-yes" />
             <Label htmlFor="informed-yes" className="font-normal cursor-pointer">Oui</Label>
@@ -300,22 +319,22 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
       </div>
 
       <div className="space-y-2">
-        <Label>Canal d'information{formData.wasInformed === "oui" && "*"}</Label>
+        <Label>Canal d'information{formData.affichageWasInformed === "oui" && "*"}</Label>
         <RadioGroup 
-          value={formData.informationChannel} 
-          onValueChange={(value) => updateFormData({ informationChannel: value })}
-          disabled={formData.wasInformed !== "oui"}
+          value={formData.affichageInformationChannel} 
+          onValueChange={(value) => updateFormData({ affichageInformationChannel: value })}
+          disabled={formData.affichageWasInformed !== "oui"}
         >
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="affichage-physique" id="channel-physical" disabled={formData.wasInformed !== "oui"} />
+            <RadioGroupItem value="affichage-physique" id="channel-physical" disabled={formData.affichageWasInformed !== "oui"} />
             <Label htmlFor="channel-physical" className="font-normal cursor-pointer">Affichage physique</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="site-anuttc" id="channel-site" disabled={formData.wasInformed !== "oui"} />
+            <RadioGroupItem value="site-anuttc" id="channel-site" disabled={formData.affichageWasInformed !== "oui"} />
             <Label htmlFor="channel-site" className="font-normal cursor-pointer">Site ANUTTC</Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="autre" id="channel-autre" disabled={formData.wasInformed !== "oui"} />
+            <RadioGroupItem value="autre" id="channel-autre" disabled={formData.affichageWasInformed !== "oui"} />
             <Label htmlFor="channel-autre" className="font-normal cursor-pointer">Autre</Label>
           </div>
         </RadioGroup>
@@ -323,7 +342,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Délai suffisant pour opposition ?*</Label>
-        <RadioGroup value={formData.sufficientDelay} onValueChange={(value) => updateFormData({ sufficientDelay: value })}>
+        <RadioGroup value={formData.affichageSufficientDelay} onValueChange={(value) => updateFormData({ affichageSufficientDelay: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="oui" id="delay-sufficient-yes" />
             <Label htmlFor="delay-sufficient-yes" className="font-normal cursor-pointer">Oui</Label>
@@ -337,7 +356,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Opposition introduite ?*</Label>
-        <RadioGroup value={formData.hasOpposition} onValueChange={(value) => updateFormData({ hasOpposition: value })}>
+        <RadioGroup value={formData.affichageHasOpposition} onValueChange={(value) => updateFormData({ affichageHasOpposition: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="oui" id="opposition-yes" />
             <Label htmlFor="opposition-yes" className="font-normal cursor-pointer">Oui</Label>
@@ -362,7 +381,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
-        <RadioGroup value={formData.hasReceipt} onValueChange={(value) => updateFormData({ hasReceipt: value })}>
+        <RadioGroup value={formData.affichageHasReceipt} onValueChange={(value) => updateFormData({ affichageHasReceipt: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="oui" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
@@ -377,8 +396,8 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
       <div className="space-y-2">
         <Label>Satisfaction gestion de l'affichage*</Label>
         <StarRating
-          value={formData.satisfaction[0] || 0}
-          onChange={(value) => updateFormData({ satisfaction: [value] })}
+          value={formData.affichageSatisfaction[0] || 0}
+          onChange={(value) => updateFormData({ affichageSatisfaction: [value] })}
           max={5}
           size="lg"
         />
@@ -389,19 +408,19 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
   const renderBornageStep = () => (
     <>
       <div className="space-y-2">
-        <Label htmlFor="delayPerceived">Délais perçus (en jours)*</Label>
+        <Label htmlFor="bornageDelayPerceived">Délais perçus (en jours)*</Label>
         <Input
-          id="delayPerceived"
+          id="bornageDelayPerceived"
           type="number"
           placeholder="Nombre de jours"
-          value={formData.delayPerceived}
-          onChange={(e) => updateFormData({ delayPerceived: e.target.value })}
+          value={formData.bornageDelayPerceived}
+          onChange={(e) => updateFormData({ bornageDelayPerceived: e.target.value })}
         />
       </div>
 
       <div className="space-y-2">
         <Label>Mode de paiement*</Label>
-        <Select value={formData.paymentMode} onValueChange={(value) => updateFormData({ paymentMode: value })}>
+        <Select value={formData.bornagePaymentMode} onValueChange={(value) => updateFormData({ bornagePaymentMode: value })}>
           <SelectTrigger>
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
@@ -415,20 +434,21 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </Select>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="otherPaymentMode">Précisez le mode de paiement{formData.paymentMode === "autre" && "*"}</Label>
-        <Input
-          id="otherPaymentMode"
-          placeholder="Ex: Autre moyen"
-          value={formData.otherPaymentMode}
-          onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
-          disabled={formData.paymentMode !== "autre"}
-        />
-      </div>
+      {formData.bornagePaymentMode === "autre" && (
+        <div className="space-y-2">
+          <Label htmlFor="bornageOtherPaymentMode">Précisez le mode de paiement*</Label>
+          <Input
+            id="bornageOtherPaymentMode"
+            placeholder="Ex: Autre moyen"
+            value={formData.bornageOtherPaymentMode}
+            onChange={(e) => updateFormData({ bornageOtherPaymentMode: e.target.value })}
+          />
+        </div>
+      )}
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
-        <RadioGroup value={formData.hasReceipt} onValueChange={(value) => updateFormData({ hasReceipt: value })}>
+        <RadioGroup value={formData.bornageHasReceipt} onValueChange={(value) => updateFormData({ bornageHasReceipt: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="oui" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
@@ -443,8 +463,8 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
       <div className="space-y-2">
         <Label>Satisfaction bornage*</Label>
         <StarRating
-          value={formData.satisfaction[0] || 0}
-          onChange={(value) => updateFormData({ satisfaction: [value] })}
+          value={formData.bornageSatisfaction[0] || 0}
+          onChange={(value) => updateFormData({ bornageSatisfaction: [value] })}
           max={5}
           size="lg"
         />
@@ -456,7 +476,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
     <>
       <div className="space-y-2">
         <Label>Compréhension du calcul du prix*</Label>
-        <RadioGroup value={formData.priceUnderstanding} onValueChange={(value) => updateFormData({ priceUnderstanding: value })}>
+        <RadioGroup value={formData.evaluationPriceUnderstanding} onValueChange={(value) => updateFormData({ evaluationPriceUnderstanding: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="oui" id="price-yes" />
             <Label htmlFor="price-yes" className="font-normal cursor-pointer">Oui</Label>
@@ -470,7 +490,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
 
       <div className="space-y-2">
         <Label>Mode de paiement*</Label>
-        <Select value={formData.paymentMode} onValueChange={(value) => updateFormData({ paymentMode: value })}>
+        <Select value={formData.evaluationPaymentMode} onValueChange={(value) => updateFormData({ evaluationPaymentMode: value })}>
           <SelectTrigger>
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
@@ -484,20 +504,21 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </Select>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="otherPaymentMode">Précisez le mode de paiement{formData.paymentMode === "autre" && "*"}</Label>
-        <Input
-          id="otherPaymentMode"
-          placeholder="Ex: Autre moyen"
-          value={formData.otherPaymentMode}
-          onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
-          disabled={formData.paymentMode !== "autre"}
-        />
-      </div>
+      {formData.evaluationPaymentMode === "autre" && (
+        <div className="space-y-2">
+          <Label htmlFor="evaluationOtherPaymentMode">Précisez le mode de paiement*</Label>
+          <Input
+            id="evaluationOtherPaymentMode"
+            placeholder="Ex: Autre moyen"
+            value={formData.evaluationOtherPaymentMode}
+            onChange={(e) => updateFormData({ evaluationOtherPaymentMode: e.target.value })}
+          />
+        </div>
+      )}
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
-        <RadioGroup value={formData.hasReceipt} onValueChange={(value) => updateFormData({ hasReceipt: value })}>
+        <RadioGroup value={formData.evaluationHasReceipt} onValueChange={(value) => updateFormData({ evaluationHasReceipt: value })}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="oui" id="receipt-yes" />
             <Label htmlFor="receipt-yes" className="font-normal cursor-pointer">Oui</Label>
@@ -512,8 +533,8 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
       <div className="space-y-2">
         <Label>Satisfaction évaluation*</Label>
         <StarRating
-          value={formData.satisfaction[0] || 0}
-          onChange={(value) => updateFormData({ satisfaction: [value] })}
+          value={formData.evaluationSatisfaction[0] || 0}
+          onChange={(value) => updateFormData({ evaluationSatisfaction: [value] })}
           max={5}
           size="lg"
         />
@@ -539,38 +560,58 @@ export function validateEvaluationStep(
 ): boolean {
   if (stepKey === "depot") {
     return !!(
-      formData.evaluation &&
-      formData.hasAcknowledgment &&
-      formData.paymentMode &&
-      formData.amountPaid &&
-      formData.hasReceipt &&
-      (formData.paymentMode !== "autre" || formData.otherPaymentMode)
+      formData.depotEvaluation &&
+      formData.depotHasAcknowledgment &&
+      formData.depotPaymentMode &&
+      formData.depotAmountPaid &&
+      formData.depotHasReceipt &&
+      (formData.depotPaymentMode !== "autre" || formData.depotOtherPaymentMode)
     );
   }
 
-  if (stepKey === "enquete" || stepKey === "etat-lieux" || stepKey === "bornage") {
+  if (stepKey === "enquete") {
     return !!(
-      formData.delayPerceived &&
-      formData.paymentMode &&
-      formData.hasReceipt &&
-      formData.satisfaction?.[0] &&
-      (formData.paymentMode !== "autre" || formData.otherPaymentMode)
+      formData.enqueteDelayPerceived &&
+      formData.enquetePaymentMode &&
+      formData.enqueteHasReceipt &&
+      formData.enqueteSatisfaction?.[0] &&
+      (formData.enquetePaymentMode !== "autre" || formData.enqueteOtherPaymentMode)
+    );
+  }
+
+  if (stepKey === "etat-lieux") {
+    return !!(
+      formData.etatLieuxDelayPerceived &&
+      formData.etatLieuxPaymentMode &&
+      formData.etatLieuxHasReceipt &&
+      formData.etatLieuxSatisfaction?.[0] &&
+      (formData.etatLieuxPaymentMode !== "autre" || formData.etatLieuxOtherPaymentMode)
+    );
+  }
+
+  if (stepKey === "bornage") {
+    return !!(
+      formData.bornageDelayPerceived &&
+      formData.bornagePaymentMode &&
+      formData.bornageHasReceipt &&
+      formData.bornageSatisfaction?.[0] &&
+      (formData.bornagePaymentMode !== "autre" || formData.bornageOtherPaymentMode)
     );
   }
 
   if (stepKey === "affichage") {
     const baseValidation = !!(
       formData.affichageInTime &&
-      formData.wasInformed &&
-      formData.sufficientDelay &&
-      formData.hasOpposition &&
+      formData.affichageWasInformed &&
+      formData.affichageSufficientDelay &&
+      formData.affichageHasOpposition &&
       formData.affichageFees &&
-      formData.hasReceipt &&
-      formData.satisfaction?.[0]
+      formData.affichageHasReceipt &&
+      formData.affichageSatisfaction?.[0]
     );
     
-    if (formData.wasInformed === "oui") {
-      return baseValidation && !!formData.informationChannel;
+    if (formData.affichageWasInformed === "oui") {
+      return baseValidation && !!formData.affichageInformationChannel;
     }
     
     return baseValidation;
@@ -578,11 +619,11 @@ export function validateEvaluationStep(
 
   if (stepKey === "evaluation") {
     return !!(
-      formData.priceUnderstanding &&
-      formData.paymentMode &&
-      formData.hasReceipt &&
-      formData.satisfaction?.[0] &&
-      (formData.paymentMode !== "autre" || formData.otherPaymentMode)
+      formData.evaluationPriceUnderstanding &&
+      formData.evaluationPaymentMode &&
+      formData.evaluationHasReceipt &&
+      formData.evaluationSatisfaction?.[0] &&
+      (formData.evaluationPaymentMode !== "autre" || formData.evaluationOtherPaymentMode)
     );
   }
 

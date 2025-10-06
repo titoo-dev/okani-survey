@@ -59,16 +59,17 @@ export function DecisionStep({ formData, updateFormData }: DecisionStepProps) {
         </Select>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="decisionOtherPaymentMode">Précisez le mode de paiement{formData.decisionPaymentMode === "autre" && "*"}</Label>
-        <Input
-          id="decisionOtherPaymentMode"
-          placeholder="Ex: Autre moyen"
-          value={formData.decisionOtherPaymentMode}
-          onChange={(e) => updateFormData({ decisionOtherPaymentMode: e.target.value })}
-          disabled={formData.decisionPaymentMode !== "autre"}
-        />
-      </div>
+      {formData.decisionPaymentMode === "autre" && (
+        <div className="space-y-2">
+          <Label htmlFor="decisionOtherPaymentMode">Précisez le mode de paiement*</Label>
+          <Input
+            id="decisionOtherPaymentMode"
+            placeholder="Ex: Autre moyen"
+            value={formData.decisionOtherPaymentMode}
+            onChange={(e) => updateFormData({ decisionOtherPaymentMode: e.target.value })}
+          />
+        </div>
+      )}
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>

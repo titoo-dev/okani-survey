@@ -10,24 +10,40 @@ export type SurveyFormData = {
   userType: string;
   nationality: string;
   legalEntity: string;
-  hasCompletedStep: string;
-  evaluation: string;
-  paymentMode: string;
-  paymentDate: string;
-  paymentRecipient: string;
-  hasReceipt: string;
-  otherPaymentMode: string;
-  amountPaid: string;
-  hasAcknowledgment: string;
-  delayPerceived: string;
-  satisfaction: number[];
-  priceUnderstanding: string;
+  depotEvaluation: string;
+  depotPaymentMode: string;
+  depotOtherPaymentMode: string;
+  depotAmountPaid: string;
+  depotHasReceipt: string;
+  depotHasAcknowledgment: string;
+  enqueteDelayPerceived: string;
+  enquetePaymentMode: string;
+  enqueteOtherPaymentMode: string;
+  enqueteHasReceipt: string;
+  enqueteSatisfaction: number[];
+  etatLieuxDelayPerceived: string;
+  etatLieuxPaymentMode: string;
+  etatLieuxOtherPaymentMode: string;
+  etatLieuxHasReceipt: string;
+  etatLieuxSatisfaction: number[];
   affichageInTime: string;
-  wasInformed: string;
-  informationChannel: string;
-  sufficientDelay: string;
-  hasOpposition: string;
+  affichageWasInformed: string;
+  affichageInformationChannel: string;
+  affichageSufficientDelay: string;
+  affichageHasOpposition: string;
   affichageFees: string;
+  affichageHasReceipt: string;
+  affichageSatisfaction: number[];
+  bornageDelayPerceived: string;
+  bornagePaymentMode: string;
+  bornageOtherPaymentMode: string;
+  bornageHasReceipt: string;
+  bornageSatisfaction: number[];
+  evaluationPriceUnderstanding: string;
+  evaluationPaymentMode: string;
+  evaluationOtherPaymentMode: string;
+  evaluationHasReceipt: string;
+  evaluationSatisfaction: number[];
   decisionDelay: string;
   decisionPaymentMode: string;
   decisionOtherPaymentMode: string;
@@ -154,7 +170,25 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
         formData.globalSatisfaction[0]
       );
     }
-    return !!formData.satisfaction?.[0] || !!formData.evaluation;
+    if (step.key === "depot") {
+      return !!formData.depotEvaluation;
+    }
+    if (step.key === "enquete") {
+      return !!formData.enqueteSatisfaction?.[0];
+    }
+    if (step.key === "etat-lieux") {
+      return !!formData.etatLieuxSatisfaction?.[0];
+    }
+    if (step.key === "affichage") {
+      return !!formData.affichageSatisfaction?.[0];
+    }
+    if (step.key === "bornage") {
+      return !!formData.bornageSatisfaction?.[0];
+    }
+    if (step.key === "evaluation") {
+      return !!formData.evaluationSatisfaction?.[0];
+    }
+    return false;
   };
 
   const renderStepIcon = (step: { id: number; key: string }) => {
@@ -178,6 +212,26 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
       );
     }
     
+    if (step.key === "enquete" && formData.enqueteSatisfaction?.[0]) {
+      return <p className="text-sm text-gray-600">Satisfaction: {formData.enqueteSatisfaction[0]}/5</p>;
+    }
+    
+    if (step.key === "etat-lieux" && formData.etatLieuxSatisfaction?.[0]) {
+      return <p className="text-sm text-gray-600">Satisfaction: {formData.etatLieuxSatisfaction[0]}/5</p>;
+    }
+    
+    if (step.key === "affichage" && formData.affichageSatisfaction?.[0]) {
+      return <p className="text-sm text-gray-600">Satisfaction: {formData.affichageSatisfaction[0]}/5</p>;
+    }
+    
+    if (step.key === "bornage" && formData.bornageSatisfaction?.[0]) {
+      return <p className="text-sm text-gray-600">Satisfaction: {formData.bornageSatisfaction[0]}/5</p>;
+    }
+    
+    if (step.key === "evaluation" && formData.evaluationSatisfaction?.[0]) {
+      return <p className="text-sm text-gray-600">Satisfaction: {formData.evaluationSatisfaction[0]}/5</p>;
+    }
+    
     if (step.key === "decision" && formData.decisionSatisfaction[0]) {
       return <p className="text-sm text-gray-600">Satisfaction: {formData.decisionSatisfaction[0]}/10</p>;
     }
@@ -192,10 +246,6 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     
     if (step.key === "global" && formData.globalSatisfaction[0]) {
       return <p className="text-sm text-gray-600">Satisfaction: {formData.globalSatisfaction[0]}/10</p>;
-    }
-    
-    if (formData.satisfaction?.[0] && !["profile", "decision", "governance", "disputes", "global"].includes(step.key)) {
-      return <p className="text-sm text-gray-600">Satisfaction: {formData.satisfaction[0]}/5</p>;
     }
     
     return null;
