@@ -15,7 +15,8 @@ import {
   BarChart,
   Shield,
   Scale,
-  Gavel
+  Gavel,
+  Phone
 } from "lucide-react";
 
 import { StepIndicator } from "../../components/step-indicator";
@@ -332,17 +333,27 @@ export default function SurveyPage() {
             <Card className="bg-muted/30 shadow-none">
               <CardContent>
                 <div className="flex items-start gap-3">
-                  <svg className="w-5 h-5 text-secondary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clipRule="evenodd" />
-                  </svg>
+                  <Phone className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
                   <div className="text-sm text-muted-foreground">
-                    <p className="font-semibold text-foreground">Besoin d'aide ?</p>
-                    <p className="mt-1">
-                      Si vous rencontrez des difficultés, contactez-nous à{" "}
-                      <a href="mailto:support@okanisurvey.com" className="text-primary hover:underline">
-                        support@okanisurvey.com
+                    <p className="font-semibold text-foreground">Support technique WhatsApp</p>
+                    <div className="flex flex-col gap-1 mt-2">
+                      <a 
+                        href="https://wa.me/24176000000" 
+                        className="text-primary hover:underline"
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        +241 76 00 00 00
                       </a>
-                    </p>
+                      <a 
+                        href="https://wa.me/24166000000" 
+                        className="text-primary hover:underline"
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        +241 66 00 00 00
+                      </a>
+                    </div>
                   </div>
                 </div>
               </CardContent>
