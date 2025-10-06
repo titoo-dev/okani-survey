@@ -16,9 +16,6 @@ import { FileText } from "lucide-react";
 export default function StageSelectionPage() {
   const [hasFiledAtAnuttc, setHasFiledAtAnuttc] = useState<string>("");
   const [email, setEmail] = useState("");
-  const [parcelLocation, setParcelLocation] = useState("");
-  const [initiationCity, setInitiationCity] = useState("");
-  const [residenceCity, setResidenceCity] = useState("");
   const [stageReached, setStageReached] = useState("");
   const router = useRouter();
 
@@ -29,17 +26,14 @@ export default function StageSelectionPage() {
       return;
     }
     
-    if (stageReached && email && parcelLocation) {
+    if (stageReached && email) {
       sessionStorage.setItem("stageReached", stageReached);
       sessionStorage.setItem("introEmail", email);
-      sessionStorage.setItem("parcelLocation", parcelLocation);
-      sessionStorage.setItem("initiationCity", initiationCity);
-      sessionStorage.setItem("residenceCity", residenceCity);
       router.push("/survey");
     }
   };
 
-  const isFormValid = hasFiledAtAnuttc === "oui" && email && parcelLocation && stageReached;
+  const isFormValid = hasFiledAtAnuttc === "oui" && email && stageReached;
 
   return (
     <main className="min-h-screen bg-gray-50 py-8">
@@ -99,39 +93,6 @@ export default function StageSelectionPage() {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                   <p className="text-sm text-muted-foreground">Pour vous envoyer une copie de vos réponses</p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="parcelLocation">Ville de dépôt du dossier*</Label>
-                  <AutocompleteInput
-                    id="parcelLocation"
-                    value={parcelLocation}
-                    onChange={setParcelLocation}
-                    suggestions={cities}
-                    placeholder="Saisissez ou sélectionnez une ville"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="initiationCity">Ville de régularisation foncière (si différente)</Label>
-                  <AutocompleteInput
-                    id="initiationCity"
-                    value={initiationCity}
-                    onChange={setInitiationCity}
-                    suggestions={cities}
-                    placeholder="Optionnel - Saisissez ou sélectionnez une ville"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="residenceCity">Ville de résidence de l'usager</Label>
-                  <AutocompleteInput
-                    id="residenceCity"
-                    value={residenceCity}
-                    onChange={setResidenceCity}
-                    suggestions={cities}
-                    placeholder="Optionnel - Saisissez ou sélectionnez une ville"
-                  />
                 </div>
 
                 <div className="space-y-2">
