@@ -114,10 +114,38 @@ export default function SurveyPage() {
     const stageReached = sessionStorage.getItem("stageReached");
     if (!stageReached) {
       router.push("/stage-selection");
+      return;
+    }
+
+    const savedFormData = localStorage.getItem("surveyFormData");
+    const savedCurrentStep = localStorage.getItem("surveyCurrentStep");
+    
+    if (savedFormData) {
+      try {
+        const parsedData = JSON.parse(savedFormData);
+        setFormData({ ...parsedData, stageReached });
+      } catch (error) {
+        console.error("Error loading saved form data:", error);
+        setFormData((prev) => ({ ...prev, stageReached }));
+      }
     } else {
       setFormData((prev) => ({ ...prev, stageReached }));
     }
+
+    if (savedCurrentStep) {
+      setCurrentStep(Number.parseInt(savedCurrentStep, 10));
+    }
   }, [router]);
+
+  useEffect(() => {
+    if (formData.stageReached) {
+      localStorage.setItem("surveyFormData", JSON.stringify(formData));
+    }
+  }, [formData]);
+
+  useEffect(() => {
+    localStorage.setItem("surveyCurrentStep", currentStep.toString());
+  }, [currentStep]);
 
   const stepColors = [
     "text-step-title-1",
@@ -205,6 +233,20 @@ export default function SurveyPage() {
 
   const handleSubmit = () => {
     console.log("Form submitted:", formData);
+    
+    localStorage.removeItem("surveyFormData");
+    localStorage.removeItem("surveyCurrentStep");
+    
+    alert("Formulaire soumis avec succès! Merci pour votre participation.");
+  };
+
+  const handleResetForm = () => {
+    if (confirm("Êtes-vous sûr de vouloir réinitialiser le formulaire? Toutes vos données seront perdues.")) {
+      localStorage.removeItem("surveyFormData");
+      localStorage.removeItem("surveyCurrentStep");
+      sessionStorage.removeItem("stageReached");
+      router.push("/stage-selection");
+    }
   };
 
   const updateFormData = (updates: Partial<SurveyFormData>) => {
@@ -281,6 +323,14 @@ export default function SurveyPage() {
         <div className="mb-4">
           <div className="flex items-center justify-between mb-4">
             <h1 className="text-3xl font-bold">Enquête de satisfaction</h1>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={handleResetForm}
+              className="text-destructive hover:text-destructive"
+            >
+              Réinitialiser
+            </Button>
           </div>
           
           {formData.stageReached && (
