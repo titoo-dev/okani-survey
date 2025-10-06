@@ -124,7 +124,10 @@ export function AutocompleteInput({
                       ? "bg-accent text-accent-foreground"
                       : "hover:bg-accent/50"
                   )}
-                  onClick={() => handleSelectSuggestion(suggestion)}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    handleSelectSuggestion(suggestion);
+                  }}
                   onMouseEnter={() => setHighlightedIndex(index)}
                 >
                   {suggestion}
