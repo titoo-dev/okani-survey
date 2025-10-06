@@ -4,11 +4,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { AutocompleteInput } from "@/components/ui/autocomplete-input";
 import { cities } from "@/lib/cities";
-import { useEffect, useState } from "react";
 
 type UserProfileData = {
-  dossierId?: string;
-  submissionDate?: string;
+  dossierId: string;
   depositCity: string;
   regularizationCity: string;
   residenceCity: string;
@@ -46,48 +44,17 @@ const countries = [
 const citiesWithOther = [...cities, "Autres"];
 
 export function UserProfileStep({ formData, updateFormData }: UserProfileStepProps) {
-  const [currentDate] = useState(() => {
-    const now = new Date();
-    return now.toLocaleString("fr-FR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  });
-
-  useEffect(() => {
-    if (!formData.dossierId) {
-      const dossierId = `CNRF-${Date.now()}-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
-      updateFormData({ dossierId, submissionDate: currentDate });
-    }
-  }, [formData.dossierId, currentDate, updateFormData]);
-
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <Label htmlFor="dossierId">Numéro unique du dossier (QR Code scanné)</Label>
-          <Input
-            id="dossierId"
-            value={formData.dossierId || ""}
-            disabled
-            className="bg-muted"
-          />
-          <p className="text-xs text-muted-foreground">Automatique - Traçabilité</p>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="submissionDate">Date et heure de saisie</Label>
-          <Input
-            id="submissionDate"
-            value={formData.submissionDate || currentDate}
-            disabled
-            className="bg-muted"
-          />
-          <p className="text-xs text-muted-foreground">Automatique - Horodatage</p>
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="dossierId">Numéro unique du dossier (QR Code scanné)*</Label>
+        <Input
+          id="dossierId"
+          value={formData.dossierId || ""}
+          onChange={(e) => updateFormData({ dossierId: e.target.value })}
+          placeholder="Scannez ou saisissez le numéro du dossier"
+        />
+        <p className="text-xs text-muted-foreground">Traçabilité</p>
       </div>
 
       <div className="space-y-2">
@@ -184,6 +151,7 @@ export function validateUserProfileStep(
   formData: Partial<UserProfileData>
 ): boolean {
   return !!(
+    formData.dossierId &&
     formData.depositCity &&
     formData.regularizationCity &&
     formData.residenceCity &&

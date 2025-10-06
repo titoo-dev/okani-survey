@@ -3,15 +3,13 @@ import { CheckCircle, Clock } from "lucide-react";
 
 export type SurveyFormData = {
   stageReached: string;
-  dossierId?: string;
-  submissionDate?: string;
+  dossierId: string;
   depositCity: string;
   regularizationCity: string;
   residenceCity: string;
   userType: string;
   nationality: string;
   legalEntity: string;
-  howDidYouKnow: string;
   hasCompletedStep: string;
   evaluation: string;
   paymentMode: string;
@@ -120,13 +118,13 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
   const isStepCompleted = (step: { key: string }) => {
     if (step.key === "profile") {
       return !!(
+        formData.dossierId &&
         formData.depositCity &&
         formData.regularizationCity &&
         formData.residenceCity &&
         formData.userType &&
         formData.nationality &&
-        formData.legalEntity &&
-        formData.howDidYouKnow
+        formData.legalEntity
       );
     }
     if (step.key === "decision") {
