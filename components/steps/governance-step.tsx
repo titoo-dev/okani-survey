@@ -16,13 +16,6 @@ type GovernanceStepProps = {
 export function GovernanceStep({ formData, updateFormData }: GovernanceStepProps) {
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold mb-2">Gouvernance et probité</h2>
-        <p className="text-gray-600 mb-6">
-          Questions sur la transparence et l'intégrité du processus
-        </p>
-      </div>
-
       <div className="space-y-2">
         <Label>Avez-vous été sollicité pour un paiement non officiel ?*</Label>
         <RadioGroup value={formData.hasUnofficialPayment} onValueChange={(value) => updateFormData({ hasUnofficialPayment: value })}>

@@ -19,12 +19,6 @@ type GlobalEvaluationStepProps = {
 export function GlobalEvaluationStep({ formData, updateFormData }: GlobalEvaluationStepProps) {
   return (
     <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-bold mb-2">Évaluation globale</h2>
-        <p className="text-gray-600 mb-6">
-          Impressions générales sur l'ensemble du processus
-        </p>
-      </div>
 
       <div className="space-y-2">
         <Label htmlFor="transmissionDate">Date de transmission à la Conservation foncière (optionnel)</Label>

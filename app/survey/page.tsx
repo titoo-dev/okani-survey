@@ -119,6 +119,20 @@ export default function SurveyPage() {
     }
   }, [router]);
 
+  const stepColors = [
+    "text-step-title-1",
+    "text-step-title-2",
+    "text-step-title-3",
+    "text-step-title-4",
+    "text-step-title-5",
+    "text-step-title-6",
+    "text-step-title-7",
+    "text-step-title-8",
+    "text-step-title-9",
+    "text-step-title-10",
+    "text-step-title-11",
+  ];
+
   const allSteps = [
     { id: 0, key: "profile", title: "Identification", icon: <User className="w-4 h-4" /> },
     { id: 1, key: "depot", title: "Dépôt", icon: <FolderOpen className="w-4 h-4" /> },
@@ -142,9 +156,9 @@ export default function SurveyPage() {
     { key: "bornage", title: "PV et plan de bornage", description: "Étape 6", estimatedTime: "2 min" },
     { key: "evaluation", title: "Rapport d'évaluation", description: "Étape 7", estimatedTime: "2 min" },
     { key: "decision", title: "Décision et transmission", description: "Étape 8", estimatedTime: "3 min" },
-    { key: "governance", title: "Gouvernance et probité", description: "Transparence du processus", estimatedTime: "2 min" },
-    { key: "disputes", title: "Litiges et oppositions", description: "Si applicable", estimatedTime: "3 min" },
-    { key: "global", title: "Évaluation globale", description: "Impressions générales", estimatedTime: "2 min" },
+    { key: "governance", title: "Gouvernance et probité", description: "Questions sur la transparence et l'intégrité du processus", estimatedTime: "2 min" },
+    { key: "disputes", title: "Litiges et oppositions", description: "Si vous avez fait l'objet d'une opposition ou d'un litige", estimatedTime: "3 min" },
+    { key: "global", title: "Évaluation globale", description: "Impressions générales sur l'ensemble du processus", estimatedTime: "2 min" },
   ];
 
   const getVisibleSteps = (stageReached: string) => {
@@ -299,7 +313,7 @@ export default function SurveyPage() {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <CardTitle className="text-2xl">{stepDetails[currentStep].title}</CardTitle>
+                    <CardTitle className={`text-2xl ${stepColors[currentStep] || "text-step-title-1"}`}>{stepDetails[currentStep].title}</CardTitle>
                     <CardDescription className="text-base mt-2">
                       {stepDetails[currentStep].description}
                     </CardDescription>

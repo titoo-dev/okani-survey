@@ -65,13 +65,6 @@ const outcomes = [
 export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold mb-2">Litiges et oppositions</h2>
-        <p className="text-gray-600 mb-6">
-          Si vous avez fait l'objet d'une opposition ou d'un litige
-        </p>
-      </div>
-
       <div className="space-y-2">
         <Label>Avez-vous fait l'objet d'une opposition lors de l'avis d'affichage ?*</Label>
         <RadioGroup value={formData.hadOpposition} onValueChange={(value) => updateFormData({ hadOpposition: value })}>
