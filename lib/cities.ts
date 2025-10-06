@@ -6,7 +6,7 @@ export const cities = [
   "Ntoum",
   "Owendo",
   "Franceville",
-  "Franceville (ou Masuku)",
+  "Masuku",
   "Akiéni",
   "Bakoumba",
   "Bongoville",
