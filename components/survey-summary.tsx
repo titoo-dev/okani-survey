@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Clock } from "lucide-react";
+import { getUserTypeLabel } from "@/lib/descriptors";
 
 export type SurveyFormData = {
   stageReached: string;
@@ -207,7 +208,7 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
       return (
         <div className="space-y-1 text-sm text-gray-600">
           {formData.depositCity && <p className="truncate">Dépôt: {formData.depositCity}</p>}
-          {formData.userType && <p>{formData.userType === "usager" ? "Usager" : formData.userType === "partenaire" ? "Partenaire" : "Intermédiaire"}</p>}
+          {formData.userType && <p>{getUserTypeLabel(formData.userType)}</p>}
         </div>
       );
     }

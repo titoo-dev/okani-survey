@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { StarRating } from "@/components/ui/star-rating";
+import { OPPOSITION_NATURES, PAYMENT_MODES, LITIGE_CAUSES, LITIGE_OUTCOMES } from "@/lib/descriptors";
 
 type DisputesData = {
   hadOpposition: boolean | undefined;
@@ -30,37 +31,6 @@ type DisputesStepProps = {
   formData: DisputesData;
   updateFormData: (updates: Partial<DisputesData>) => void;
 };
-
-const oppositionNatures = [
-  { value: "usurpation", label: "Usurpation" },
-  { value: "emprise", label: "Emprise" },
-  { value: "conflit-anteriorite", label: "Conflit antériorité" },
-  { value: "autre", label: "Autre (préciser)" },
-];
-
-const paymentModes = [
-  { value: "especes", label: "Espèces" },
-  { value: "cheque", label: "Chèque" },
-  { value: "virement", label: "Virement" },
-  { value: "mobile-money", label: "Mobile Money" },
-  { value: "autre", label: "Autre" },
-];
-
-const litigeCauses = [
-  { value: "defaillance-si", label: "Défaillance SI" },
-  { value: "manipulation-interne", label: "Manipulation interne" },
-  { value: "affichage-non-effectif", label: "Affichage non effectif" },
-  { value: "delais-trop-courts", label: "Délais trop courts" },
-  { value: "autre", label: "Autre (préciser)" },
-];
-
-const outcomes = [
-  { value: "acceptation", label: "Acceptation" },
-  { value: "rejet", label: "Rejet" },
-  { value: "sous-investigation", label: "Sous investigation" },
-  { value: "transmission-conservation", label: "Transmission Conservation" },
-  { value: "autre", label: "Autre (préciser)" },
-];
 
 export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
   return (
@@ -101,7 +71,7 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
                 <SelectValue placeholder="Sélectionnez la nature" />
               </SelectTrigger>
               <SelectContent>
-                {oppositionNatures.map((nature) => (
+                {OPPOSITION_NATURES.map((nature) => (
                   <SelectItem key={nature.value} value={nature.value}>
                     {nature.label}
                   </SelectItem>
@@ -162,7 +132,7 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
                     <SelectValue placeholder="Sélectionnez un mode de paiement" />
                   </SelectTrigger>
                   <SelectContent>
-                    {paymentModes.map((mode) => (
+                    {PAYMENT_MODES.map((mode) => (
                       <SelectItem key={mode.value} value={mode.value}>
                         {mode.label}
                       </SelectItem>
@@ -257,7 +227,7 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
                 <SelectValue placeholder="Sélectionnez la cause" />
               </SelectTrigger>
               <SelectContent>
-                {litigeCauses.map((cause) => (
+                {LITIGE_CAUSES.map((cause) => (
                   <SelectItem key={cause.value} value={cause.value}>
                     {cause.label}
                   </SelectItem>
@@ -298,7 +268,7 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
                 <SelectValue placeholder="Sélectionnez l'issue" />
               </SelectTrigger>
               <SelectContent>
-                {outcomes.map((outcome) => (
+                {LITIGE_OUTCOMES.map((outcome) => (
                   <SelectItem key={outcome.value} value={outcome.value}>
                     {outcome.label}
                   </SelectItem>

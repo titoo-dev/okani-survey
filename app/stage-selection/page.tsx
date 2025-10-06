@@ -20,6 +20,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FileText, Phone } from "lucide-react";
 import { stageSelectionSchema } from "@/lib/schema";
+import { STAGES } from "@/lib/descriptors";
 import { z } from "zod";
 
 export default function StageSelectionPage() {
@@ -125,13 +126,11 @@ export default function StageSelectionPage() {
                       <SelectValue placeholder="Choisissez une étape" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="depot">Dépôt de dossier</SelectItem>
-                      <SelectItem value="enquete">Enquête foncière</SelectItem>
-                      <SelectItem value="etat-lieux">État des lieux</SelectItem>
-                      <SelectItem value="affichage">Avis d'affichage</SelectItem>
-                      <SelectItem value="bornage">PV et plan de bornage</SelectItem>
-                      <SelectItem value="evaluation">Rapport d'évaluation</SelectItem>
-                      <SelectItem value="decision">Décision et transmission</SelectItem>
+                      {STAGES.map((stage) => (
+                        <SelectItem key={stage.value} value={stage.value}>
+                          {stage.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

@@ -3,6 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { StarRating } from "@/components/ui/star-rating";
+import { PAYMENT_MODES } from "@/lib/descriptors";
 
 type DecisionData = {
   decisionDelay: string;
@@ -19,15 +20,6 @@ type DecisionStepProps = {
   formData: DecisionData;
   updateFormData: (updates: Partial<DecisionData>) => void;
 };
-
-const paymentModes = [
-  { value: "especes", label: "Espèces" },
-  { value: "cheque", label: "Chèque" },
-  { value: "virement", label: "Virement" },
-  { value: "mobile-money", label: "Mobile Money" },
-  { value: "money-banking", label: "Money Banking" },
-  { value: "autre", label: "Autre (Préciser...)" },
-];
 
 export function DecisionStep({ formData, updateFormData }: DecisionStepProps) {
   return (
@@ -50,7 +42,7 @@ export function DecisionStep({ formData, updateFormData }: DecisionStepProps) {
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {paymentModes.map((mode) => (
+            {PAYMENT_MODES.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>

@@ -37,6 +37,7 @@ import { GovernanceStep, validateGovernanceStep } from "../../components/steps/g
 import { DisputesStep, validateDisputesStep } from "../../components/steps/disputes-step";
 import { GlobalEvaluationStep, validateGlobalEvaluationStep } from "../../components/steps/global-evaluation-step";
 import { surveyFormSchema } from "@/lib/schema";
+import { getStageLabel } from "@/lib/descriptors";
 import { z } from "zod";
 
 export default function SurveyPage() {
@@ -362,13 +363,7 @@ export default function SurveyPage() {
             <div className="mb-4 p-3 bg-primary/10 border border-primary/20 rounded-lg flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
                 <span className="font-medium text-foreground">Étape sélectionnée:</span>{" "}
-                {formData.stageReached === "depot" && "Dépôt de dossier"}
-                {formData.stageReached === "enquete" && "Enquête foncière"}
-                {formData.stageReached === "etat-lieux" && "État des lieux"}
-                {formData.stageReached === "affichage" && "Avis d'affichage"}
-                {formData.stageReached === "bornage" && "PV et plan de bornage"}
-                {formData.stageReached === "evaluation" && "Rapport d'évaluation"}
-                {formData.stageReached === "decision" && "Décision et transmission"}
+                {getStageLabel(formData.stageReached)}
               </p>
               <Link 
                 href="/stage-selection" 

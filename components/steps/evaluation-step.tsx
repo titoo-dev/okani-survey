@@ -3,6 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { StarRating } from "@/components/ui/star-rating";
+import { PAYMENT_MODES, EVALUATION_OPTIONS, AFFICHAGE_INFORMATION_CHANNELS } from "@/lib/descriptors";
 
 type EvaluationData = {
   depotEvaluation: string;
@@ -48,24 +49,6 @@ type EvaluationStepProps = {
   stepKey: string;
 };
 
-const evaluationOptions = [
-  { value: "excellent", label: "Excellent" },
-  { value: "tres-bien", label: "Très bien" },
-  { value: "bien", label: "Bien" },
-  { value: "assez-bien", label: "Assez bien" },
-  { value: "passable", label: "Passable" },
-  { value: "mediocre", label: "Médiocre" },
-];
-
-const paymentModes = [
-  { value: "especes", label: "Espèces" },
-  { value: "cheque", label: "Chèque" },
-  { value: "virement", label: "Virement" },
-  { value: "mobile-money", label: "Mobile Money" },
-  { value: "money-banking", label: "Money Banking" },
-  { value: "autre", label: "Autre (Préciser...)" },
-];
-
 export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }: EvaluationStepProps) {
   const renderDepotStep = () => (
     <>
@@ -76,7 +59,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
             <SelectValue placeholder="Sélectionnez une évaluation" />
           </SelectTrigger>
           <SelectContent>
-            {evaluationOptions.map((option) => (
+            {EVALUATION_OPTIONS.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>
@@ -106,7 +89,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {paymentModes.map((mode) => (
+            {PAYMENT_MODES.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>
@@ -174,7 +157,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {paymentModes.map((mode) => (
+            {PAYMENT_MODES.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>
@@ -241,7 +224,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {paymentModes.map((mode) => (
+            {PAYMENT_MODES.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>
@@ -325,18 +308,12 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
           onValueChange={(value) => updateFormData({ affichageInformationChannel: value })}
           disabled={formData.affichageWasInformed !== true}
         >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="affichage-physique" id="channel-physical" disabled={formData.affichageWasInformed !== true} />
-            <Label htmlFor="channel-physical" className="font-normal cursor-pointer">Affichage physique</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="site-anuttc" id="channel-site" disabled={formData.affichageWasInformed !== true} />
-            <Label htmlFor="channel-site" className="font-normal cursor-pointer">Site ANUTTC</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="autre" id="channel-autre" disabled={formData.affichageWasInformed !== true} />
-            <Label htmlFor="channel-autre" className="font-normal cursor-pointer">Autre</Label>
-          </div>
+          {AFFICHAGE_INFORMATION_CHANNELS.map((channel) => (
+            <div key={channel.value} className="flex items-center space-x-2">
+              <RadioGroupItem value={channel.value} id={`channel-${channel.value}`} disabled={formData.affichageWasInformed !== true} />
+              <Label htmlFor={`channel-${channel.value}`} className="font-normal cursor-pointer">{channel.label}</Label>
+            </div>
+          ))}
         </RadioGroup>
       </div>
 
@@ -425,7 +402,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {paymentModes.map((mode) => (
+            {PAYMENT_MODES.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>
@@ -495,7 +472,7 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {paymentModes.map((mode) => (
+            {PAYMENT_MODES.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>

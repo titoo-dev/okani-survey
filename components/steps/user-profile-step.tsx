@@ -3,6 +3,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { AutocompleteInput } from "@/components/ui/autocomplete-input";
 import { cities } from "@/lib/cities";
+import { USER_TYPES, LEGAL_ENTITIES, COUNTRIES } from "@/lib/descriptors";
 
 type UserProfileData = {
   dossierId: string;
@@ -19,27 +20,7 @@ type UserProfileStepProps = {
   updateFormData: (updates: Partial<UserProfileData>) => void;
 };
 
-const countries = [
-  "Gabon",
-  "Cameroun",
-  "Congo-Brazzaville",
-  "Congo (RDC)",
-  "Guinée Équatoriale",
-  "Tchad",
-  "Centrafrique",
-  "Sénégal",
-  "Côte d'Ivoire",
-  "Bénin",
-  "Burkina Faso",
-  "Mali",
-  "Niger",
-  "Togo",
-  "France",
-  "États-Unis",
-  "Chine",
-  "Autre"
-];
-
+const countriesList = COUNTRIES.map(country => country.label);
 const citiesWithOther = [...cities, "Autres"];
 
 export function UserProfileStep({ formData, updateFormData }: UserProfileStepProps) {
@@ -95,18 +76,12 @@ export function UserProfileStep({ formData, updateFormData }: UserProfileStepPro
       <div className="space-y-2">
         <Label>Type d'usager*</Label>
         <RadioGroup value={formData.userType} onValueChange={(value) => updateFormData({ userType: value })}>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="usager" id="usager" />
-            <Label htmlFor="usager" className="font-normal cursor-pointer">Usager</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="partenaire" id="partenaire" />
-            <Label htmlFor="partenaire" className="font-normal cursor-pointer">Partenaire</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="intermediaire" id="intermediaire" />
-            <Label htmlFor="intermediaire" className="font-normal cursor-pointer">Intermédiaire</Label>
-          </div>
+          {USER_TYPES.map((userType) => (
+            <div key={userType.value} className="flex items-center space-x-2">
+              <RadioGroupItem value={userType.value} id={userType.value} />
+              <Label htmlFor={userType.value} className="font-normal cursor-pointer">{userType.label}</Label>
+            </div>
+          ))}
         </RadioGroup>
         <p className="text-xs text-muted-foreground">Catégorie</p>
       </div>
@@ -114,14 +89,12 @@ export function UserProfileStep({ formData, updateFormData }: UserProfileStepPro
       <div className="space-y-2">
         <Label>Personnalité juridique*</Label>
         <RadioGroup value={formData.legalEntity} onValueChange={(value) => updateFormData({ legalEntity: value })}>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="physique" id="physique" />
-            <Label htmlFor="physique" className="font-normal cursor-pointer">Personne physique</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="morale" id="morale" />
-            <Label htmlFor="morale" className="font-normal cursor-pointer">Personne morale</Label>
-          </div>
+          {LEGAL_ENTITIES.map((entity) => (
+            <div key={entity.value} className="flex items-center space-x-2">
+              <RadioGroupItem value={entity.value} id={entity.value} />
+              <Label htmlFor={entity.value} className="font-normal cursor-pointer">{entity.label}</Label>
+            </div>
+          ))}
         </RadioGroup>
         <p className="text-xs text-muted-foreground">Profil juridique</p>
       </div>
@@ -132,7 +105,7 @@ export function UserProfileStep({ formData, updateFormData }: UserProfileStepPro
           id="nationality"
           value={formData.nationality}
           onChange={(value) => updateFormData({ nationality: value })}
-          suggestions={countries}
+          suggestions={countriesList}
           placeholder="Sélectionnez ou tapez votre nationalité"
         />
         <p className="text-xs text-muted-foreground">Profil socio-juridique</p>
