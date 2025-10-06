@@ -4,6 +4,13 @@ export type Descriptor = {
   label: string;
 };
 
+/**
+ * Payment modes for various form steps
+ * Used in: 
+ * - EvaluationStep: depotPaymentMode, enquetePaymentMode, etatLieuxPaymentMode, bornagePaymentMode, evaluationPaymentMode
+ * - DecisionStep: decisionPaymentMode
+ * - DisputesStep: litigePaymentMode
+ */
 export const PAYMENT_MODES: Descriptor[] = [
   { type: "payment_mode", value: "especes", label: "Espèces" },
   { type: "payment_mode", value: "cheque", label: "Chèque" },
@@ -13,6 +20,11 @@ export const PAYMENT_MODES: Descriptor[] = [
   { type: "payment_mode", value: "autre", label: "Autre (Préciser...)" },
 ];
 
+/**
+ * Evaluation options for depot step
+ * Used in:
+ * - EvaluationStep: depotEvaluation (depot step only)
+ */
 export const EVALUATION_OPTIONS: Descriptor[] = [
   { type: "evaluation", value: "excellent", label: "Excellent" },
   { type: "evaluation", value: "tres-bien", label: "Très bien" },
@@ -22,6 +34,11 @@ export const EVALUATION_OPTIONS: Descriptor[] = [
   { type: "evaluation", value: "mediocre", label: "Médiocre" },
 ];
 
+/**
+ * Opposition nature types for disputes step
+ * Used in:
+ * - DisputesStep: oppositionNature (when hadOpposition is true)
+ */
 export const OPPOSITION_NATURES: Descriptor[] = [
   { type: "opposition_nature", value: "usurpation", label: "Usurpation" },
   { type: "opposition_nature", value: "emprise", label: "Emprise" },
@@ -29,6 +46,11 @@ export const OPPOSITION_NATURES: Descriptor[] = [
   { type: "opposition_nature", value: "autre", label: "Autre (préciser)" },
 ];
 
+/**
+ * Litigation cause types for disputes step
+ * Used in:
+ * - DisputesStep: litigeCause (when hadOpposition is true)
+ */
 export const LITIGE_CAUSES: Descriptor[] = [
   { type: "litige_cause", value: "defaillance-si", label: "Défaillance SI" },
   { type: "litige_cause", value: "manipulation-interne", label: "Manipulation interne" },
@@ -37,6 +59,11 @@ export const LITIGE_CAUSES: Descriptor[] = [
   { type: "litige_cause", value: "autre", label: "Autre (préciser)" },
 ];
 
+/**
+ * Litigation outcome types for disputes step
+ * Used in:
+ * - DisputesStep: litigeOutcome (when hadOpposition is true)
+ */
 export const LITIGE_OUTCOMES: Descriptor[] = [
   { type: "litige_outcome", value: "acceptation", label: "Acceptation" },
   { type: "litige_outcome", value: "rejet", label: "Rejet" },
@@ -45,17 +72,35 @@ export const LITIGE_OUTCOMES: Descriptor[] = [
   { type: "litige_outcome", value: "autre", label: "Autre (préciser)" },
 ];
 
+/**
+ * User type options for profile step
+ * Used in:
+ * - UserProfileStep: userType
+ * - SurveySummary: getUserTypeLabel() helper function
+ */
 export const USER_TYPES: Descriptor[] = [
   { type: "user_type", value: "usager", label: "Usager" },
   { type: "user_type", value: "partenaire", label: "Partenaire" },
   { type: "user_type", value: "intermediaire", label: "Intermédiaire" },
 ];
 
+/**
+ * Legal entity types for profile step
+ * Used in:
+ * - UserProfileStep: legalEntity
+ */
 export const LEGAL_ENTITIES: Descriptor[] = [
   { type: "legal_entity", value: "physique", label: "Personne physique" },
   { type: "legal_entity", value: "morale", label: "Personne morale" },
 ];
 
+/**
+ * Process stages for stage selection and survey flow
+ * Used in:
+ * - StageSelectionPage: stageReached dropdown
+ * - SurveyPage: getStageLabel() helper function for display
+ * - SurveySummary: stageReached field for step visibility logic
+ */
 export const STAGES: Descriptor[] = [
   { type: "stage", value: "depot", label: "Dépôt de dossier" },
   { type: "stage", value: "enquete", label: "Enquête foncière" },
@@ -66,12 +111,22 @@ export const STAGES: Descriptor[] = [
   { type: "stage", value: "decision", label: "Décision et transmission" },
 ];
 
+/**
+ * Information channels for affichage step
+ * Used in:
+ * - EvaluationStep: affichageInformationChannel (affichage step only, when affichageWasInformed is true)
+ */
 export const AFFICHAGE_INFORMATION_CHANNELS: Descriptor[] = [
   { type: "affichage_channel", value: "affichage-physique", label: "Affichage physique" },
   { type: "affichage_channel", value: "site-anuttc", label: "Site ANUTTC" },
   { type: "affichage_channel", value: "autre", label: "Autre" },
 ];
 
+/**
+ * Country options for nationality field
+ * Used in:
+ * - UserProfileStep: nationality autocomplete field
+ */
 export const COUNTRIES: Descriptor[] = [
   { type: "country", value: "gabon", label: "Gabon" },
   { type: "country", value: "cameroun", label: "Cameroun" },
@@ -93,14 +148,26 @@ export const COUNTRIES: Descriptor[] = [
   { type: "country", value: "autre", label: "Autre" },
 ];
 
+/**
+ * Helper function to get user type label from value
+ * Used in: SurveySummary component for displaying user type
+ */
 export const getUserTypeLabel = (value: string): string => {
   return USER_TYPES.find(t => t.value === value)?.label || value;
 };
 
+/**
+ * Helper function to get legal entity label from value
+ * Currently not used but available for future use
+ */
 export const getLegalEntityLabel = (value: string): string => {
   return LEGAL_ENTITIES.find(e => e.value === value)?.label || value;
 };
 
+/**
+ * Helper function to get stage label from value
+ * Used in: SurveyPage for displaying selected stage
+ */
 export const getStageLabel = (value: string): string => {
   return STAGES.find(s => s.value === value)?.label || value;
 };
