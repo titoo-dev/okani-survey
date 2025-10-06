@@ -1,6 +1,5 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { AutocompleteInput } from "@/components/ui/autocomplete-input";
 import { cities } from "@/lib/cities";
@@ -129,18 +128,13 @@ export function UserProfileStep({ formData, updateFormData }: UserProfileStepPro
 
       <div className="space-y-2">
         <Label htmlFor="nationality">Nationalité*</Label>
-        <Select value={formData.nationality} onValueChange={(value) => updateFormData({ nationality: value })}>
-          <SelectTrigger>
-            <SelectValue placeholder="Sélectionnez votre nationalité" />
-          </SelectTrigger>
-          <SelectContent>
-            {countries.map((country) => (
-              <SelectItem key={country} value={country}>
-                {country}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <AutocompleteInput
+          id="nationality"
+          value={formData.nationality}
+          onChange={(value) => updateFormData({ nationality: value })}
+          suggestions={countries}
+          placeholder="Sélectionnez ou tapez votre nationalité"
+        />
         <p className="text-xs text-muted-foreground">Profil socio-juridique</p>
       </div>
     </div>
