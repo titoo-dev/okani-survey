@@ -3,9 +3,15 @@ import { CheckCircle, Clock } from "lucide-react";
 
 export type SurveyFormData = {
   stageReached: string;
+  dossierId?: string;
+  submissionDate?: string;
+  depositCity: string;
+  regularizationCity: string;
+  residenceCity: string;
   userType: string;
   nationality: string;
   legalEntity: string;
+  howDidYouKnow: string;
   hasCompletedStep: string;
   evaluation: string;
   paymentMode: string;
@@ -67,7 +73,7 @@ type SurveySummaryProps = {
 
 export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
   const allSteps = [
-    { id: 0, key: "profile", label: "Profil de l'usager" },
+    { id: 0, key: "profile", label: "Identification du dossier" },
     { id: 1, key: "depot", label: "Dépôt de dossier" },
     { id: 2, key: "enquete", label: "Enquête foncière" },
     { id: 3, key: "etat-lieux", label: "État des lieux" },
@@ -114,9 +120,13 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
   const isStepCompleted = (step: { key: string }) => {
     if (step.key === "profile") {
       return !!(
+        formData.depositCity &&
+        formData.regularizationCity &&
+        formData.residenceCity &&
         formData.userType &&
         formData.nationality &&
-        formData.legalEntity
+        formData.legalEntity &&
+        formData.howDidYouKnow
       );
     }
     if (step.key === "decision") {
@@ -164,8 +174,8 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     if (step.key === "profile") {
       return (
         <div className="space-y-1 text-sm text-gray-600">
+          {formData.depositCity && <p className="truncate">Dépôt: {formData.depositCity}</p>}
           {formData.userType && <p>{formData.userType === "usager" ? "Usager" : formData.userType === "partenaire" ? "Partenaire" : "Intermédiaire"}</p>}
-          {formData.nationality && <p className="truncate">{formData.nationality}</p>}
         </div>
       );
     }

@@ -32,9 +32,15 @@ export default function SurveyPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<SurveyFormData>({
     stageReached: "",
+    dossierId: "",
+    submissionDate: "",
+    depositCity: "",
+    regularizationCity: "",
+    residenceCity: "",
     userType: "",
     nationality: "",
     legalEntity: "",
+    howDidYouKnow: "",
     hasCompletedStep: "",
     evaluation: "",
     paymentMode: "",
@@ -99,7 +105,7 @@ export default function SurveyPage() {
   }, [router]);
 
   const allSteps = [
-    { id: 0, key: "profile", title: "Profil", icon: <User className="w-4 h-4" /> },
+    { id: 0, key: "profile", title: "Identification", icon: <User className="w-4 h-4" /> },
     { id: 1, key: "depot", title: "Dépôt", icon: <FolderOpen className="w-4 h-4" /> },
     { id: 2, key: "enquete", title: "Enquête", icon: <Search className="w-4 h-4" /> },
     { id: 3, key: "etat-lieux", title: "État des lieux", icon: <FileCheck className="w-4 h-4" /> },
@@ -113,7 +119,7 @@ export default function SurveyPage() {
   ];
 
   const allStepDetails = [
-    { key: "profile", title: "Profil de l'usager", description: "Informations de base", estimatedTime: "1 min" },
+    { key: "profile", title: "Identification du dossier", description: "Informations de base", estimatedTime: "2 min" },
     { key: "depot", title: "Dépôt de dossier", description: "Étape 2", estimatedTime: "2 min" },
     { key: "enquete", title: "Enquête foncière", description: "Étape 3", estimatedTime: "2 min" },
     { key: "etat-lieux", title: "État des lieux", description: "Étape 4", estimatedTime: "2 min" },
