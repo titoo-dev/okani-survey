@@ -184,13 +184,13 @@ export default function StageSelectionPage() {
                       <SelectValue placeholder="Choisissez une étape" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="depot">Étape 2 : Dépôt de dossier</SelectItem>
-                      <SelectItem value="enquete">Étape 3 : Enquête foncière</SelectItem>
-                      <SelectItem value="etat-lieux">Étape 4 : État des lieux</SelectItem>
-                      <SelectItem value="affichage">Étape 5 : Avis d'affichage</SelectItem>
-                      <SelectItem value="bornage">Étape 6 : PV et plan de bornage</SelectItem>
-                      <SelectItem value="evaluation">Étape 7 : Rapport d'évaluation</SelectItem>
-                      <SelectItem value="decision">Étape 8 : Décision et transmission</SelectItem>
+                      <SelectItem value="depot">Dépôt de dossier</SelectItem>
+                      <SelectItem value="enquete">Enquête foncière</SelectItem>
+                      <SelectItem value="etat-lieux">État des lieux</SelectItem>
+                      <SelectItem value="affichage">Avis d'affichage</SelectItem>
+                      <SelectItem value="bornage">PV et plan de bornage</SelectItem>
+                      <SelectItem value="evaluation">Rapport d'évaluation</SelectItem>
+                      <SelectItem value="decision">Décision et transmission</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
