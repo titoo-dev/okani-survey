@@ -7,8 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { AutocompleteInput } from "@/components/ui/autocomplete-input";
-import { cities } from "@/lib/cities";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FileText } from "lucide-react";
