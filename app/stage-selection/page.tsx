@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { AutocompleteInput } from "@/components/ui/autocomplete-input";
+import { cities } from "@/lib/cities";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FileText } from "lucide-react";
@@ -113,68 +115,35 @@ export default function StageSelectionPage() {
 
                 <div className="space-y-2">
                   <Label htmlFor="parcelLocation">Ville de dépôt du dossier*</Label>
-                  <Select value={parcelLocation} onValueChange={setParcelLocation}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionnez une ville" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="libreville">Libreville</SelectItem>
-                      <SelectItem value="franceville">Franceville</SelectItem>
-                      <SelectItem value="lambarene">Lambaréné</SelectItem>
-                      <SelectItem value="mouila">Mouila</SelectItem>
-                      <SelectItem value="tchibanga">Tchibanga</SelectItem>
-                      <SelectItem value="makokou">Makokou</SelectItem>
-                      <SelectItem value="koulamoutou">Koulamoutou</SelectItem>
-                      <SelectItem value="port-gentil">Port-Gentil</SelectItem>
-                      <SelectItem value="oyem">Oyem</SelectItem>
-                      <SelectItem value="mitzic">Mitzic</SelectItem>
-                      <SelectItem value="autres">Autres</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <AutocompleteInput
+                    id="parcelLocation"
+                    value={parcelLocation}
+                    onChange={setParcelLocation}
+                    suggestions={cities}
+                    placeholder="Saisissez ou sélectionnez une ville"
+                  />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="initiationCity">Ville de régularisation foncière (si différente)</Label>
-                  <Select value={initiationCity} onValueChange={setInitiationCity}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Optionnel - Sélectionnez une ville" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="libreville">Libreville</SelectItem>
-                      <SelectItem value="franceville">Franceville</SelectItem>
-                      <SelectItem value="lambarene">Lambaréné</SelectItem>
-                      <SelectItem value="mouila">Mouila</SelectItem>
-                      <SelectItem value="tchibanga">Tchibanga</SelectItem>
-                      <SelectItem value="makokou">Makokou</SelectItem>
-                      <SelectItem value="koulamoutou">Koulamoutou</SelectItem>
-                      <SelectItem value="port-gentil">Port-Gentil</SelectItem>
-                      <SelectItem value="oyem">Oyem</SelectItem>
-                      <SelectItem value="mitzic">Mitzic</SelectItem>
-                      <SelectItem value="autres">Autres</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <AutocompleteInput
+                    id="initiationCity"
+                    value={initiationCity}
+                    onChange={setInitiationCity}
+                    suggestions={cities}
+                    placeholder="Optionnel - Saisissez ou sélectionnez une ville"
+                  />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="residenceCity">Ville de résidence de l'usager</Label>
-                  <Select value={residenceCity} onValueChange={setResidenceCity}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Optionnel - Sélectionnez une ville" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="libreville">Libreville</SelectItem>
-                      <SelectItem value="franceville">Franceville</SelectItem>
-                      <SelectItem value="lambarene">Lambaréné</SelectItem>
-                      <SelectItem value="mouila">Mouila</SelectItem>
-                      <SelectItem value="tchibanga">Tchibanga</SelectItem>
-                      <SelectItem value="makokou">Makokou</SelectItem>
-                      <SelectItem value="koulamoutou">Koulamoutou</SelectItem>
-                      <SelectItem value="port-gentil">Port-Gentil</SelectItem>
-                      <SelectItem value="oyem">Oyem</SelectItem>
-                      <SelectItem value="mitzic">Mitzic</SelectItem>
-                      <SelectItem value="autres">Autres</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <AutocompleteInput
+                    id="residenceCity"
+                    value={residenceCity}
+                    onChange={setResidenceCity}
+                    suggestions={cities}
+                    placeholder="Optionnel - Saisissez ou sélectionnez une ville"
+                  />
                 </div>
 
                 <div className="space-y-2">
