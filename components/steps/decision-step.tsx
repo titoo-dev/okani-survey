@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Slider } from "@/components/ui/slider";
+import { StarRating } from "@/components/ui/star-rating";
 
 type DecisionData = {
   decisionDelay: string;
@@ -127,23 +127,14 @@ export function DecisionStep({ formData, updateFormData }: DecisionStepProps) {
         </RadioGroup>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         <Label>Satisfaction sur cette étape (acte + transmission + remise du titre)*</Label>
-        <div className="space-y-2">
-          <Slider
-            value={formData.decisionSatisfaction}
-            onValueChange={(value) => updateFormData({ decisionSatisfaction: value })}
-            min={1}
-            max={10}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Très insatisfait</span>
-            <span className="font-semibold text-foreground">{formData.decisionSatisfaction[0]}/10</span>
-            <span>Très satisfait</span>
-          </div>
-        </div>
+        <StarRating
+          value={formData.decisionSatisfaction[0] || 0}
+          onChange={(value) => updateFormData({ decisionSatisfaction: [value] })}
+          max={10}
+          size="lg"
+        />
       </div>
     </div>
   );

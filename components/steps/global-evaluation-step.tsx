@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Slider } from "@/components/ui/slider";
+import { StarRating } from "@/components/ui/star-rating";
 
 type GlobalEvaluationData = {
   totalDelay: string;
@@ -53,23 +53,14 @@ export function GlobalEvaluationStep({ formData, updateFormData }: GlobalEvaluat
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         <Label>Satisfaction générale*</Label>
-        <div className="space-y-2">
-          <Slider
-            value={formData.globalSatisfaction}
-            onValueChange={(value) => updateFormData({ globalSatisfaction: value })}
-            min={1}
-            max={10}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Très insatisfait</span>
-            <span className="font-semibold text-foreground">{formData.globalSatisfaction[0]}/10</span>
-            <span>Très satisfait</span>
-          </div>
-        </div>
+        <StarRating
+          value={formData.globalSatisfaction[0] || 0}
+          onChange={(value) => updateFormData({ globalSatisfaction: [value] })}
+          max={10}
+          size="lg"
+        />
       </div>
 
       <div className="space-y-2">

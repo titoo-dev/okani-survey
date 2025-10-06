@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import { Slider } from "@/components/ui/slider";
+import { StarRating } from "@/components/ui/star-rating";
 
 type DisputesData = {
   hadOpposition: string;
@@ -264,23 +264,14 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
             </div>
           )}
 
-          <div className="space-y-4">
+          <div className="space-y-2">
             <Label>Satisfaction sur la gestion du litige*</Label>
-            <div className="space-y-2">
-              <Slider
-                value={formData.litigeSatisfaction}
-                onValueChange={(value) => updateFormData({ litigeSatisfaction: value })}
-                min={1}
-                max={5}
-                step={1}
-                className="w-full"
-              />
-              <div className="flex justify-between text-sm text-muted-foreground">
-                <span>Très insatisfait</span>
-                <span className="font-semibold text-foreground">{formData.litigeSatisfaction[0]}/5</span>
-                <span>Très satisfait</span>
-              </div>
-            </div>
+            <StarRating
+              value={formData.litigeSatisfaction[0] || 0}
+              onChange={(value) => updateFormData({ litigeSatisfaction: [value] })}
+              max={5}
+              size="lg"
+            />
           </div>
 
           <div className="space-y-2">

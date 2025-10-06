@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Slider } from "@/components/ui/slider";
+import { StarRating } from "@/components/ui/star-rating";
 
 type EvaluationData = {
   hasCompletedStep: string;
@@ -193,23 +193,14 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </RadioGroup>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         <Label>Satisfaction enquête foncière*</Label>
-        <div className="space-y-2">
-          <Slider
-            value={formData.satisfaction}
-            onValueChange={(value) => updateFormData({ satisfaction: value })}
-            min={1}
-            max={5}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Très insatisfait</span>
-            <span className="font-semibold text-foreground">{formData.satisfaction[0]}/5</span>
-            <span>Très satisfait</span>
-          </div>
-        </div>
+        <StarRating
+          value={formData.satisfaction[0] || 0}
+          onChange={(value) => updateFormData({ satisfaction: [value] })}
+          max={5}
+          size="lg"
+        />
       </div>
     </>
   );
@@ -269,23 +260,14 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </RadioGroup>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         <Label>Satisfaction état des lieux*</Label>
-        <div className="space-y-2">
-          <Slider
-            value={formData.satisfaction}
-            onValueChange={(value) => updateFormData({ satisfaction: value })}
-            min={1}
-            max={5}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Très insatisfait</span>
-            <span className="font-semibold text-foreground">{formData.satisfaction[0]}/5</span>
-            <span>Très satisfait</span>
-          </div>
-        </div>
+        <StarRating
+          value={formData.satisfaction[0] || 0}
+          onChange={(value) => updateFormData({ satisfaction: [value] })}
+          max={5}
+          size="lg"
+        />
       </div>
     </>
   );
@@ -393,23 +375,14 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </RadioGroup>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         <Label>Satisfaction gestion de l'affichage*</Label>
-        <div className="space-y-2">
-          <Slider
-            value={formData.satisfaction}
-            onValueChange={(value) => updateFormData({ satisfaction: value })}
-            min={1}
-            max={5}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Très insatisfait</span>
-            <span className="font-semibold text-foreground">{formData.satisfaction[0]}/5</span>
-            <span>Très satisfait</span>
-          </div>
-        </div>
+        <StarRating
+          value={formData.satisfaction[0] || 0}
+          onChange={(value) => updateFormData({ satisfaction: [value] })}
+          max={5}
+          size="lg"
+        />
       </div>
     </>
   );
@@ -469,23 +442,14 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </RadioGroup>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         <Label>Satisfaction bornage*</Label>
-        <div className="space-y-2">
-          <Slider
-            value={formData.satisfaction}
-            onValueChange={(value) => updateFormData({ satisfaction: value })}
-            min={1}
-            max={5}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Très insatisfait</span>
-            <span className="font-semibold text-foreground">{formData.satisfaction[0]}/5</span>
-            <span>Très satisfait</span>
-          </div>
-        </div>
+        <StarRating
+          value={formData.satisfaction[0] || 0}
+          onChange={(value) => updateFormData({ satisfaction: [value] })}
+          max={5}
+          size="lg"
+        />
       </div>
     </>
   );
@@ -548,23 +512,14 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </RadioGroup>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         <Label>Satisfaction évaluation*</Label>
-        <div className="space-y-2">
-          <Slider
-            value={formData.satisfaction}
-            onValueChange={(value) => updateFormData({ satisfaction: value })}
-            min={1}
-            max={5}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Très insatisfait</span>
-            <span className="font-semibold text-foreground">{formData.satisfaction[0]}/5</span>
-            <span>Très satisfait</span>
-          </div>
-        </div>
+        <StarRating
+          value={formData.satisfaction[0] || 0}
+          onChange={(value) => updateFormData({ satisfaction: [value] })}
+          max={5}
+          size="lg"
+        />
       </div>
     </>
   );

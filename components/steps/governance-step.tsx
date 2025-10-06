@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Slider } from "@/components/ui/slider";
+import { StarRating } from "@/components/ui/star-rating";
 
 type GovernanceData = {
   hasUnofficialPayment: string;
@@ -51,23 +51,14 @@ export function GovernanceStep({ formData, updateFormData }: GovernanceStepProps
         </RadioGroup>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         <Label>Faites-vous confiance à la transparence du processus ?*</Label>
-        <div className="space-y-2">
-          <Slider
-            value={formData.trustTransparency}
-            onValueChange={(value) => updateFormData({ trustTransparency: value })}
-            min={1}
-            max={5}
-            step={1}
-            className="w-full"
-          />
-          <div className="flex justify-between text-sm text-muted-foreground">
-            <span>Aucune confiance</span>
-            <span className="font-semibold text-foreground">{formData.trustTransparency[0]}/5</span>
-            <span>Confiance totale</span>
-          </div>
-        </div>
+        <StarRating
+          value={formData.trustTransparency[0] || 0}
+          onChange={(value) => updateFormData({ trustTransparency: [value] })}
+          max={5}
+          size="lg"
+        />
       </div>
 
       <div className="bg-muted/50 rounded-lg p-4">
