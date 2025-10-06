@@ -99,17 +99,16 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </Select>
       </div>
 
-      {formData.paymentMode === "autre" && (
-        <div className="space-y-2">
-          <Label htmlFor="otherPaymentMode">Précisez le mode de paiement*</Label>
-          <Input
-            id="otherPaymentMode"
-            placeholder="Ex: Autre moyen"
-            value={formData.otherPaymentMode}
-            onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
-          />
-        </div>
-      )}
+      <div className="space-y-2">
+        <Label htmlFor="otherPaymentMode">Précisez le mode de paiement{formData.paymentMode === "autre" && "*"}</Label>
+        <Input
+          id="otherPaymentMode"
+          placeholder="Ex: Autre moyen"
+          value={formData.otherPaymentMode}
+          onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
+          disabled={formData.paymentMode !== "autre"}
+        />
+      </div>
 
       <div className="space-y-2">
         <Label htmlFor="amountPaid">Montant payé*</Label>
@@ -167,17 +166,16 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </Select>
       </div>
 
-      {formData.paymentMode === "autre" && (
-        <div className="space-y-2">
-          <Label htmlFor="otherPaymentMode">Précisez le mode de paiement*</Label>
-          <Input
-            id="otherPaymentMode"
-            placeholder="Ex: Autre moyen"
-            value={formData.otherPaymentMode}
-            onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
-          />
-        </div>
-      )}
+      <div className="space-y-2">
+        <Label htmlFor="otherPaymentMode">Précisez le mode de paiement{formData.paymentMode === "autre" && "*"}</Label>
+        <Input
+          id="otherPaymentMode"
+          placeholder="Ex: Autre moyen"
+          value={formData.otherPaymentMode}
+          onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
+          disabled={formData.paymentMode !== "autre"}
+        />
+      </div>
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
@@ -234,17 +232,16 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </Select>
       </div>
 
-      {formData.paymentMode === "autre" && (
-        <div className="space-y-2">
-          <Label htmlFor="otherPaymentMode">Précisez le mode de paiement*</Label>
-          <Input
-            id="otherPaymentMode"
-            placeholder="Ex: Autre moyen"
-            value={formData.otherPaymentMode}
-            onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
-          />
-        </div>
-      )}
+      <div className="space-y-2">
+        <Label htmlFor="otherPaymentMode">Précisez le mode de paiement{formData.paymentMode === "autre" && "*"}</Label>
+        <Input
+          id="otherPaymentMode"
+          placeholder="Ex: Autre moyen"
+          value={formData.otherPaymentMode}
+          onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
+          disabled={formData.paymentMode !== "autre"}
+        />
+      </div>
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
@@ -302,25 +299,27 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </RadioGroup>
       </div>
 
-      {formData.wasInformed === "oui" && (
-        <div className="space-y-2">
-          <Label>Canal d'information*</Label>
-          <RadioGroup value={formData.informationChannel} onValueChange={(value) => updateFormData({ informationChannel: value })}>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="affichage-physique" id="channel-physical" />
-              <Label htmlFor="channel-physical" className="font-normal cursor-pointer">Affichage physique</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="site-anuttc" id="channel-site" />
-              <Label htmlFor="channel-site" className="font-normal cursor-pointer">Site ANUTTC</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="autre" id="channel-autre" />
-              <Label htmlFor="channel-autre" className="font-normal cursor-pointer">Autre</Label>
-            </div>
-          </RadioGroup>
-        </div>
-      )}
+      <div className="space-y-2">
+        <Label>Canal d'information{formData.wasInformed === "oui" && "*"}</Label>
+        <RadioGroup 
+          value={formData.informationChannel} 
+          onValueChange={(value) => updateFormData({ informationChannel: value })}
+          disabled={formData.wasInformed !== "oui"}
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="affichage-physique" id="channel-physical" disabled={formData.wasInformed !== "oui"} />
+            <Label htmlFor="channel-physical" className="font-normal cursor-pointer">Affichage physique</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="site-anuttc" id="channel-site" disabled={formData.wasInformed !== "oui"} />
+            <Label htmlFor="channel-site" className="font-normal cursor-pointer">Site ANUTTC</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="autre" id="channel-autre" disabled={formData.wasInformed !== "oui"} />
+            <Label htmlFor="channel-autre" className="font-normal cursor-pointer">Autre</Label>
+          </div>
+        </RadioGroup>
+      </div>
 
       <div className="space-y-2">
         <Label>Délai suffisant pour opposition ?*</Label>
@@ -416,17 +415,16 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </Select>
       </div>
 
-      {formData.paymentMode === "autre" && (
-        <div className="space-y-2">
-          <Label htmlFor="otherPaymentMode">Précisez le mode de paiement*</Label>
-          <Input
-            id="otherPaymentMode"
-            placeholder="Ex: Autre moyen"
-            value={formData.otherPaymentMode}
-            onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
-          />
-        </div>
-      )}
+      <div className="space-y-2">
+        <Label htmlFor="otherPaymentMode">Précisez le mode de paiement{formData.paymentMode === "autre" && "*"}</Label>
+        <Input
+          id="otherPaymentMode"
+          placeholder="Ex: Autre moyen"
+          value={formData.otherPaymentMode}
+          onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
+          disabled={formData.paymentMode !== "autre"}
+        />
+      </div>
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>
@@ -486,17 +484,16 @@ export function EvaluationStep({ formData, updateFormData, stepTitle, stepKey }:
         </Select>
       </div>
 
-      {formData.paymentMode === "autre" && (
-        <div className="space-y-2">
-          <Label htmlFor="otherPaymentMode">Précisez le mode de paiement*</Label>
-          <Input
-            id="otherPaymentMode"
-            placeholder="Ex: Autre moyen"
-            value={formData.otherPaymentMode}
-            onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
-          />
-        </div>
-      )}
+      <div className="space-y-2">
+        <Label htmlFor="otherPaymentMode">Précisez le mode de paiement{formData.paymentMode === "autre" && "*"}</Label>
+        <Input
+          id="otherPaymentMode"
+          placeholder="Ex: Autre moyen"
+          value={formData.otherPaymentMode}
+          onChange={(e) => updateFormData({ otherPaymentMode: e.target.value })}
+          disabled={formData.paymentMode !== "autre"}
+        />
+      </div>
 
       <div className="space-y-2">
         <Label>Quittance reçue ?*</Label>

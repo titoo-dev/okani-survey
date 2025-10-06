@@ -43,7 +43,7 @@ export function StarRating({ value, onChange, max = 5, min = 0, size = "md", rea
             className={cn(
               "transition-all duration-200",
               !readonly && isClickable && "hover:scale-110 cursor-pointer",
-              (readonly || !isClickable) && "cursor-not-allowed opacity-50"
+              (readonly || !isClickable) && "cursor-not-allowed"
             )}
             aria-label={`${starValue} étoile${starValue > 1 ? 's' : ''}`}
           >
@@ -51,7 +51,8 @@ export function StarRating({ value, onChange, max = 5, min = 0, size = "md", rea
               className={cn(
                 sizeClasses[size],
                 "transition-colors",
-                isFilled ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                isFilled ? "fill-yellow-400 text-yellow-400" : "text-gray-300",
+                (readonly || !isClickable) && "opacity-40"
               )}
             />
           </button>
