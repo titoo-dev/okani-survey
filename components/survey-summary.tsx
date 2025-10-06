@@ -54,6 +54,7 @@ export type SurveyFormData = {
   litigeOutcomeOther: string;
   litigeComments: string;
   totalDelay: string;
+  transmissionDate: string;
   totalCost: string;
   globalSatisfaction: number[];
   generalSuggestions: string;
@@ -141,7 +142,6 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     }
     if (step.key === "global") {
       return !!(
-        formData.totalDelay &&
         formData.totalCost &&
         formData.globalSatisfaction[0]
       );

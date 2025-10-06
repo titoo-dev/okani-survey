@@ -83,6 +83,7 @@ export default function SurveyPage() {
     litigeOutcomeOther: "",
     litigeComments: "",
     totalDelay: "",
+    transmissionDate: "",
     totalCost: "",
     globalSatisfaction: [5],
     generalSuggestions: "",

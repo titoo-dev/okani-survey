@@ -5,6 +5,7 @@ import { StarRating } from "@/components/ui/star-rating";
 
 type GlobalEvaluationData = {
   totalDelay: string;
+  transmissionDate: string;
   totalCost: string;
   globalSatisfaction: number[];
   generalSuggestions: string;
@@ -26,16 +27,15 @@ export function GlobalEvaluationStep({ formData, updateFormData }: GlobalEvaluat
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="totalDelay">Délai total entre dépôt et transmission à la Conservation foncière (en jours)*</Label>
+        <Label htmlFor="transmissionDate">Date de transmission à la Conservation foncière (optionnel)</Label>
         <Input
-          id="totalDelay"
-          type="number"
-          placeholder="Nombre de jours"
-          value={formData.totalDelay}
-          onChange={(e) => updateFormData({ totalDelay: e.target.value })}
+          id="transmissionDate"
+          type="date"
+          value={formData.transmissionDate}
+          onChange={(e) => updateFormData({ transmissionDate: e.target.value })}
         />
         <p className="text-sm text-muted-foreground">
-          Estimation du temps total écoulé depuis le dépôt initial
+          Date à laquelle votre dossier a été transmis à la Conservation foncière
         </p>
       </div>
 
@@ -94,10 +94,9 @@ export function GlobalEvaluationStep({ formData, updateFormData }: GlobalEvaluat
 }
 
 export function validateGlobalEvaluationStep(
-  formData: Pick<GlobalEvaluationData, "totalDelay" | "totalCost" | "globalSatisfaction">
+  formData: Pick<GlobalEvaluationData, "totalDelay" | "transmissionDate" | "totalCost" | "globalSatisfaction">
 ): boolean {
   return !!(
-    formData.totalDelay &&
     formData.totalCost &&
     formData.globalSatisfaction?.[0]
   );
