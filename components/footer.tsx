@@ -4,7 +4,7 @@ export const Footer = () => {
       <div className="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
         <div className="flex flex-col gap-4 md:order-2">
           <p className="text-sm leading-5 text-muted-foreground">
-            Une initiative de la DGCBF réalisée par le cabinet OKANI
+            Une initiative de la DGCBF
           </p>
           <p className="text-sm leading-5 text-muted-foreground">
             Contact : <a href="mailto:support@okanisurvey.com" className="text-primary hover:underline">support@okanisurvey.com</a>
