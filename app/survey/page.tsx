@@ -273,6 +273,23 @@ export default function SurveyPage() {
 
         <div className="flex gap-8">
           <div className="flex-1">
+            <Card className="mb-8 shadow-none">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <CardTitle className="text-2xl">{stepDetails[currentStep].title}</CardTitle>
+                    <CardDescription className="text-base mt-2">
+                      {stepDetails[currentStep].description}
+                    </CardDescription>
+                  </div>
+                  <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                    {stepDetails[currentStep].estimatedTime}
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>{renderStepContent()}</CardContent>
+            </Card>
+
             <div className="flex justify-between mb-6">
               <Button
                 variant="outline"
@@ -304,23 +321,6 @@ export default function SurveyPage() {
                 </Button>
               )}
             </div>
-
-            <Card className="mb-8 shadow-none">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="text-2xl">{stepDetails[currentStep].title}</CardTitle>
-                    <CardDescription className="text-base mt-2">
-                      {stepDetails[currentStep].description}
-                    </CardDescription>
-                  </div>
-                  <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                    {stepDetails[currentStep].estimatedTime}
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>{renderStepContent()}</CardContent>
-            </Card>
 
             <Card className="bg-muted/30 shadow-none">
               <CardContent>
