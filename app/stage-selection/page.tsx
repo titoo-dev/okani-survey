@@ -16,7 +16,6 @@ import { FileText } from "lucide-react";
 export default function StageSelectionPage() {
   const [hasFiledAtAnuttc, setHasFiledAtAnuttc] = useState<string>("");
   const [email, setEmail] = useState("");
-  const [filingDate, setFilingDate] = useState("");
   const [parcelLocation, setParcelLocation] = useState("");
   const [initiationCity, setInitiationCity] = useState("");
   const [residenceCity, setResidenceCity] = useState("");
@@ -30,10 +29,9 @@ export default function StageSelectionPage() {
       return;
     }
     
-    if (stageReached && email && filingDate && parcelLocation) {
+    if (stageReached && email && parcelLocation) {
       sessionStorage.setItem("stageReached", stageReached);
       sessionStorage.setItem("introEmail", email);
-      sessionStorage.setItem("filingDate", filingDate);
       sessionStorage.setItem("parcelLocation", parcelLocation);
       sessionStorage.setItem("initiationCity", initiationCity);
       sessionStorage.setItem("residenceCity", residenceCity);
@@ -41,7 +39,7 @@ export default function StageSelectionPage() {
     }
   };
 
-  const isFormValid = hasFiledAtAnuttc === "oui" && email && filingDate && parcelLocation && stageReached;
+  const isFormValid = hasFiledAtAnuttc === "oui" && email && parcelLocation && stageReached;
 
   return (
     <main className="min-h-screen bg-gray-50 py-8">
@@ -101,16 +99,6 @@ export default function StageSelectionPage() {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                   <p className="text-sm text-muted-foreground">Pour vous envoyer une copie de vos réponses</p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="filingDate">Date de saisie*</Label>
-                  <Input
-                    id="filingDate"
-                    type="date"
-                    value={filingDate}
-                    onChange={(e) => setFilingDate(e.target.value)}
-                  />
                 </div>
 
                 <div className="space-y-2">
