@@ -57,6 +57,7 @@ export function GovernanceStep({ formData, updateFormData }: GovernanceStepProps
           value={formData.trustTransparency[0] || 0}
           onChange={(value) => updateFormData({ trustTransparency: [value] })}
           max={5}
+          min={2}
           size="lg"
         />
       </div>
@@ -81,10 +82,13 @@ export function GovernanceStep({ formData, updateFormData }: GovernanceStepProps
 export function validateGovernanceStep(
   formData: Pick<GovernanceData, "hasUnofficialPayment" | "hasFavoritism" | "trustTransparency">
 ): boolean {
+  const trustValue = formData.trustTransparency?.[0];
   return !!(
     formData.hasUnofficialPayment &&
     formData.hasFavoritism &&
-    formData.trustTransparency?.[0]
+    trustValue !== undefined &&
+    trustValue >= 2 &&
+    trustValue <= 4
   );
 }
 
