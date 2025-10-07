@@ -14,6 +14,7 @@ const stageSelectionSchema = z.object({
 export type StageSelectionState = {
   success: boolean;
   errors?: string[];
+  alreadySubmitted?: boolean;
   data?: {
     stageReached: string;
     email: string;
@@ -80,6 +81,45 @@ export async function getAllDescriptors() {
 }
 
 /**
+ * Check if an email has already submitted a survey
+ */
+export async function checkEmailSubmission(email: string) {
+  try {
+    const survey = await prisma.survey.findFirst({
+      where: {
+        email: {
+          equals: email,
+          mode: "insensitive",
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      select: {
+        id: true,
+        dossierId: true,
+        createdAt: true,
+        stageReached: true,
+      },
+    });
+
+    return {
+      success: true,
+      hasSubmitted: !!survey,
+      survey: survey || null,
+    };
+  } catch (error) {
+    console.error("Error checking email submission:", error);
+    return {
+      success: false,
+      hasSubmitted: false,
+      survey: null,
+      error: "Failed to check email",
+    };
+  }
+}
+
+/**
  * Validate stage selection data
  */
 export async function validateStageSelection(
@@ -106,6 +146,16 @@ export async function validateStageSelection(
       email,
       stageReached,
     });
+
+    // Check if email has already submitted a survey
+    const emailCheck = await checkEmailSubmission(validatedData.email);
+    if (emailCheck.hasSubmitted) {
+      return {
+        success: false,
+        errors: ["Cette adresse email a déjà soumis une enquête."],
+        alreadySubmitted: true,
+      };
+    }
 
     return {
       success: true,

@@ -96,6 +96,44 @@ GET /api/surveys?page=1&limit=10&stageReached=enquete
 }
 ```
 
+### Check if Email Already Submitted
+```http
+POST /api/surveys/check-email
+Content-Type: application/json
+
+{
+  "email": "user@example.com"
+}
+```
+
+**Alternative GET method:**
+```http
+GET /api/surveys/check-email?email=user@example.com
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "hasSubmitted": true,
+  "survey": {
+    "id": "clx123...",
+    "dossierId": "DOSS-2025-001",
+    "createdAt": "2025-10-07T10:30:00.000Z",
+    "stageReached": "enquete"
+  }
+}
+```
+
+**If email hasn't submitted:**
+```json
+{
+  "success": true,
+  "hasSubmitted": false,
+  "survey": null
+}
+```
+
 ### Create Survey
 ```http
 POST /api/surveys
@@ -219,6 +257,12 @@ import { descriptorsApi, surveysApi } from "@/lib/api-client";
 const descriptors = await descriptorsApi.getAll();
 const paymentModes = await descriptorsApi.getByType("payment_mode");
 
+// Check if email already submitted
+const emailCheck = await surveysApi.checkEmail("user@example.com");
+if (emailCheck.hasSubmitted) {
+  // Redirect to already submitted page
+}
+
 // Create survey
 const result = await surveysApi.create(formData);
 
@@ -242,6 +286,14 @@ curl http://localhost:3000/api/descriptors?type=payment_mode
 curl -X POST http://localhost:3000/api/descriptors \
   -H "Content-Type: application/json" \
   -d '{"type":"payment_mode","value":"especes","label":"Espèces","order":0}'
+
+# Check if email already submitted (POST)
+curl -X POST http://localhost:3000/api/surveys/check-email \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com"}'
+
+# Check if email already submitted (GET)
+curl "http://localhost:3000/api/surveys/check-email?email=user@example.com"
 
 # Get surveys with pagination
 curl "http://localhost:3000/api/surveys?page=1&limit=10"

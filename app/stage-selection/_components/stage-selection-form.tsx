@@ -73,6 +73,11 @@ export function StageSelectionForm({ stages }: StageSelectionFormProps) {
       startTransition(() => {
         router.push("/survey");
       });
+    } else if (!state.success && state.alreadySubmitted) {
+      // Redirect to already submitted page
+      startTransition(() => {
+        router.push("/stage-selection/already-submitted");
+      });
     } else if (!state.success && state.errors && state.errors.length > 0) {
       setValidationErrors(state.errors);
       setShowErrorDialog(true);

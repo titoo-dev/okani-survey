@@ -172,6 +172,26 @@ export const surveysApi = {
   },
 
   /**
+   * Check if an email has already submitted a survey
+   */
+  checkEmail: async (email: string): Promise<ApiResponse<{
+    hasSubmitted: boolean;
+    survey: {
+      id: string;
+      dossierId: string;
+      createdAt: string;
+      stageReached: string;
+    } | null;
+  }>> => {
+    const response = await fetch("/api/surveys/check-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    return handleResponse(response);
+  },
+
+  /**
    * Get a single survey by ID
    */
   getById: async (id: string): Promise<ApiResponse> => {
