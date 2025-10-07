@@ -1,4 +1,6 @@
-export function convertFormDataToBoolean(value: string | boolean | undefined): boolean | undefined {
+export function convertFormDataToBoolean(
+  value: string | boolean | undefined,
+): boolean | undefined {
   if (value === undefined || value === null || value === "") return undefined;
   if (typeof value === "boolean") return value;
   return value === "true";
@@ -23,9 +25,8 @@ export function convertISOToDate(value: string): string {
   if (!value) return "";
   try {
     const date = new Date(value);
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split("T")[0];
   } catch {
     return value;
   }
 }
-

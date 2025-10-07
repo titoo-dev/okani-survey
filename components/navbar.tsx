@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,7 +21,10 @@ export const Navbar = () => {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link href="/" className="relative flex items-center h-16 w-[180px] transition-opacity hover:opacity-80">
+            <Link
+              href="/"
+              className="relative flex items-center h-16 w-[180px] transition-opacity hover:opacity-80"
+            >
               <Image
                 src="/logo.png"
                 alt="Okani Survey"
@@ -146,4 +149,3 @@ export const Navbar = () => {
     </nav>
   );
 };
-

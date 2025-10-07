@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +29,10 @@ export function AutocompleteInput({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -41,7 +44,7 @@ export function AutocompleteInput({
   useEffect(() => {
     if (value) {
       const filtered = suggestions.filter((suggestion) =>
-        suggestion.toLowerCase().includes(value.toLowerCase())
+        suggestion.toLowerCase().includes(value.toLowerCase()),
       );
       setFilteredSuggestions(filtered);
       setHighlightedIndex(-1);
@@ -74,7 +77,7 @@ export function AutocompleteInput({
       case "ArrowDown":
         e.preventDefault();
         setHighlightedIndex((prev) =>
-          prev < filteredSuggestions.length - 1 ? prev + 1 : prev
+          prev < filteredSuggestions.length - 1 ? prev + 1 : prev,
         );
         break;
       case "ArrowUp":
@@ -83,7 +86,10 @@ export function AutocompleteInput({
         break;
       case "Enter":
         e.preventDefault();
-        if (highlightedIndex >= 0 && highlightedIndex < filteredSuggestions.length) {
+        if (
+          highlightedIndex >= 0 &&
+          highlightedIndex < filteredSuggestions.length
+        ) {
           handleSelectSuggestion(filteredSuggestions[highlightedIndex]);
         }
         break;
@@ -122,7 +128,7 @@ export function AutocompleteInput({
                     "px-3 py-2 cursor-pointer text-sm transition-colors rounded-sm",
                     index === highlightedIndex
                       ? "bg-accent text-accent-foreground"
-                      : "hover:bg-accent/50"
+                      : "hover:bg-accent/50",
                   )}
                   onMouseDown={(e) => {
                     e.preventDefault();
@@ -140,4 +146,3 @@ export function AutocompleteInput({
     </div>
   );
 }
-

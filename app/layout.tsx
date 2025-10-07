@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { Navbar } from "@/components/navbar";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,7 +17,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Okani Survey - Enquête de Satisfaction ANUTTC",
-  description: "Évaluation de la satisfaction des citoyens gabonais concernant les procédures foncières gérées par l'ANUTTC.",
+  description:
+    "Évaluation de la satisfaction des citoyens gabonais concernant les procédures foncières gérées par l'ANUTTC.",
 };
 
 export default function RootLayout({
@@ -32,6 +34,7 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <Toaster />
       </body>
     </html>
   );

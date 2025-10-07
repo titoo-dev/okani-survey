@@ -15,19 +15,19 @@ export const Footer = () => {
               Support technique WhatsApp
             </p>
             <div className="flex flex-col gap-2">
-              <a 
-                href="https://wa.me/24176000000" 
+              <a
+                href="https://wa.me/24176000000"
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 <Phone className="w-4 h-4 text-green-500 group-hover:scale-110 transition-transform" />
                 <span>+241 76 00 00 00</span>
               </a>
-              <a 
-                href="https://wa.me/24166000000" 
+              <a
+                href="https://wa.me/24166000000"
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 <Phone className="w-4 h-4 text-green-500 group-hover:scale-110 transition-transform" />
@@ -45,4 +45,3 @@ export const Footer = () => {
     </footer>
   );
 };
-

@@ -13,33 +13,68 @@ type GovernanceStepProps = {
   updateFormData: (updates: Partial<GovernanceData>) => void;
 };
 
-export function GovernanceStep({ formData, updateFormData }: GovernanceStepProps) {
+export function GovernanceStep({
+  formData,
+  updateFormData,
+}: GovernanceStepProps) {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
         <Label>Avez-vous été sollicité pour un paiement non officiel ?*</Label>
-        <RadioGroup value={formData.hasUnofficialPayment?.toString()} onValueChange={(value) => updateFormData({ hasUnofficialPayment: value === "true" })}>
+        <RadioGroup
+          value={formData.hasUnofficialPayment?.toString()}
+          onValueChange={(value) =>
+            updateFormData({ hasUnofficialPayment: value === "true" })
+          }
+        >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="true" id="unofficial-yes" />
-            <Label htmlFor="unofficial-yes" className="font-normal cursor-pointer">Oui</Label>
+            <Label
+              htmlFor="unofficial-yes"
+              className="font-normal cursor-pointer"
+            >
+              Oui
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="false" id="unofficial-no" />
-            <Label htmlFor="unofficial-no" className="font-normal cursor-pointer">Non</Label>
+            <Label
+              htmlFor="unofficial-no"
+              className="font-normal cursor-pointer"
+            >
+              Non
+            </Label>
           </div>
         </RadioGroup>
       </div>
 
       <div className="space-y-2">
-        <Label>Avez-vous constaté un favoritisme ou conflit d'intérêts ?*</Label>
-        <RadioGroup value={formData.hasFavoritism?.toString()} onValueChange={(value) => updateFormData({ hasFavoritism: value === "true" })}>
+        <Label>
+          Avez-vous constaté un favoritisme ou conflit d'intérêts ?*
+        </Label>
+        <RadioGroup
+          value={formData.hasFavoritism?.toString()}
+          onValueChange={(value) =>
+            updateFormData({ hasFavoritism: value === "true" })
+          }
+        >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="true" id="favoritism-yes" />
-            <Label htmlFor="favoritism-yes" className="font-normal cursor-pointer">Oui</Label>
+            <Label
+              htmlFor="favoritism-yes"
+              className="font-normal cursor-pointer"
+            >
+              Oui
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="false" id="favoritism-no" />
-            <Label htmlFor="favoritism-no" className="font-normal cursor-pointer">Non</Label>
+            <Label
+              htmlFor="favoritism-no"
+              className="font-normal cursor-pointer"
+            >
+              Non
+            </Label>
           </div>
         </RadioGroup>
       </div>
@@ -57,13 +92,24 @@ export function GovernanceStep({ formData, updateFormData }: GovernanceStepProps
 
       <div className="bg-muted/50 rounded-lg p-4">
         <div className="flex items-start gap-3">
-          <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clipRule="evenodd" />
+          <svg
+            className="w-5 h-5 text-primary mt-0.5 flex-shrink-0"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z"
+              clipRule="evenodd"
+            />
           </svg>
           <div className="text-sm text-muted-foreground">
-            <p className="font-semibold text-foreground mb-1">Confidentialité</p>
+            <p className="font-semibold text-foreground mb-1">
+              Confidentialité
+            </p>
             <p>
-              Vos réponses sont anonymes et seront utilisées uniquement pour améliorer le service foncier.
+              Vos réponses sont anonymes et seront utilisées uniquement pour
+              améliorer le service foncier.
             </p>
           </div>
         </div>
@@ -73,7 +119,10 @@ export function GovernanceStep({ formData, updateFormData }: GovernanceStepProps
 }
 
 export function validateGovernanceStep(
-  formData: Pick<GovernanceData, "hasUnofficialPayment" | "hasFavoritism" | "trustTransparency">
+  formData: Pick<
+    GovernanceData,
+    "hasUnofficialPayment" | "hasFavoritism" | "trustTransparency"
+  >,
 ): boolean {
   const trustValue = formData.trustTransparency?.[0];
   return !!(
@@ -84,4 +133,3 @@ export function validateGovernanceStep(
     trustValue <= 4
   );
 }
-

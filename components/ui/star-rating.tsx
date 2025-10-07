@@ -10,11 +10,18 @@ type StarRatingProps = {
   readonly?: boolean;
 };
 
-export function StarRating({ value, onChange, max = 5, min = 0, size = "md", readonly = false }: StarRatingProps) {
+export function StarRating({
+  value,
+  onChange,
+  max = 5,
+  min = 0,
+  size = "md",
+  readonly = false,
+}: StarRatingProps) {
   const sizeClasses = {
     sm: "w-5 h-5",
     md: "w-6 h-6",
-    lg: "w-8 h-8"
+    lg: "w-8 h-8",
   };
 
   const handleClick = (starValue: number) => {
@@ -33,7 +40,7 @@ export function StarRating({ value, onChange, max = 5, min = 0, size = "md", rea
         const starValue = index + 1;
         const isFilled = starValue <= value;
         const isClickable = starValue >= min && starValue <= max;
-        
+
         return (
           <button
             key={starValue}
@@ -43,16 +50,16 @@ export function StarRating({ value, onChange, max = 5, min = 0, size = "md", rea
             className={cn(
               "transition-all duration-200",
               !readonly && isClickable && "hover:scale-110 cursor-pointer",
-              (readonly || !isClickable) && "cursor-not-allowed"
+              (readonly || !isClickable) && "cursor-not-allowed",
             )}
-            aria-label={`${starValue} étoile${starValue > 1 ? 's' : ''}`}
+            aria-label={`${starValue} étoile${starValue > 1 ? "s" : ""}`}
           >
             <Star
               className={cn(
                 sizeClasses[size],
                 "transition-colors",
                 isFilled ? "fill-yellow-400 text-yellow-400" : "text-gray-300",
-                (readonly || !isClickable) && "opacity-40"
+                (readonly || !isClickable) && "opacity-40",
               )}
             />
           </button>
@@ -64,4 +71,3 @@ export function StarRating({ value, onChange, max = 5, min = 0, size = "md", rea
     </div>
   );
 }
-

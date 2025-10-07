@@ -6,7 +6,7 @@ export type Descriptor = {
 
 /**
  * Payment modes for various form steps
- * Used in: 
+ * Used in:
  * - EvaluationStep: depotPaymentMode, enquetePaymentMode, etatLieuxPaymentMode, bornagePaymentMode, evaluationPaymentMode
  * - DecisionStep: decisionPaymentMode
  * - DisputesStep: litigePaymentMode
@@ -42,7 +42,11 @@ export const EVALUATION_OPTIONS: Descriptor[] = [
 export const OPPOSITION_NATURES: Descriptor[] = [
   { type: "opposition_nature", value: "usurpation", label: "Usurpation" },
   { type: "opposition_nature", value: "emprise", label: "Emprise" },
-  { type: "opposition_nature", value: "conflit-anteriorite", label: "Conflit antériorité" },
+  {
+    type: "opposition_nature",
+    value: "conflit-anteriorite",
+    label: "Conflit antériorité",
+  },
   { type: "opposition_nature", value: "autre", label: "Autre (préciser)" },
 ];
 
@@ -53,9 +57,21 @@ export const OPPOSITION_NATURES: Descriptor[] = [
  */
 export const LITIGE_CAUSES: Descriptor[] = [
   { type: "litige_cause", value: "defaillance-si", label: "Défaillance SI" },
-  { type: "litige_cause", value: "manipulation-interne", label: "Manipulation interne" },
-  { type: "litige_cause", value: "affichage-non-effectif", label: "Affichage non effectif" },
-  { type: "litige_cause", value: "delais-trop-courts", label: "Délais trop courts" },
+  {
+    type: "litige_cause",
+    value: "manipulation-interne",
+    label: "Manipulation interne",
+  },
+  {
+    type: "litige_cause",
+    value: "affichage-non-effectif",
+    label: "Affichage non effectif",
+  },
+  {
+    type: "litige_cause",
+    value: "delais-trop-courts",
+    label: "Délais trop courts",
+  },
   { type: "litige_cause", value: "autre", label: "Autre (préciser)" },
 ];
 
@@ -67,8 +83,16 @@ export const LITIGE_CAUSES: Descriptor[] = [
 export const LITIGE_OUTCOMES: Descriptor[] = [
   { type: "litige_outcome", value: "acceptation", label: "Acceptation" },
   { type: "litige_outcome", value: "rejet", label: "Rejet" },
-  { type: "litige_outcome", value: "sous-investigation", label: "Sous investigation" },
-  { type: "litige_outcome", value: "transmission-conservation", label: "Transmission Conservation" },
+  {
+    type: "litige_outcome",
+    value: "sous-investigation",
+    label: "Sous investigation",
+  },
+  {
+    type: "litige_outcome",
+    value: "transmission-conservation",
+    label: "Transmission Conservation",
+  },
   { type: "litige_outcome", value: "autre", label: "Autre (préciser)" },
 ];
 
@@ -117,7 +141,11 @@ export const STAGES: Descriptor[] = [
  * - EvaluationStep: affichageInformationChannel (affichage step only, when affichageWasInformed is true)
  */
 export const AFFICHAGE_INFORMATION_CHANNELS: Descriptor[] = [
-  { type: "affichage_channel", value: "affichage-physique", label: "Affichage physique" },
+  {
+    type: "affichage_channel",
+    value: "affichage-physique",
+    label: "Affichage physique",
+  },
   { type: "affichage_channel", value: "site-anuttc", label: "Site ANUTTC" },
   { type: "affichage_channel", value: "autre", label: "Autre" },
 ];
@@ -153,7 +181,7 @@ export const COUNTRIES: Descriptor[] = [
  * Used in: SurveySummary component for displaying user type
  */
 export const getUserTypeLabel = (value: string): string => {
-  return USER_TYPES.find(t => t.value === value)?.label || value;
+  return USER_TYPES.find((t) => t.value === value)?.label || value;
 };
 
 /**
@@ -161,7 +189,7 @@ export const getUserTypeLabel = (value: string): string => {
  * Currently not used but available for future use
  */
 export const getLegalEntityLabel = (value: string): string => {
-  return LEGAL_ENTITIES.find(e => e.value === value)?.label || value;
+  return LEGAL_ENTITIES.find((e) => e.value === value)?.label || value;
 };
 
 /**
@@ -169,6 +197,5 @@ export const getLegalEntityLabel = (value: string): string => {
  * Used in: SurveyPage for displaying selected stage
  */
 export const getStageLabel = (value: string): string => {
-  return STAGES.find(s => s.value === value)?.label || value;
+  return STAGES.find((s) => s.value === value)?.label || value;
 };
-

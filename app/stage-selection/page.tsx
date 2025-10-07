@@ -1,12 +1,10 @@
 "use client";
 
+import { FileText, Phone } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { z } from "zod";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,15 +14,31 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FileText, Phone } from "lucide-react";
-import { stageSelectionSchema } from "@/lib/schema";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { STAGES } from "@/lib/descriptors";
-import { z } from "zod";
+import { stageSelectionSchema } from "@/lib/schema";
 
 export default function StageSelectionPage() {
-  const [hasFiledAtAnuttc, setHasFiledAtAnuttc] = useState<boolean | null>(null);
+  const [hasFiledAtAnuttc, setHasFiledAtAnuttc] = useState<boolean | null>(
+    null,
+  );
   const [email, setEmail] = useState("");
   const [stageReached, setStageReached] = useState("");
   const [showErrorDialog, setShowErrorDialog] = useState(false);
@@ -33,20 +47,22 @@ export default function StageSelectionPage() {
 
   const handleContinue = () => {
     if (hasFiledAtAnuttc === false) {
-      alert("Merci pour votre intérêt. Ce sondage est réservé aux usagers ayant introduit un dossier à l'ANUTTC.");
+      alert(
+        "Merci pour votre intérêt. Ce sondage est réservé aux usagers ayant introduit un dossier à l'ANUTTC.",
+      );
       router.push("/");
       return;
     }
-    
+
     try {
       const validatedData = stageSelectionSchema.parse({
         hasFiledAtAnuttc,
         email,
         stageReached,
       });
-      
+
       sessionStorage.setItem("stageReached", validatedData.stageReached);
-      sessionStorage.setItem("introEmail", validatedData.email);
+      sessionStorage.setItem("userEmail", validatedData.email);
       router.push("/survey");
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -63,9 +79,22 @@ export default function StageSelectionPage() {
     <main className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="mb-8">
-          <Link href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          <Link
+            href="/"
+            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <svg
+              className="w-4 h-4 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+              />
             </svg>
             Retour à l'accueil
           </Link>
@@ -78,7 +107,9 @@ export default function StageSelectionPage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold">Étape atteinte</h1>
-              <p className="text-muted-foreground">Identification de votre situation</p>
+              <p className="text-muted-foreground">
+                Identification de votre situation
+              </p>
             </div>
           </div>
         </div>
@@ -87,20 +118,36 @@ export default function StageSelectionPage() {
           <CardHeader>
             <CardTitle>Informations préliminaires</CardTitle>
             <CardDescription>
-              Quelques questions pour vérifier votre éligibilité et personnaliser l'enquête
+              Quelques questions pour vérifier votre éligibilité et
+              personnaliser l'enquête
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
               <Label>Avez-vous introduit un dossier à l'ANUTTC ?*</Label>
-              <RadioGroup value={hasFiledAtAnuttc === null ? "" : String(hasFiledAtAnuttc)} onValueChange={(value) => setHasFiledAtAnuttc(value === "true")}>
+              <RadioGroup
+                value={
+                  hasFiledAtAnuttc === null ? "" : String(hasFiledAtAnuttc)
+                }
+                onValueChange={(value) => setHasFiledAtAnuttc(value === "true")}
+              >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="true" id="filed-yes" />
-                  <Label htmlFor="filed-yes" className="font-normal cursor-pointer">Oui</Label>
+                  <Label
+                    htmlFor="filed-yes"
+                    className="font-normal cursor-pointer"
+                  >
+                    Oui
+                  </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="false" id="filed-no" />
-                  <Label htmlFor="filed-no" className="font-normal cursor-pointer">Non</Label>
+                  <Label
+                    htmlFor="filed-no"
+                    className="font-normal cursor-pointer"
+                  >
+                    Non
+                  </Label>
                 </div>
               </RadioGroup>
             </div>
@@ -116,11 +163,15 @@ export default function StageSelectionPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
-                  <p className="text-sm text-muted-foreground">Pour vous envoyer une copie de vos réponses</p>
+                  <p className="text-sm text-muted-foreground">
+                    Pour vous envoyer une copie de vos réponses
+                  </p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="stageReached">À quelle étape du dossier êtes-vous ?*</Label>
+                  <Label htmlFor="stageReached">
+                    À quelle étape du dossier êtes-vous ?*
+                  </Label>
                   <Select value={stageReached} onValueChange={setStageReached}>
                     <SelectTrigger className="h-12">
                       <SelectValue placeholder="Choisissez une étape" />
@@ -137,14 +188,25 @@ export default function StageSelectionPage() {
 
                 <div className="bg-muted/50 rounded-lg p-4">
                   <div className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clipRule="evenodd" />
+                    <svg
+                      className="w-5 h-5 text-primary mt-0.5 flex-shrink-0"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     <div className="text-sm text-muted-foreground">
-                      <p className="font-semibold text-foreground mb-1">Pourquoi ces informations ?</p>
+                      <p className="font-semibold text-foreground mb-1">
+                        Pourquoi ces informations ?
+                      </p>
                       <p className="mb-2">
-                        En connaissant votre étape, nous pourrons vous poser des questions pertinentes uniquement 
-                        sur les phases que vous avez effectivement traversées.
+                        En connaissant votre étape, nous pourrons vous poser des
+                        questions pertinentes uniquement sur les phases que vous
+                        avez effectivement traversées.
                       </p>
                     </div>
                   </div>
@@ -158,8 +220,18 @@ export default function StageSelectionPage() {
                     className="bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Continuer vers l'enquête
-                    <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    <svg
+                      className="w-4 h-4 ml-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                      />
                     </svg>
                   </Button>
                 </div>
@@ -169,7 +241,8 @@ export default function StageSelectionPage() {
             {hasFiledAtAnuttc === false && (
               <div className="bg-muted/50 rounded-lg p-6 text-center">
                 <p className="text-muted-foreground mb-4">
-                  Merci pour votre intérêt. Ce sondage est réservé aux usagers ayant introduit un dossier à l'ANUTTC.
+                  Merci pour votre intérêt. Ce sondage est réservé aux usagers
+                  ayant introduit un dossier à l'ANUTTC.
                 </p>
                 <Button asChild variant="outline">
                   <Link href="/">Retour à l'accueil</Link>
@@ -185,20 +258,22 @@ export default function StageSelectionPage() {
               <div className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
                 <div className="text-sm text-muted-foreground">
-                  <p className="font-semibold text-foreground">Support technique WhatsApp</p>
+                  <p className="font-semibold text-foreground">
+                    Support technique WhatsApp
+                  </p>
                   <div className="flex flex-col gap-1 mt-2">
-                    <a 
-                      href="https://wa.me/24176000000" 
+                    <a
+                      href="https://wa.me/24176000000"
                       className="text-primary hover:underline"
-                      target="_blank" 
+                      target="_blank"
                       rel="noopener noreferrer"
                     >
                       +241 76 00 00 00
                     </a>
-                    <a 
-                      href="https://wa.me/24166000000" 
+                    <a
+                      href="https://wa.me/24166000000"
                       className="text-primary hover:underline"
-                      target="_blank" 
+                      target="_blank"
                       rel="noopener noreferrer"
                     >
                       +241 66 00 00 00
@@ -236,4 +311,3 @@ export default function StageSelectionPage() {
     </main>
   );
 }
-

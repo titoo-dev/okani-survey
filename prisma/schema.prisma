@@ -2,7 +2,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("PRISMA_DATABASE_URL")
 }
 
 // Define custom output path for generated Prisma Client
@@ -70,3 +70,113 @@ model Verification {
 
   @@map("verification")
 }
+
+model Survey {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email       String
+  stageReached String
+
+  dossierId            String
+  depositCity          String
+  regularizationCity   String
+  residenceCity        String
+  userType             String
+  legalEntity          String
+  nationality          String
+
+  depotEvaluation          String?
+  depotPaymentMode         String?
+  depotOtherPaymentMode    String?
+  depotAmountPaid          String?
+  depotHasReceipt          Boolean?
+  depotHasAcknowledgment   Boolean?
+
+  enqueteDelayPerceived    String?
+  enquetePaymentMode       String?
+  enqueteOtherPaymentMode  String?
+  enqueteHasReceipt        Boolean?
+  enqueteSatisfaction      String?
+
+  etatLieuxDelayPerceived    String?
+  etatLieuxPaymentMode       String?
+  etatLieuxOtherPaymentMode  String?
+  etatLieuxHasReceipt        Boolean?
+  etatLieuxSatisfaction      String?
+
+  affichageInTime             Boolean?
+  affichageWasInformed        Boolean?
+  affichageInformationChannel String?
+  affichageSufficientDelay    Boolean?
+  affichageHasOpposition      Boolean?
+  affichageFees               String?
+  affichageHasReceipt         Boolean?
+  affichageSatisfaction       String?
+
+  bornageDelayPerceived    String?
+  bornagePaymentMode       String?
+  bornageOtherPaymentMode  String?
+  bornageHasReceipt        Boolean?
+  bornageSatisfaction      String?
+
+  evaluationPriceUnderstanding String?
+  evaluationPaymentMode        String?
+  evaluationOtherPaymentMode   String?
+  evaluationHasReceipt         Boolean?
+  evaluationSatisfaction       String?
+
+  decisionDelay              String?
+  decisionPaymentMode        String?
+  decisionOtherPaymentMode   String?
+  decisionHasReceipt         Boolean?
+  wasTransmitted             Boolean?
+  hasActeCession             Boolean?
+  hasTitrePropriete          Boolean?
+  decisionSatisfaction       String?
+
+  hasUnofficialPayment Boolean?
+  hasFavoritism        Boolean?
+  trustTransparency    String?
+
+  hadOpposition           Boolean?
+  oppositionDate          String?
+  oppositionNature        String?
+  oppositionNatureOther   String?
+  litigeDelay             String?
+  paidLitigeFees          Boolean?
+  litigePaymentMode       String?
+  litigePaymentAmount     String?
+  litigeHasReceipt        Boolean?
+  wasInformedProcedure    Boolean?
+  sentFormalLetter        Boolean?
+  letterReference         String?
+  litigeCause             String?
+  litigeCauseOther        String?
+  litigeSatisfaction      String?
+  litigeOutcome           String?
+  litigeOutcomeOther      String?
+  litigeComments          String?
+
+  totalDelay         String?
+  transmissionDate   String?
+  totalCost          String?
+  globalSatisfaction String?
+  generalSuggestions String?
+
+  @@map("survey")
+}
+
+model Descriptor {
+  id        String   @id @default(cuid())
+  type      String
+  value     String
+  label     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([type, value])
+  @@map("descriptor")
+}
+

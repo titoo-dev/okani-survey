@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Clock } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getUserTypeLabel } from "@/lib/descriptors";
 
 export type SurveyFormData = {
@@ -106,18 +106,34 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
       return [];
     }
 
-    const stageOrder = ["depot", "enquete", "etat-lieux", "affichage", "bornage", "evaluation", "decision"];
+    const stageOrder = [
+      "depot",
+      "enquete",
+      "etat-lieux",
+      "affichage",
+      "bornage",
+      "evaluation",
+      "decision",
+    ];
     const stageIndex = stageOrder.indexOf(stageReached);
-    
+
     if (stageIndex === -1) {
       return allSteps;
     }
 
-    const visibleKeys = ["profile", ...stageOrder.slice(0, stageIndex + 1), "governance", "disputes", "global"];
-    return allSteps.filter(step => visibleKeys.includes(step.key)).map((step, index) => ({
-      ...step,
-      id: index
-    }));
+    const visibleKeys = [
+      "profile",
+      ...stageOrder.slice(0, stageIndex + 1),
+      "governance",
+      "disputes",
+      "global",
+    ];
+    return allSteps
+      .filter((step) => visibleKeys.includes(step.key))
+      .map((step, index) => ({
+        ...step,
+        id: index,
+      }));
   };
 
   const steps = getVisibleSteps(formData.stageReached);
@@ -166,10 +182,7 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
       return formData.hadOpposition !== undefined;
     }
     if (step.key === "global") {
-      return !!(
-        formData.totalCost &&
-        formData.globalSatisfaction[0]
-      );
+      return !!(formData.totalCost && formData.globalSatisfaction[0]);
     }
     if (step.key === "depot") {
       return !!formData.depotEvaluation;
@@ -207,48 +220,88 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     if (step.key === "profile") {
       return (
         <div className="space-y-1 text-sm text-gray-600">
-          {formData.depositCity && <p className="truncate">Dépôt: {formData.depositCity}</p>}
+          {formData.depositCity && (
+            <p className="truncate">Dépôt: {formData.depositCity}</p>
+          )}
           {formData.userType && <p>{getUserTypeLabel(formData.userType)}</p>}
         </div>
       );
     }
-    
+
     if (step.key === "enquete" && formData.enqueteSatisfaction?.[0]) {
-      return <p className="text-sm text-gray-600">Satisfaction: {formData.enqueteSatisfaction[0]}/5</p>;
+      return (
+        <p className="text-sm text-gray-600">
+          Satisfaction: {formData.enqueteSatisfaction[0]}/5
+        </p>
+      );
     }
-    
+
     if (step.key === "etat-lieux" && formData.etatLieuxSatisfaction?.[0]) {
-      return <p className="text-sm text-gray-600">Satisfaction: {formData.etatLieuxSatisfaction[0]}/5</p>;
+      return (
+        <p className="text-sm text-gray-600">
+          Satisfaction: {formData.etatLieuxSatisfaction[0]}/5
+        </p>
+      );
     }
-    
+
     if (step.key === "affichage" && formData.affichageSatisfaction?.[0]) {
-      return <p className="text-sm text-gray-600">Satisfaction: {formData.affichageSatisfaction[0]}/5</p>;
+      return (
+        <p className="text-sm text-gray-600">
+          Satisfaction: {formData.affichageSatisfaction[0]}/5
+        </p>
+      );
     }
-    
+
     if (step.key === "bornage" && formData.bornageSatisfaction?.[0]) {
-      return <p className="text-sm text-gray-600">Satisfaction: {formData.bornageSatisfaction[0]}/5</p>;
+      return (
+        <p className="text-sm text-gray-600">
+          Satisfaction: {formData.bornageSatisfaction[0]}/5
+        </p>
+      );
     }
-    
+
     if (step.key === "evaluation" && formData.evaluationSatisfaction?.[0]) {
-      return <p className="text-sm text-gray-600">Satisfaction: {formData.evaluationSatisfaction[0]}/5</p>;
+      return (
+        <p className="text-sm text-gray-600">
+          Satisfaction: {formData.evaluationSatisfaction[0]}/5
+        </p>
+      );
     }
-    
+
     if (step.key === "decision" && formData.decisionSatisfaction[0]) {
-      return <p className="text-sm text-gray-600">Satisfaction: {formData.decisionSatisfaction[0]}/10</p>;
+      return (
+        <p className="text-sm text-gray-600">
+          Satisfaction: {formData.decisionSatisfaction[0]}/10
+        </p>
+      );
     }
-    
+
     if (step.key === "governance" && formData.trustTransparency[0]) {
-      return <p className="text-sm text-gray-600">Confiance: {formData.trustTransparency[0]}/5</p>;
+      return (
+        <p className="text-sm text-gray-600">
+          Confiance: {formData.trustTransparency[0]}/5
+        </p>
+      );
     }
-    
+
     if (step.key === "disputes" && formData.hadOpposition !== undefined) {
-      return <p className="text-sm text-gray-600">{formData.hadOpposition === true ? "Opposition déclarée" : "Aucune opposition"}</p>;
+      return (
+        <p className="text-sm text-gray-600">
+          {formData.hadOpposition === true
+            ? "Opposition déclarée"
+            : "Aucune opposition"}
+        </p>
+      );
     }
-    
+
     if (step.key === "global" && formData.globalSatisfaction[0]) {
-      return <p className="text-sm text-gray-600">Satisfaction: {formData.globalSatisfaction[0]}/10</p>;
+      return (
+        <p className="text-sm text-gray-600">
+          Satisfaction: {formData.globalSatisfaction[0]}/10
+        </p>
+      );
     }
-    
+
     return null;
   };
 
@@ -299,4 +352,3 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
     </div>
   );
 }
-

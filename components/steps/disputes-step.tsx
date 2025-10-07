@@ -1,10 +1,21 @@
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { StarRating } from "@/components/ui/star-rating";
-import { OPPOSITION_NATURES, PAYMENT_MODES, LITIGE_CAUSES, LITIGE_OUTCOMES } from "@/lib/descriptors";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  LITIGE_CAUSES,
+  LITIGE_OUTCOMES,
+  OPPOSITION_NATURES,
+  PAYMENT_MODES,
+} from "@/lib/descriptors";
 
 type DisputesData = {
   hadOpposition: boolean | undefined;
@@ -36,15 +47,32 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <Label>Avez-vous fait l'objet d'une opposition lors de l'avis d'affichage ?*</Label>
-        <RadioGroup value={formData.hadOpposition?.toString()} onValueChange={(value) => updateFormData({ hadOpposition: value === "true" })}>
+        <Label>
+          Avez-vous fait l'objet d'une opposition lors de l'avis d'affichage ?*
+        </Label>
+        <RadioGroup
+          value={formData.hadOpposition?.toString()}
+          onValueChange={(value) =>
+            updateFormData({ hadOpposition: value === "true" })
+          }
+        >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="true" id="had-opposition-yes" />
-            <Label htmlFor="had-opposition-yes" className="font-normal cursor-pointer">Oui</Label>
+            <Label
+              htmlFor="had-opposition-yes"
+              className="font-normal cursor-pointer"
+            >
+              Oui
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="false" id="had-opposition-no" />
-            <Label htmlFor="had-opposition-no" className="font-normal cursor-pointer">Non</Label>
+            <Label
+              htmlFor="had-opposition-no"
+              className="font-normal cursor-pointer"
+            >
+              Non
+            </Label>
           </div>
         </RadioGroup>
       </div>
@@ -52,20 +80,26 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
       {formData.hadOpposition === true && (
         <>
           <div className="space-y-2">
-            <Label htmlFor="oppositionDate">À quelle date l'opposition a-t-elle été enregistrée ?*</Label>
+            <Label htmlFor="oppositionDate">
+              À quelle date l'opposition a-t-elle été enregistrée ?*
+            </Label>
             <Input
               id="oppositionDate"
               type="date"
               value={formData.oppositionDate}
-              onChange={(e) => updateFormData({ oppositionDate: e.target.value })}
+              onChange={(e) =>
+                updateFormData({ oppositionDate: e.target.value })
+              }
             />
           </div>
 
           <div className="space-y-2">
             <Label>Quelle est la nature de l'opposition ?*</Label>
-            <Select 
-              value={formData.oppositionNature} 
-              onValueChange={(value) => updateFormData({ oppositionNature: value })}
+            <Select
+              value={formData.oppositionNature}
+              onValueChange={(value) =>
+                updateFormData({ oppositionNature: value })
+              }
             >
               <SelectTrigger>
                 <SelectValue placeholder="Sélectionnez la nature" />
@@ -82,18 +116,24 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
 
           {formData.oppositionNature === "autre" && (
             <div className="space-y-2">
-              <Label htmlFor="oppositionNatureOther">Précisez la nature de l'opposition*</Label>
+              <Label htmlFor="oppositionNatureOther">
+                Précisez la nature de l'opposition*
+              </Label>
               <Input
                 id="oppositionNatureOther"
                 placeholder="Ex: Autre motif"
                 value={formData.oppositionNatureOther}
-                onChange={(e) => updateFormData({ oppositionNatureOther: e.target.value })}
+                onChange={(e) =>
+                  updateFormData({ oppositionNatureOther: e.target.value })
+                }
               />
             </div>
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="litigeDelay">Délais de traitement du litige (dépôt → décision) en jours*</Label>
+            <Label htmlFor="litigeDelay">
+              Délais de traitement du litige (dépôt → décision) en jours*
+            </Label>
             <Input
               id="litigeDelay"
               type="number"
@@ -104,18 +144,32 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>Avez-vous payé des frais liés à l'opposition/contentieux ?*</Label>
-            <RadioGroup 
-              value={formData.paidLitigeFees?.toString()} 
-              onValueChange={(value) => updateFormData({ paidLitigeFees: value === "true" })}
+            <Label>
+              Avez-vous payé des frais liés à l'opposition/contentieux ?*
+            </Label>
+            <RadioGroup
+              value={formData.paidLitigeFees?.toString()}
+              onValueChange={(value) =>
+                updateFormData({ paidLitigeFees: value === "true" })
+              }
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="true" id="paid-fees-yes" />
-                <Label htmlFor="paid-fees-yes" className="font-normal cursor-pointer">Oui</Label>
+                <Label
+                  htmlFor="paid-fees-yes"
+                  className="font-normal cursor-pointer"
+                >
+                  Oui
+                </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="false" id="paid-fees-no" />
-                <Label htmlFor="paid-fees-no" className="font-normal cursor-pointer">Non</Label>
+                <Label
+                  htmlFor="paid-fees-no"
+                  className="font-normal cursor-pointer"
+                >
+                  Non
+                </Label>
               </div>
             </RadioGroup>
           </div>
@@ -124,9 +178,11 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
             <>
               <div className="space-y-2">
                 <Label>Mode de paiement*</Label>
-                <Select 
-                  value={formData.litigePaymentMode} 
-                  onValueChange={(value) => updateFormData({ litigePaymentMode: value })}
+                <Select
+                  value={formData.litigePaymentMode}
+                  onValueChange={(value) =>
+                    updateFormData({ litigePaymentMode: value })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Sélectionnez un mode de paiement" />
@@ -148,23 +204,37 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
                   type="number"
                   placeholder="Montant en FCFA"
                   value={formData.litigePaymentAmount}
-                  onChange={(e) => updateFormData({ litigePaymentAmount: e.target.value })}
+                  onChange={(e) =>
+                    updateFormData({ litigePaymentAmount: e.target.value })
+                  }
                 />
               </div>
 
               <div className="space-y-2">
                 <Label>Avez-vous reçu une quittance pour ces frais ?*</Label>
-                <RadioGroup 
-                  value={formData.litigeHasReceipt?.toString()} 
-                  onValueChange={(value) => updateFormData({ litigeHasReceipt: value === "true" })}
+                <RadioGroup
+                  value={formData.litigeHasReceipt?.toString()}
+                  onValueChange={(value) =>
+                    updateFormData({ litigeHasReceipt: value === "true" })
+                  }
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="true" id="litige-receipt-yes" />
-                    <Label htmlFor="litige-receipt-yes" className="font-normal cursor-pointer">Oui</Label>
+                    <Label
+                      htmlFor="litige-receipt-yes"
+                      className="font-normal cursor-pointer"
+                    >
+                      Oui
+                    </Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="false" id="litige-receipt-no" />
-                    <Label htmlFor="litige-receipt-no" className="font-normal cursor-pointer">Non</Label>
+                    <Label
+                      htmlFor="litige-receipt-no"
+                      className="font-normal cursor-pointer"
+                    >
+                      Non
+                    </Label>
                   </div>
                 </RadioGroup>
               </div>
@@ -172,55 +242,88 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
           )}
 
           <div className="space-y-2">
-            <Label>Avez-vous été informé de la procédure et des voies de recours ?*</Label>
-            <RadioGroup 
-              value={formData.wasInformedProcedure?.toString()} 
-              onValueChange={(value) => updateFormData({ wasInformedProcedure: value === "true" })}
+            <Label>
+              Avez-vous été informé de la procédure et des voies de recours ?*
+            </Label>
+            <RadioGroup
+              value={formData.wasInformedProcedure?.toString()}
+              onValueChange={(value) =>
+                updateFormData({ wasInformedProcedure: value === "true" })
+              }
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="true" id="informed-procedure-yes" />
-                <Label htmlFor="informed-procedure-yes" className="font-normal cursor-pointer">Oui</Label>
+                <Label
+                  htmlFor="informed-procedure-yes"
+                  className="font-normal cursor-pointer"
+                >
+                  Oui
+                </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="false" id="informed-procedure-no" />
-                <Label htmlFor="informed-procedure-no" className="font-normal cursor-pointer">Non</Label>
+                <Label
+                  htmlFor="informed-procedure-no"
+                  className="font-normal cursor-pointer"
+                >
+                  Non
+                </Label>
               </div>
             </RadioGroup>
           </div>
 
           <div className="space-y-2">
-            <Label>Avez-vous adressé un courrier formel (ex. opposition au DG ANUTTC) ?*</Label>
-            <RadioGroup 
-              value={formData.sentFormalLetter?.toString()} 
-              onValueChange={(value) => updateFormData({ sentFormalLetter: value === "true" })}
+            <Label>
+              Avez-vous adressé un courrier formel (ex. opposition au DG ANUTTC)
+              ?*
+            </Label>
+            <RadioGroup
+              value={formData.sentFormalLetter?.toString()}
+              onValueChange={(value) =>
+                updateFormData({ sentFormalLetter: value === "true" })
+              }
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="true" id="letter-yes" />
-                <Label htmlFor="letter-yes" className="font-normal cursor-pointer">Oui</Label>
+                <Label
+                  htmlFor="letter-yes"
+                  className="font-normal cursor-pointer"
+                >
+                  Oui
+                </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="false" id="letter-no" />
-                <Label htmlFor="letter-no" className="font-normal cursor-pointer">Non</Label>
+                <Label
+                  htmlFor="letter-no"
+                  className="font-normal cursor-pointer"
+                >
+                  Non
+                </Label>
               </div>
             </RadioGroup>
           </div>
 
           {formData.sentFormalLetter === true && (
             <div className="space-y-2">
-              <Label htmlFor="letterReference">Joindre la référence (n°/date)*</Label>
+              <Label htmlFor="letterReference">
+                Joindre la référence (n°/date)*
+              </Label>
               <Input
                 id="letterReference"
                 placeholder="Ex: N°123/2024 du 01/01/2024"
                 value={formData.letterReference}
-                onChange={(e) => updateFormData({ letterReference: e.target.value })}
+                onChange={(e) =>
+                  updateFormData({ letterReference: e.target.value })
+                }
               />
             </div>
           )}
 
           <div className="space-y-2">
             <Label>Cause perçue du litige*</Label>
-            <Select 
-              value={formData.litigeCause} 
+            <Select
+              value={formData.litigeCause}
               onValueChange={(value) => updateFormData({ litigeCause: value })}
             >
               <SelectTrigger>
@@ -243,7 +346,9 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
                 id="litigeCauseOther"
                 placeholder="Ex: Autre raison"
                 value={formData.litigeCauseOther}
-                onChange={(e) => updateFormData({ litigeCauseOther: e.target.value })}
+                onChange={(e) =>
+                  updateFormData({ litigeCauseOther: e.target.value })
+                }
               />
             </div>
           )}
@@ -252,7 +357,9 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
             <Label>Satisfaction sur la gestion du litige*</Label>
             <StarRating
               value={formData.litigeSatisfaction[0] || 0}
-              onChange={(value) => updateFormData({ litigeSatisfaction: [value] })}
+              onChange={(value) =>
+                updateFormData({ litigeSatisfaction: [value] })
+              }
               max={5}
               size="lg"
             />
@@ -260,9 +367,11 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
 
           <div className="space-y-2">
             <Label>Issue du litige*</Label>
-            <Select 
-              value={formData.litigeOutcome} 
-              onValueChange={(value) => updateFormData({ litigeOutcome: value })}
+            <Select
+              value={formData.litigeOutcome}
+              onValueChange={(value) =>
+                updateFormData({ litigeOutcome: value })
+              }
             >
               <SelectTrigger>
                 <SelectValue placeholder="Sélectionnez l'issue" />
@@ -284,18 +393,24 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
                 id="litigeOutcomeOther"
                 placeholder="Ex: Autre issue"
                 value={formData.litigeOutcomeOther}
-                onChange={(e) => updateFormData({ litigeOutcomeOther: e.target.value })}
+                onChange={(e) =>
+                  updateFormData({ litigeOutcomeOther: e.target.value })
+                }
               />
             </div>
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="litigeComments">Commentaire libre (faits saillants, preuves, témoins)</Label>
+            <Label htmlFor="litigeComments">
+              Commentaire libre (faits saillants, preuves, témoins)
+            </Label>
             <Textarea
               id="litigeComments"
               placeholder="Décrivez les faits importants, preuves ou témoins..."
               value={formData.litigeComments}
-              onChange={(e) => updateFormData({ litigeComments: e.target.value })}
+              onChange={(e) =>
+                updateFormData({ litigeComments: e.target.value })
+              }
               rows={5}
             />
           </div>
@@ -305,13 +420,11 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
   );
 }
 
-export function validateDisputesStep(
-  formData: Partial<DisputesData>
-): boolean {
+export function validateDisputesStep(formData: Partial<DisputesData>): boolean {
   if (formData.hadOpposition === undefined) return false;
-  
+
   if (formData.hadOpposition === false) return true;
-  
+
   const baseValidation = !!(
     formData.oppositionDate &&
     formData.oppositionNature &&
@@ -323,14 +436,18 @@ export function validateDisputesStep(
     formData.litigeSatisfaction?.[0] &&
     formData.litigeOutcome
   );
-  
+
   if (!baseValidation) return false;
-  
-  if (formData.oppositionNature === "autre" && !formData.oppositionNatureOther) return false;
-  if (formData.litigeCause === "autre" && !formData.litigeCauseOther) return false;
-  if (formData.litigeOutcome === "autre" && !formData.litigeOutcomeOther) return false;
-  if (formData.sentFormalLetter === true && !formData.letterReference) return false;
-  
+
+  if (formData.oppositionNature === "autre" && !formData.oppositionNatureOther)
+    return false;
+  if (formData.litigeCause === "autre" && !formData.litigeCauseOther)
+    return false;
+  if (formData.litigeOutcome === "autre" && !formData.litigeOutcomeOther)
+    return false;
+  if (formData.sentFormalLetter === true && !formData.letterReference)
+    return false;
+
   if (formData.paidLitigeFees === true) {
     return !!(
       formData.litigePaymentMode &&
@@ -338,7 +455,6 @@ export function validateDisputesStep(
       formData.litigeHasReceipt !== undefined
     );
   }
-  
+
   return true;
 }
-

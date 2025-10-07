@@ -1,5 +1,11 @@
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type StageReachedData = {
   stageReached: string;
@@ -10,7 +16,10 @@ type StageReachedStepProps = {
   updateFormData: (updates: Partial<StageReachedData>) => void;
 };
 
-export function StageReachedStep({ formData, updateFormData }: StageReachedStepProps) {
+export function StageReachedStep({
+  formData,
+  updateFormData,
+}: StageReachedStepProps) {
   return (
     <div className="space-y-6">
       <div>
@@ -21,8 +30,13 @@ export function StageReachedStep({ formData, updateFormData }: StageReachedStepP
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="stageReached">Jusqu'à quelle étape votre procédure est-elle arrivée ?*</Label>
-        <Select value={formData.stageReached} onValueChange={(value) => updateFormData({ stageReached: value })}>
+        <Label htmlFor="stageReached">
+          Jusqu'à quelle étape votre procédure est-elle arrivée ?*
+        </Label>
+        <Select
+          value={formData.stageReached}
+          onValueChange={(value) => updateFormData({ stageReached: value })}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Sélectionnez une étape" />
           </SelectTrigger>
@@ -37,13 +51,16 @@ export function StageReachedStep({ formData, updateFormData }: StageReachedStepP
             <SelectItem value="litigieux">Litigieux</SelectItem>
           </SelectContent>
         </Select>
-        <p className="text-sm text-muted-foreground">Cette information nous aidera à personnaliser les questions</p>
+        <p className="text-sm text-muted-foreground">
+          Cette information nous aidera à personnaliser les questions
+        </p>
       </div>
     </div>
   );
 }
 
-export function validateStageReachedStep(formData: Pick<StageReachedData, "stageReached">): boolean {
+export function validateStageReachedStep(
+  formData: Pick<StageReachedData, "stageReached">,
+): boolean {
   return !!formData.stageReached;
 }
-
