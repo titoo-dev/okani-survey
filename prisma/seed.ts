@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 
 import {
   AFFICHAGE_INFORMATION_CHANNELS,
+  CITIES,
   COUNTRIES,
   EVALUATION_OPTIONS,
   LEGAL_ENTITIES,
@@ -34,6 +35,7 @@ async function main() {
     ...STAGES,
     ...AFFICHAGE_INFORMATION_CHANNELS,
     ...COUNTRIES,
+    ...CITIES,
   ];
 
   console.log(`Creating ${allDescriptors.length} descriptors...`);
@@ -58,6 +60,7 @@ async function main() {
     "stage",
     "affichage_channel",
     "country",
+    "city",
   ];
 
   console.log("\n📊 Descriptors by type:");

@@ -1,8 +1,7 @@
 import { AutocompleteInput } from "@/components/ui/autocomplete-input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { cities } from "@/lib/cities";
-import { COUNTRIES, LEGAL_ENTITIES, USER_TYPES } from "@/lib/descriptors";
+import { CITIES, COUNTRIES, LEGAL_ENTITIES, USER_TYPES } from "@/lib/descriptors";
 
 type UserProfileData = {
   depositCity: string;
@@ -28,8 +27,6 @@ type UserProfileStepProps = {
   descriptors?: DescriptorGroups;
 };
 
-const citiesWithOther = [...cities, "Autres"];
-
 export function UserProfileStep({
   formData,
   updateFormData,
@@ -39,7 +36,10 @@ export function UserProfileStep({
   const userTypes = descriptors.user_type || USER_TYPES;
   const legalEntities = descriptors.legal_entity || LEGAL_ENTITIES;
   const countries = descriptors.country || COUNTRIES;
+  const cities = descriptors.city || CITIES;
+  
   const countriesList = countries.map((country) => country.label);
+  const citiesList = cities.map((city) => city.label);
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -48,7 +48,7 @@ export function UserProfileStep({
           id="depositCity"
           value={formData.depositCity}
           onChange={(value) => updateFormData({ depositCity: value })}
-          suggestions={citiesWithOther}
+          suggestions={citiesList}
           placeholder="Sélectionnez ou tapez une ville"
         />
         <p className="text-xs text-muted-foreground">Localisation dépôt</p>
@@ -62,7 +62,7 @@ export function UserProfileStep({
           id="regularizationCity"
           value={formData.regularizationCity}
           onChange={(value) => updateFormData({ regularizationCity: value })}
-          suggestions={citiesWithOther}
+          suggestions={citiesList}
           placeholder="Sélectionnez ou tapez une ville"
         />
         <p className="text-xs text-muted-foreground">Cohérence territoriale</p>
@@ -74,7 +74,7 @@ export function UserProfileStep({
           id="residenceCity"
           value={formData.residenceCity}
           onChange={(value) => updateFormData({ residenceCity: value })}
-          suggestions={citiesWithOther}
+          suggestions={citiesList}
           placeholder="Sélectionnez ou tapez une ville"
         />
         <p className="text-xs text-muted-foreground">Profil usager</p>

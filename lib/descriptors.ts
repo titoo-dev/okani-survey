@@ -178,6 +178,58 @@ export const COUNTRIES: Descriptor[] = [
 ];
 
 /**
+ * Cities in Gabon for location fields
+ * Used in:
+ * - UserProfileStep: depositCity, regularizationCity, residenceCity
+ */
+export const CITIES: Descriptor[] = [
+  { type: "city", value: "libreville", label: "Libreville", order: 1 },
+  { type: "city", value: "akanda", label: "Akanda", order: 2 },
+  { type: "city", value: "cocobeach", label: "Cocobeach", order: 3 },
+  { type: "city", value: "kango", label: "Kango", order: 4 },
+  { type: "city", value: "ntoum", label: "Ntoum", order: 5 },
+  { type: "city", value: "owendo", label: "Owendo", order: 6 },
+  { type: "city", value: "franceville", label: "Franceville", order: 7 },
+  { type: "city", value: "masuku", label: "Masuku", order: 8 },
+  { type: "city", value: "akieni", label: "Akiéni", order: 9 },
+  { type: "city", value: "bakoumba", label: "Bakoumba", order: 10 },
+  { type: "city", value: "bongoville", label: "Bongoville", order: 11 },
+  { type: "city", value: "boumango", label: "Boumango", order: 12 },
+  { type: "city", value: "lekoni", label: "Lékoni", order: 13 },
+  { type: "city", value: "moanda", label: "Moanda", order: 14 },
+  { type: "city", value: "mounana", label: "Mounana", order: 15 },
+  { type: "city", value: "okondja", label: "Okondja", order: 16 },
+  { type: "city", value: "lambarene", label: "Lambaréné", order: 17 },
+  { type: "city", value: "ndjole", label: "Ndjolé", order: 18 },
+  { type: "city", value: "mouila", label: "Mouila", order: 19 },
+  { type: "city", value: "fougamou", label: "Fougamou", order: 20 },
+  { type: "city", value: "lebamba", label: "Lébamba", order: 21 },
+  { type: "city", value: "mbigou", label: "Mbigou", order: 22 },
+  { type: "city", value: "mimongo", label: "Mimongo", order: 23 },
+  { type: "city", value: "ndende", label: "Ndendé", order: 24 },
+  { type: "city", value: "tchibanga", label: "Tchibanga", order: 25 },
+  { type: "city", value: "mayumba", label: "Mayumba", order: 26 },
+  { type: "city", value: "moabi", label: "Moabi", order: 27 },
+  { type: "city", value: "ndindi", label: "Ndindi", order: 28 },
+  { type: "city", value: "makokou", label: "Makokou", order: 29 },
+  { type: "city", value: "booue", label: "Booué", order: 30 },
+  { type: "city", value: "mekambo", label: "Mékambo", order: 31 },
+  { type: "city", value: "ovan", label: "Ovan", order: 32 },
+  { type: "city", value: "koulamoutou", label: "Koulamoutou", order: 33 },
+  { type: "city", value: "lastoursville", label: "Lastoursville", order: 34 },
+  { type: "city", value: "pana", label: "Pana", order: 35 },
+  { type: "city", value: "port-gentil", label: "Port-Gentil", order: 36 },
+  { type: "city", value: "gamba", label: "Gamba", order: 37 },
+  { type: "city", value: "omboue", label: "Omboué", order: 38 },
+  { type: "city", value: "oyem", label: "Oyem", order: 39 },
+  { type: "city", value: "bitam", label: "Bitam", order: 40 },
+  { type: "city", value: "medouneu", label: "Médouneu", order: 41 },
+  { type: "city", value: "minvoul", label: "Minvoul", order: 42 },
+  { type: "city", value: "mitzic", label: "Mitzic", order: 43 },
+  { type: "city", value: "autres", label: "Autres", order: 44 },
+];
+
+/**
  * Helper function to get user type label from value
  * Used in: SurveySummary component for displaying user type
  */
