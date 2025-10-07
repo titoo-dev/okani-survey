@@ -1,12 +1,10 @@
 import { AutocompleteInput } from "@/components/ui/autocomplete-input";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cities } from "@/lib/cities";
 import { COUNTRIES, LEGAL_ENTITIES, USER_TYPES } from "@/lib/descriptors";
 
 type UserProfileData = {
-  dossierId: string;
   depositCity: string;
   regularizationCity: string;
   residenceCity: string;
@@ -44,17 +42,6 @@ export function UserProfileStep({
   const countriesList = countries.map((country) => country.label);
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="dossierId">Numéro unique du dossier*</Label>
-        <Input
-          id="dossierId"
-          value={formData.dossierId || ""}
-          onChange={(e) => updateFormData({ dossierId: e.target.value })}
-          placeholder="Scannez ou saisissez le numéro du dossier"
-        />
-        <p className="text-xs text-muted-foreground">Traçabilité</p>
-      </div>
-
       <div className="space-y-2">
         <Label htmlFor="depositCity">Ville de dépôt du dossier*</Label>
         <AutocompleteInput
@@ -154,7 +141,6 @@ export function validateUserProfileStep(
   formData: Partial<UserProfileData>,
 ): boolean {
   return !!(
-    formData.dossierId &&
     formData.depositCity &&
     formData.regularizationCity &&
     formData.residenceCity &&

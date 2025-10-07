@@ -89,7 +89,6 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [formData, setFormData] = useState<SurveyFormData>({
     stageReached: "",
-    dossierId: "",
     depositCity: "",
     regularizationCity: "",
     residenceCity: "",

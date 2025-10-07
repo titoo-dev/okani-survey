@@ -256,8 +256,10 @@ Get a single survey by ID.
 
 Create a new survey.
 
+**Note:** The `dossierId` field is automatically generated in the format `DOSS-YYYY-XXX` (e.g., `DOSS-2025-001`) if not provided. The system uses the current year and increments the counter for each survey created in that year.
+
 **Request Body:**
-Full survey data object following the `surveyFormSchema` validation.
+Full survey data object following the `surveyFormSchema` validation (excluding `dossierId` which is auto-generated).
 
 **Response:**
 ```json

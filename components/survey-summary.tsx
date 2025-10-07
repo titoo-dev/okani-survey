@@ -4,7 +4,6 @@ import { getUserTypeLabel } from "@/lib/descriptors";
 
 export type SurveyFormData = {
   stageReached: string;
-  dossierId: string;
   depositCity: string;
   regularizationCity: string;
   residenceCity: string;
@@ -151,7 +150,6 @@ export function SurveySummary({ formData, currentStep }: SurveySummaryProps) {
   const isStepCompleted = (step: { key: string }) => {
     if (step.key === "profile") {
       return !!(
-        formData.dossierId &&
         formData.depositCity &&
         formData.regularizationCity &&
         formData.residenceCity &&

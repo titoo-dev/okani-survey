@@ -104,7 +104,6 @@ Content-Type: application/json
 {
   "email": "user@example.com",
   "stageReached": "enquete",
-  "dossierId": "DOSS-2025-001",
   "depositCity": "Libreville",
   "regularizationCity": "Libreville",
   "residenceCity": "Libreville",
@@ -183,6 +182,13 @@ Valid values for `stageReached`:
 ---
 
 ## 💡 Tips
+
+### Automatic DossierId Generation
+The `dossierId` is automatically generated when creating a survey:
+- **Format:** `DOSS-YYYY-XXX` (e.g., `DOSS-2025-001`, `DOSS-2025-002`)
+- **Year-based:** Counter resets each year
+- **Sequential:** Increments for each survey created in that year
+- **Optional in POST:** Don't include it in your request body; the system will generate it
 
 ### Array Fields in Surveys
 Array fields like `globalSatisfaction`, `trustTransparency`, and satisfaction ratings are:

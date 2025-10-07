@@ -11,6 +11,30 @@ export type SurveySubmitState = {
 };
 
 /**
+ * Generate a unique dossier ID in the format DOSS-YYYY-XXX
+ * Example: DOSS-2025-001
+ */
+async function generateDossierId(): Promise<string> {
+  const year = new Date().getFullYear();
+  const prefix = `DOSS-${year}-`;
+
+  // Get the count of surveys created this year
+  const startOfYear = new Date(year, 0, 1);
+  const count = await prisma.survey.count({
+    where: {
+      createdAt: {
+        gte: startOfYear,
+      },
+    },
+  });
+
+  // Increment and format with leading zeros (e.g., 001, 002, ...)
+  const nextNumber = (count + 1).toString().padStart(3, "0");
+
+  return `${prefix}${nextNumber}`;
+}
+
+/**
  * Helper function to convert arrays to JSON strings for storage
  */
 function prepareSurveyData(data: any) {
@@ -47,6 +71,11 @@ export async function submitSurvey(
   try {
     // Validate form data
     const validatedData = surveyFormSchema.parse(formData);
+
+    // Generate dossierId if not provided
+    if (!validatedData.dossierId) {
+      validatedData.dossierId = await generateDossierId();
+    }
 
     // Prepare data for database (convert arrays to JSON strings)
     const preparedData = prepareSurveyData(validatedData);

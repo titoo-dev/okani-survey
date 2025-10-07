@@ -778,11 +778,6 @@
             "enum": ["depot", "enquete", "etat-lieux", "affichage", "bornage", "evaluation", "decision"],
             "example": "enquete"
           },
-          "dossierId": {
-            "type": "string",
-            "minLength": 1,
-            "example": "DOSS-2025-001"
-          },
           "depositCity": {
             "type": "string",
             "minLength": 1,
@@ -846,7 +841,7 @@
             "description": "Whether user faced opposition (required)"
           }
         },
-        "required": ["email", "stageReached", "dossierId", "depositCity", "regularizationCity", "residenceCity", "userType", "legalEntity", "nationality", "totalCost", "globalSatisfaction", "hasUnofficialPayment", "hasFavoritism", "trustTransparency", "hadOpposition"]
+        "required": ["email", "stageReached", "depositCity", "regularizationCity", "residenceCity", "userType", "legalEntity", "nationality", "totalCost", "globalSatisfaction", "hasUnofficialPayment", "hasFavoritism", "trustTransparency", "hadOpposition"]
       },
       "Pagination": {
         "type": "object",

@@ -26,8 +26,7 @@ export const surveyFormSchema = z
   .object({
     email: z.string().email("Email invalide").min(1, "L'email est requis"),
     stageReached: z.string().min(1, "L'étape atteinte est requise"),
-
-    dossierId: z.string(),
+    dossierId: z.string().optional(), // Auto-generated if not provided
     depositCity: z.string(),
     regularizationCity: z.string(),
     residenceCity: z.string(),
@@ -126,7 +125,6 @@ export const surveyFormSchema = z
     const stageIndex = stageOrder.indexOf(data.stageReached);
 
     if (
-      !data.dossierId ||
       !data.depositCity ||
       !data.regularizationCity ||
       !data.residenceCity ||
