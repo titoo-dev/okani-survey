@@ -15,18 +15,33 @@ type UserProfileData = {
   nationality: string;
 };
 
+type Descriptor = {
+  id: string;
+  type: string;
+  value: string;
+  label: string;
+};
+
+type DescriptorGroups = Record<string, Descriptor[]>;
+
 type UserProfileStepProps = {
   formData: UserProfileData;
   updateFormData: (updates: Partial<UserProfileData>) => void;
+  descriptors?: DescriptorGroups;
 };
 
-const countriesList = COUNTRIES.map((country) => country.label);
 const citiesWithOther = [...cities, "Autres"];
 
 export function UserProfileStep({
   formData,
   updateFormData,
+  descriptors = {},
 }: UserProfileStepProps) {
+  // Use descriptors from props or fallback to static imports
+  const userTypes = descriptors.user_type || USER_TYPES;
+  const legalEntities = descriptors.legal_entity || LEGAL_ENTITIES;
+  const countries = descriptors.country || COUNTRIES;
+  const countriesList = countries.map((country) => country.label);
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -84,7 +99,7 @@ export function UserProfileStep({
           value={formData.userType}
           onValueChange={(value) => updateFormData({ userType: value })}
         >
-          {USER_TYPES.map((userType) => (
+          {userTypes.map((userType) => (
             <div key={userType.value} className="flex items-center space-x-2">
               <RadioGroupItem value={userType.value} id={userType.value} />
               <Label
@@ -105,7 +120,7 @@ export function UserProfileStep({
           value={formData.legalEntity}
           onValueChange={(value) => updateFormData({ legalEntity: value })}
         >
-          {LEGAL_ENTITIES.map((entity) => (
+          {legalEntities.map((entity) => (
             <div key={entity.value} className="flex items-center space-x-2">
               <RadioGroupItem value={entity.value} id={entity.value} />
               <Label

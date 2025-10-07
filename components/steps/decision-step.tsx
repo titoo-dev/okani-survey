@@ -11,6 +11,15 @@ import {
 import { StarRating } from "@/components/ui/star-rating";
 import { PAYMENT_MODES } from "@/lib/descriptors";
 
+type Descriptor = {
+  id: string;
+  type: string;
+  value: string;
+  label: string;
+};
+
+type DescriptorGroups = Record<string, Descriptor[]>;
+
 type DecisionData = {
   decisionDelay: string;
   decisionPaymentMode: string;
@@ -25,9 +34,16 @@ type DecisionData = {
 type DecisionStepProps = {
   formData: DecisionData;
   updateFormData: (updates: Partial<DecisionData>) => void;
+  descriptors?: DescriptorGroups;
 };
 
-export function DecisionStep({ formData, updateFormData }: DecisionStepProps) {
+export function DecisionStep({
+  formData,
+  updateFormData,
+  descriptors = {},
+}: DecisionStepProps) {
+  // Use descriptors from props or fallback to static imports
+  const paymentModes = descriptors.payment_mode || PAYMENT_MODES;
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -58,7 +74,7 @@ export function DecisionStep({ formData, updateFormData }: DecisionStepProps) {
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {PAYMENT_MODES.map((mode) => (
+            {paymentModes.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>

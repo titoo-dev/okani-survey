@@ -17,6 +17,15 @@ import {
   PAYMENT_MODES,
 } from "@/lib/descriptors";
 
+type Descriptor = {
+  id: string;
+  type: string;
+  value: string;
+  label: string;
+};
+
+type DescriptorGroups = Record<string, Descriptor[]>;
+
 type DisputesData = {
   hadOpposition: boolean | undefined;
   oppositionDate: string;
@@ -41,9 +50,19 @@ type DisputesData = {
 type DisputesStepProps = {
   formData: DisputesData;
   updateFormData: (updates: Partial<DisputesData>) => void;
+  descriptors?: DescriptorGroups;
 };
 
-export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
+export function DisputesStep({
+  formData,
+  updateFormData,
+  descriptors = {},
+}: DisputesStepProps) {
+  // Use descriptors from props or fallback to static imports
+  const oppositionNatures = descriptors.opposition_nature || OPPOSITION_NATURES;
+  const paymentModes = descriptors.payment_mode || PAYMENT_MODES;
+  const litigeCauses = descriptors.litige_cause || LITIGE_CAUSES;
+  const litigeOutcomes = descriptors.litige_outcome || LITIGE_OUTCOMES;
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -105,7 +124,7 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
                 <SelectValue placeholder="Sélectionnez la nature" />
               </SelectTrigger>
               <SelectContent>
-                {OPPOSITION_NATURES.map((nature) => (
+                {oppositionNatures.map((nature) => (
                   <SelectItem key={nature.value} value={nature.value}>
                     {nature.label}
                   </SelectItem>
@@ -188,7 +207,7 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
                     <SelectValue placeholder="Sélectionnez un mode de paiement" />
                   </SelectTrigger>
                   <SelectContent>
-                    {PAYMENT_MODES.map((mode) => (
+                    {paymentModes.map((mode) => (
                       <SelectItem key={mode.value} value={mode.value}>
                         {mode.label}
                       </SelectItem>
@@ -330,7 +349,7 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
                 <SelectValue placeholder="Sélectionnez la cause" />
               </SelectTrigger>
               <SelectContent>
-                {LITIGE_CAUSES.map((cause) => (
+                {litigeCauses.map((cause) => (
                   <SelectItem key={cause.value} value={cause.value}>
                     {cause.label}
                   </SelectItem>
@@ -377,7 +396,7 @@ export function DisputesStep({ formData, updateFormData }: DisputesStepProps) {
                 <SelectValue placeholder="Sélectionnez l'issue" />
               </SelectTrigger>
               <SelectContent>
-                {LITIGE_OUTCOMES.map((outcome) => (
+                {litigeOutcomes.map((outcome) => (
                   <SelectItem key={outcome.value} value={outcome.value}>
                     {outcome.label}
                   </SelectItem>

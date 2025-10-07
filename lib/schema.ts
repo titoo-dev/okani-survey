@@ -21,24 +21,10 @@ export const stageSelectionSchema = z.object({
   ),
 });
 
-const userProfileSchema = z.object({
-  dossierId: z.string().min(1, "Le numéro de dossier est requis"),
-  depositCity: z.string().min(1, "La ville de dépôt est requise"),
-  regularizationCity: z
-    .string()
-    .min(1, "La ville de régularisation est requise"),
-  residenceCity: z.string().min(1, "La ville de résidence est requise"),
-  userType: z.enum(["usager", "partenaire", "intermediaire"], {
-    message: "Le type d'usager est requis",
-  }),
-  legalEntity: z.enum(["physique", "morale"], {
-    message: "La personnalité juridique est requise",
-  }),
-  nationality: z.string().min(1, "La nationalité est requise"),
-});
 
 export const surveyFormSchema = z
   .object({
+    email: z.string().email("Email invalide").min(1, "L'email est requis"),
     stageReached: z.string().min(1, "L'étape atteinte est requise"),
 
     dossierId: z.string(),

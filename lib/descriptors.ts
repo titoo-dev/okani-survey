@@ -2,6 +2,7 @@ export type Descriptor = {
   type: string;
   value: string;
   label: string;
+  order?: number;
 };
 
 /**
@@ -126,13 +127,13 @@ export const LEGAL_ENTITIES: Descriptor[] = [
  * - SurveySummary: stageReached field for step visibility logic
  */
 export const STAGES: Descriptor[] = [
-  { type: "stage", value: "depot", label: "Dépôt de dossier" },
-  { type: "stage", value: "enquete", label: "Enquête foncière" },
-  { type: "stage", value: "etat-lieux", label: "État des lieux" },
-  { type: "stage", value: "affichage", label: "Avis d'affichage" },
-  { type: "stage", value: "bornage", label: "PV et plan de bornage" },
-  { type: "stage", value: "evaluation", label: "Rapport d'évaluation" },
-  { type: "stage", value: "decision", label: "Décision et transmission" },
+  { type: "stage", value: "depot", label: "Dépôt de dossier", order: 1 },
+  { type: "stage", value: "enquete", label: "Enquête foncière", order: 2 },
+  { type: "stage", value: "etat-lieux", label: "État des lieux", order: 3 },
+  { type: "stage", value: "affichage", label: "Avis d'affichage", order: 4 },
+  { type: "stage", value: "bornage", label: "PV et plan de bornage", order: 5 },
+  { type: "stage", value: "evaluation", label: "Rapport d'évaluation", order: 6 },
+  { type: "stage", value: "decision", label: "Décision et transmission", order: 7 },
 ];
 
 /**

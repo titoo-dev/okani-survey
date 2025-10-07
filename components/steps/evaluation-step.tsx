@@ -15,6 +15,15 @@ import {
   PAYMENT_MODES,
 } from "@/lib/descriptors";
 
+type Descriptor = {
+  id: string;
+  type: string;
+  value: string;
+  label: string;
+};
+
+type DescriptorGroups = Record<string, Descriptor[]>;
+
 type EvaluationData = {
   depotEvaluation: string;
   depotPaymentMode: string;
@@ -57,6 +66,7 @@ type EvaluationStepProps = {
   updateFormData: (updates: Partial<EvaluationData>) => void;
   stepTitle: string;
   stepKey: string;
+  descriptors?: DescriptorGroups;
 };
 
 export function EvaluationStep({
@@ -64,7 +74,13 @@ export function EvaluationStep({
   updateFormData,
   stepTitle,
   stepKey,
+  descriptors = {},
 }: EvaluationStepProps) {
+  // Use descriptors from props or fallback to static imports
+  const paymentModes = descriptors.payment_mode || PAYMENT_MODES;
+  const evaluationOptions = descriptors.evaluation || EVALUATION_OPTIONS;
+  const affichageChannels =
+    descriptors.affichage_channel || AFFICHAGE_INFORMATION_CHANNELS;
   const renderDepotStep = () => (
     <>
       <div className="space-y-2">
@@ -77,7 +93,7 @@ export function EvaluationStep({
             <SelectValue placeholder="Sélectionnez une évaluation" />
           </SelectTrigger>
           <SelectContent>
-            {EVALUATION_OPTIONS.map((option) => (
+            {evaluationOptions.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>
@@ -119,7 +135,7 @@ export function EvaluationStep({
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {PAYMENT_MODES.map((mode) => (
+            {paymentModes.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>
@@ -209,7 +225,7 @@ export function EvaluationStep({
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {PAYMENT_MODES.map((mode) => (
+            {paymentModes.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>
@@ -298,7 +314,7 @@ export function EvaluationStep({
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {PAYMENT_MODES.map((mode) => (
+            {paymentModes.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>
@@ -428,7 +444,7 @@ export function EvaluationStep({
           }
           disabled={formData.affichageWasInformed !== true}
         >
-          {AFFICHAGE_INFORMATION_CHANNELS.map((channel) => (
+          {affichageChannels.map((channel) => (
             <div key={channel.value} className="flex items-center space-x-2">
               <RadioGroupItem
                 value={channel.value}
@@ -579,7 +595,7 @@ export function EvaluationStep({
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {PAYMENT_MODES.map((mode) => (
+            {paymentModes.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>
@@ -676,7 +692,7 @@ export function EvaluationStep({
             <SelectValue placeholder="Sélectionnez un mode de paiement" />
           </SelectTrigger>
           <SelectContent>
-            {PAYMENT_MODES.map((mode) => (
+            {paymentModes.map((mode) => (
               <SelectItem key={mode.value} value={mode.value}>
                 {mode.label}
               </SelectItem>
