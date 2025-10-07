@@ -2,6 +2,13 @@
 
 This document describes the REST API endpoints for the Okani Survey application.
 
+## OpenAPI Specification
+
+A comprehensive OpenAPI 3.0 specification is available at [`openapi.json`](./openapi.json). You can:
+- Import it into **Postman**, **Insomnia**, or other API clients
+- Use it with **Swagger UI** for interactive documentation
+- Generate client SDKs in various languages using **OpenAPI Generator**
+
 ## Base URL
 
 All API endpoints are relative to: `/api`
@@ -26,7 +33,7 @@ Descriptors are used to manage dropdown options and form field values.
 
 ### GET /api/descriptors
 
-Get all descriptors or filter by type.
+Get all descriptors or filter by type. Descriptors are sorted by type, order, and label.
 
 **Query Parameters:**
 - `type` (optional): Filter descriptors by type (e.g., "payment_mode", "user_type")
@@ -41,6 +48,7 @@ Get all descriptors or filter by type.
       "type": "payment_mode",
       "value": "especes",
       "label": "Espèces",
+      "order": 0,
       "createdAt": "2025-01-01T00:00:00.000Z",
       "updatedAt": "2025-01-01T00:00:00.000Z"
     }
@@ -77,9 +85,12 @@ Create a new descriptor.
 {
   "type": "payment_mode",
   "value": "especes",
-  "label": "Espèces"
+  "label": "Espèces",
+  "order": 0
 }
 ```
+
+**Note:** The `order` field is optional and defaults to `0`. Lower values appear first in the UI.
 
 **Response:**
 ```json

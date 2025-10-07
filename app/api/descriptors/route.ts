@@ -7,6 +7,7 @@ const descriptorSchema = z.object({
   type: z.string().min(1, "Type is required"),
   value: z.string().min(1, "Value is required"),
   label: z.string().min(1, "Label is required"),
+  order: z.number().int().default(0),
 });
 
 // GET /api/descriptors - Get all descriptors or filter by type
@@ -19,7 +20,7 @@ export async function GET(request: Request) {
 
     const descriptors = await prisma.descriptor.findMany({
       where,
-      orderBy: [{ type: "asc" }, { label: "asc" }],
+      orderBy: [{ type: "asc" }, { order: "asc" }, { label: "asc" }],
     });
 
     return NextResponse.json({
