@@ -64,23 +64,13 @@ export const sendEmail = async (params: SendEmailParams): Promise<BrevoResponse>
 
   // Check for required environment variables
   const apiKey = process.env.BREVO_API_KEY;
-  const fromEmail = process.env.BREVO_FROM_EMAIL;
-  const fromName = process.env.BREVO_FROM_NAME || "Okani Survey";
 
   if (!apiKey) {
     throw new Error("BREVO_API_KEY environment variable is not set");
   }
 
-  if (!fromEmail) {
-    throw new Error("BREVO_FROM_EMAIL environment variable is not set");
-  }
-
   // Prepare request body
   const requestBody = {
-    sender: {
-      email: fromEmail,
-      name: fromName,
-    },
     to: validatedParams.to,
     subject: validatedParams.subject,
     htmlContent: validatedParams.htmlContent,

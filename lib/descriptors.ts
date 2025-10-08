@@ -27,12 +27,12 @@ export const PAYMENT_MODES: Descriptor[] = [
  * - EvaluationStep: depotEvaluation (depot step only)
  */
 export const EVALUATION_OPTIONS: Descriptor[] = [
-  { type: "evaluation", value: "excellent", label: "Excellent" },
-  { type: "evaluation", value: "tres-bien", label: "Très bien" },
-  { type: "evaluation", value: "bien", label: "Bien" },
-  { type: "evaluation", value: "assez-bien", label: "Assez bien" },
-  { type: "evaluation", value: "passable", label: "Passable" },
-  { type: "evaluation", value: "mediocre", label: "Médiocre" },
+  { type: "evaluation", value: "excellent", label: "Excellent", order: 1 },
+  { type: "evaluation", value: "tres-bien", label: "Très bien", order: 2 },
+  { type: "evaluation", value: "bien", label: "Bien", order: 3 },
+  { type: "evaluation", value: "assez-bien", label: "Assez bien", order: 4 },
+  { type: "evaluation", value: "passable", label: "Passable", order: 5 },
+  { type: "evaluation", value: "mediocre", label: "Médiocre", order: 6 },
 ];
 
 /**
