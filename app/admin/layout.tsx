@@ -6,11 +6,15 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
 	const navigationItems = [
 		{
-			title: "Menu",
+			title: "Dashboard",
 			items: [
 				{
-					title: "Tableau de bord",
-					url: "/admin/dashboard",
+					title: "Statistiques",
+					url: "/admin/dashboard/statistics",
+				},
+				{
+					title: "Liste des enquêtes",
+					url: "/admin/dashboard/surveys",
 				},
 			],
 		}

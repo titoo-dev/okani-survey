@@ -37,10 +37,8 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import { Download, Filter, X, BarChart3, Users, FileText } from "lucide-react";
+import { Filter, X, BarChart3, Users, FileText } from "lucide-react";
 import type { DashboardData, DashboardFilters } from "@/app/actions/dashboard";
-import { exportSurveysToCSV } from "@/app/actions/dashboard";
-import { toast } from "sonner";
 
 const CITIES = ["Libreville", "Lambaréné", "Mouila"];
 const STAGES = [
@@ -73,19 +71,18 @@ const PIE_COLORS = [
   "hsl(var(--stat-warning))",
 ];
 
-type DashboardClientProps = {
+type StatisticsClientProps = {
   initialData: DashboardData;
   initialFilters: DashboardFilters;
 };
 
-export function DashboardClient({
+export function StatisticsClient({
   initialData,
   initialFilters,
-}: DashboardClientProps) {
+}: StatisticsClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const [isExporting, setIsExporting] = useState(false);
 
   const [filters, setFilters] = useState<DashboardFilters>(initialFilters);
 
@@ -103,40 +100,15 @@ export function DashboardClient({
       } else {
         params.set(key, value);
       }
-      router.push(`/admin/dashboard?${params.toString()}`);
+      router.push(`/admin/dashboard/statistics?${params.toString()}`);
     });
   };
 
   const handleClearFilters = () => {
     setFilters({});
     startTransition(() => {
-      router.push("/admin/dashboard");
+      router.push("/admin/dashboard/statistics");
     });
-  };
-
-  const handleExportCSV = async () => {
-    setIsExporting(true);
-    try {
-      const csvContent = await exportSurveysToCSV(filters);
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      const url = URL.createObjectURL(blob);
-      link.setAttribute("href", url);
-      link.setAttribute(
-        "download",
-        `okani-survey-${new Date().toISOString().split("T")[0]}.csv`
-      );
-      link.style.visibility = "hidden";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      toast.success("Export CSV réussi");
-    } catch (error) {
-      console.error("Error exporting CSV:", error);
-      toast.error("Erreur lors de l'export CSV");
-    } finally {
-      setIsExporting(false);
-    }
   };
 
   const hasActiveFilters = filters.city || filters.stage;
@@ -147,20 +119,12 @@ export function DashboardClient({
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">
-            Tableau de bord
+            Statistiques
           </h1>
           <p className="text-muted-foreground">
-            Statistiques des enquêtes Okani Survey
+            Visualisation des données et analyses
           </p>
         </div>
-        <Button
-          onClick={handleExportCSV}
-          disabled={isExporting || isPending}
-          className="gap-2"
-        >
-          <Download className="h-4 w-4" />
-          {isExporting ? "Export en cours..." : "Exporter CSV"}
-        </Button>
       </div>
 
       {/* Filters */}
@@ -235,12 +199,12 @@ export function DashboardClient({
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="border-l-4 border-l-stat-info">
+        <Card className="border-l-4">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total des enquêtes
             </CardTitle>
-            <div className="rounded-full bg-stat-info/10 p-2">
+            <div className="rounded-full p-2">
               <FileText className="h-4 w-4 text-stat-info" />
             </div>
           </CardHeader>
@@ -254,15 +218,15 @@ export function DashboardClient({
           </CardContent>
         </Card>
 
-        <Card className="border-l-4 border-l-stat-success">
+        <Card className="border-l-4">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Villes</CardTitle>
-            <div className="rounded-full bg-stat-success/10 p-2">
-              <BarChart3 className="h-4 w-4 text-stat-success" />
+            <div className="rounded-full p-2">
+              <BarChart3 className="h-4 w-4" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-stat-success">
+            <div className="text-2xl font-bold">
               {initialData.citiesStats.length}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -271,17 +235,17 @@ export function DashboardClient({
           </CardContent>
         </Card>
 
-        <Card className="border-l-4 border-l-stat-warning">
+        <Card className="border-l-4">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Étapes suivies
             </CardTitle>
-            <div className="rounded-full bg-stat-warning/10 p-2">
-              <Users className="h-4 w-4 text-stat-warning" />
+            <div className="rounded-full p-2">
+              <Users className="h-4 w-4" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-stat-warning">
+            <div className="text-2xl font-bold">
               {initialData.stagesStats.length}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -329,7 +293,7 @@ export function DashboardClient({
                 <YAxis />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Bar dataKey="count" radius={[8, 8, 0, 0]}>
-                  {initialData.citiesStats.map((entry, index) => (
+                  {initialData.citiesStats.map((entry) => (
                     <Cell 
                       key={`cell-${entry.city}`}
                       fill={
@@ -429,7 +393,7 @@ export function DashboardClient({
           <ChartContainer
             config={{
               average: {
-                label: "Satisfaction moyenne",
+                label: "moyenne",
                 color: "hsl(var(--stat-success))",
               },
             }}
@@ -468,42 +432,6 @@ export function DashboardClient({
               />
             </LineChart>
           </ChartContainer>
-        </CardContent>
-      </Card>
-
-      {/* Recent Surveys Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Enquêtes récentes</CardTitle>
-          <CardDescription>
-            Les 10 dernières enquêtes soumises
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="pb-3 text-left font-medium">Email</th>
-                  <th className="pb-3 text-left font-medium">Ville</th>
-                  <th className="pb-3 text-left font-medium">Étape</th>
-                  <th className="pb-3 text-left font-medium">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {initialData.recentSurveys.map((survey) => (
-                  <tr key={survey.id} className="border-b">
-                    <td className="py-3">{survey.email}</td>
-                    <td className="py-3">{survey.depositCity}</td>
-                    <td className="py-3">{survey.stageReached}</td>
-                    <td className="py-3">
-                      {new Date(survey.createdAt).toLocaleDateString("fr-FR")}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </CardContent>
       </Card>
     </div>
