@@ -7,7 +7,7 @@ export const Footer = () => {
   const pathname = usePathname();
 
   // Hide footer on admin routes
-  if (pathname?.startsWith("/admin")) {
+  if (['/admin', '/auth'].includes(pathname)) {
     return null;
   }
 

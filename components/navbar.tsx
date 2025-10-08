@@ -19,7 +19,7 @@ export const Navbar = () => {
   };
 
   // Hide navbar on admin routes
-  if (pathname?.startsWith("/admin")) {
+  if (['/admin', '/auth'].includes(pathname)) {
     return null;
   }
 
@@ -30,7 +30,7 @@ export const Navbar = () => {
           <div className="flex items-center gap-8">
             <Link
               href="/"
-              className="relative flex items-center h-16 w-[180px] transition-opacity hover:opacity-80"
+              className="relative flex items-center h-16 w-16 transition-opacity hover:opacity-80"
             >
               <Image
                 src="/logo.png"
