@@ -199,17 +199,17 @@ export function StatisticsClient({
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="border-l-4">
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total des enquêtes
             </CardTitle>
             <div className="rounded-full p-2">
-              <FileText className="h-4 w-4 text-stat-info" />
+              <FileText className="h-4 w-4" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-stat-info">
+            <div className="text-2xl font-bold">
               {initialData.totalSurveys}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -218,7 +218,7 @@ export function StatisticsClient({
           </CardContent>
         </Card>
 
-        <Card className="border-l-4">
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Villes</CardTitle>
             <div className="rounded-full p-2">
@@ -235,7 +235,7 @@ export function StatisticsClient({
           </CardContent>
         </Card>
 
-        <Card className="border-l-4">
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Étapes suivies
