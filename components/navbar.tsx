@@ -19,7 +19,7 @@ export const Navbar = () => {
   };
 
   // Hide navbar on admin routes
-  if (pathname?.startsWith("/admin") || pathname?.startsWith("/auth")) {
+  if (pathname?.includes("/admin") || pathname?.includes("/auth")) {
     return null;
   }
 

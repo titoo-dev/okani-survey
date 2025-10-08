@@ -51,7 +51,7 @@ export function AppSidebar({
     startTransition(async () => {
       const result = await signOutAction()
       if (result.success) {
-        router.push('/')
+        router.push('/admin')
       }
     })
   }
