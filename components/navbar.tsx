@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
 
 export const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -15,6 +17,11 @@ export const Navbar = () => {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
+
+  // Hide navbar on admin routes
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <nav className="sticky top-0 py-4 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -34,33 +41,6 @@ export const Navbar = () => {
               />
             </Link>
           </div>
-
-          {/* <div className="hidden items-center gap-6 md:flex">
-            <Link
-              href="/"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Accueil
-            </Link>
-            <Link
-              href="/about"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              À propos
-            </Link>
-            <Link
-              href="/faq"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              FAQ
-            </Link>
-            <Link
-              href="/contact"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Contact
-            </Link>
-          </div> */}
 
           <div className="flex items-center gap-4">
             <Button asChild size="sm" className="hidden sm:flex">
