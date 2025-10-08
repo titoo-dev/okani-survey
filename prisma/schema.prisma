@@ -121,7 +121,7 @@ model Survey {
   bornageHasReceipt        Boolean?
   bornageSatisfaction      String?
 
-  evaluationPriceUnderstanding String?
+  evaluationPriceUnderstanding Boolean?
   evaluationPaymentMode        String?
   evaluationOtherPaymentMode   String?
   evaluationHasReceipt         Boolean?

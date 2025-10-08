@@ -56,41 +56,54 @@ interface BrevoError {
 }
 
 /**
- * Send an email using Brevo API
+ * Load email template with context variables
  */
-export const sendEmail = async (params: SendEmailParams): Promise<BrevoResponse> => {
-  // Validate parameters
-  const validatedParams = sendEmailSchema.parse(params);
+const loadTemplate = (template: string, context: Record<string, any>): string => {
+  // This is a simple template loader - you can enhance it based on your needs
+  let htmlContent = template;
+  
+  // Replace context variables in the template
+  Object.keys(context).forEach(key => {
+    const placeholder = `{{${key}}}`;
+    const value = context[key] || '';
+    htmlContent = htmlContent.replace(new RegExp(placeholder, 'g'), value);
+  });
+  
+  return htmlContent;
+};
 
-  // Check for required environment variables
-  const apiKey = process.env.BREVO_API_KEY;
+/**
+ * Send an email using Brevo API with the new payload structure
+ */
+export const sendEmailByApi = async ({
+  to,
+  subject,
+  template,
+  context,
+}: {
+  to: string;
+  subject: string;
+  template: string;
+  context: Record<string, any>;
+}): Promise<BrevoResponse> => {
+  const url = 'https://api.brevo.com/v3/smtp/email';
+  const htmlContent = loadTemplate(template, context);
 
-  if (!apiKey) {
-    throw new Error("BREVO_API_KEY environment variable is not set");
-  }
-
-  // Prepare request body
-  const requestBody = {
-    to: validatedParams.to,
-    subject: validatedParams.subject,
-    htmlContent: validatedParams.htmlContent,
-    textContent: validatedParams.textContent,
-    replyTo: validatedParams.replyTo,
-    cc: validatedParams.cc,
-    bcc: validatedParams.bcc,
-    headers: validatedParams.headers,
-    tags: validatedParams.tags,
+  const payload = {
+    sender: { email: 'ezangoapp@gmail.com' },
+    to: [{ email: to }],
+    subject,
+    htmlContent,
   };
 
   try {
-    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
-      method: "POST",
+    const response = await fetch(url, {
+      method: 'POST',
       headers: {
-        "accept": "application/json",
-        "api-key": apiKey,
-        "content-type": "application/json",
+        'api-key': process.env.BREVO_API_KEY!,
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -101,7 +114,7 @@ export const sendEmail = async (params: SendEmailParams): Promise<BrevoResponse>
     const data = await response.json() as BrevoResponse;
     return data;
   } catch (error) {
-    console.error("Failed to send email:", error);
+    console.error("Erreur lors de l'envoi de l'email", error);
     throw error;
   }
 };
@@ -116,12 +129,14 @@ export const sendVerificationEmail = async (
 ): Promise<BrevoResponse> => {
   const template = verificationTemplate(verificationLink, userName);
   
-  return sendEmail({
-    to: [{ email, name: userName }],
+  return sendEmailByApi({
+    to: email,
     subject: template.subject,
-    htmlContent: template.htmlContent,
-    textContent: template.textContent,
-    tags: ["verification", "auth"],
+    template: template.htmlContent,
+    context: {
+      verificationLink,
+      userName: userName || "",
+    },
   });
 };
 
@@ -136,12 +151,14 @@ export const sendPasswordResetEmail = async (
 ): Promise<BrevoResponse> => {
   const template = passwordResetTemplate(resetLink, userName);
   
-  return sendEmail({
-    to: [{ email, name: userName }],
+  return sendEmailByApi({
+    to: email,
     subject: template.subject,
-    htmlContent: template.htmlContent,
-    textContent: template.textContent,
-    tags: ["password-reset", "auth"],
+    template: template.htmlContent,
+    context: {
+      resetLink,
+      userName: userName || "",
+    },
   });
 };
 
@@ -155,12 +172,14 @@ export const sendSurveyConfirmationEmail = async (
 ): Promise<BrevoResponse> => {
   const template = surveyConfirmationTemplate(userName, dossierId);
   
-  return sendEmail({
-    to: [{ email, name: userName }],
+  return sendEmailByApi({
+    to: email,
     subject: template.subject,
-    htmlContent: template.htmlContent,
-    textContent: template.textContent,
-    tags: ["survey", "confirmation"],
+    template: template.htmlContent,
+    context: {
+      userName,
+      dossierId: dossierId || "",
+    },
   });
 };
 
@@ -173,11 +192,24 @@ export const sendAdminNotificationEmail = async (
 ): Promise<BrevoResponse> => {
   const template = adminNotificationTemplate(surveyInfo);
   
-  return sendEmail({
-    to: [{ email: adminEmail, name: "Admin OKANI" }],
+  return sendEmailByApi({
+    to: adminEmail,
     subject: template.subject,
-    htmlContent: template.htmlContent,
-    textContent: template.textContent,
-    tags: ["admin", "notification"],
+    template: template.htmlContent,
+    context: {
+      userName: surveyInfo.userName,
+      userEmail: surveyInfo.userEmail,
+      city: surveyInfo.city,
+      procedureType: surveyInfo.procedureType,
+      stageReached: surveyInfo.stageReached,
+      dossierId: surveyInfo.dossierId || "",
+      submittedAt: surveyInfo.submittedAt.toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      }),
+    },
   });
 };
