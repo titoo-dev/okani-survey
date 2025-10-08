@@ -216,3 +216,11 @@ export async function exportSurveysToCSV(
   return csvContent;
 }
 
+export async function getSurveyById(id: string) {
+  const survey = await prisma.survey.findUnique({
+    where: { id },
+  });
+
+  return survey;
+}
+

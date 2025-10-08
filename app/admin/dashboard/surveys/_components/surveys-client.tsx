@@ -273,7 +273,8 @@ export function SurveysClient({
                   filteredSurveys.map((survey) => (
                     <tr 
                       key={survey.id} 
-                      className="border-b transition-colors hover:bg-muted/50"
+                      className="border-b transition-colors hover:bg-muted/50 cursor-pointer"
+                      onClick={() => router.push(`/admin/dashboard/surveys/${survey.id}`)}
                     >
                       <td className="py-3 font-mono text-xs text-muted-foreground">
                         {survey.id.slice(0, 8)}...
