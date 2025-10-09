@@ -166,7 +166,11 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
   });
 
   useEffect(() => {
-    const stageReached = sessionStorage.getItem("stageReached");
+    // Try to get stageReached from localStorage first, then sessionStorage
+    const stageReached =
+      localStorage.getItem("stageReached") ||
+      sessionStorage.getItem("stageReached");
+
     if (!stageReached) {
       router.push("/stage-selection");
       return;
@@ -421,8 +425,11 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
     const loadingToast = toast.loading("Soumission de l'enquête en cours...");
 
     try {
-      // Get email from session storage
-      const email = sessionStorage.getItem("userEmail");
+      // Get email from localStorage first, then sessionStorage
+      const email =
+        localStorage.getItem("userEmail") ||
+        sessionStorage.getItem("userEmail");
+
       if (!email) {
         toast.error(
           "Email non trouvé. Veuillez recommencer depuis la sélection d'étape.",
@@ -471,6 +478,8 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
         // Clear local storage and session storage
         localStorage.removeItem("surveyFormData");
         localStorage.removeItem("surveyCurrentStep");
+        localStorage.removeItem("stageReached");
+        localStorage.removeItem("userEmail");
         sessionStorage.removeItem("stageReached");
         sessionStorage.removeItem("userEmail");
 
@@ -496,7 +505,10 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
     ) {
       localStorage.removeItem("surveyFormData");
       localStorage.removeItem("surveyCurrentStep");
+      localStorage.removeItem("stageReached");
+      localStorage.removeItem("userEmail");
       sessionStorage.removeItem("stageReached");
+      sessionStorage.removeItem("userEmail");
       router.push("/stage-selection");
     }
   };
