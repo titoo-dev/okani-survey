@@ -47,9 +47,17 @@ export const Footer = () => {
           </div>
         </div>
         <div className="mt-8 md:order-1 md:mt-0">
-          <p className="text-sm leading-5 text-muted-foreground">
+          <p className="text-sm leading-5 text-muted-foreground mb-3">
             &copy; 2025 Okani Survey. Tous droits réservés.
           </p>
+          <div className="flex gap-4">
+            <a
+              href="/cgu"
+              className="text-sm text-muted-foreground hover:text-primary transition-colors underline-offset-4 hover:underline"
+            >
+              Conditions générales d'utilisation
+            </a>
+          </div>
         </div>
       </div>
     </footer>
