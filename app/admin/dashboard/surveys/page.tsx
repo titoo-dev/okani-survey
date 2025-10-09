@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { getDashboardStats } from "@/app/actions/dashboard";
+import { getSurveysPaginated } from "@/app/actions/dashboard";
 import { SurveysClient } from "./_components/surveys-client";
 
 export const dynamic = "force-dynamic";
@@ -26,12 +26,16 @@ export default async function SurveysPage({
   }
 
   const params = await searchParams;
+  const page = params.page ? Number.parseInt(params.page) : 1;
+  
   const filters = {
     city: params.city,
     stage: params.stage,
+    page,
+    limit: 10,
   };
 
-  const data = await getDashboardStats(filters);
+  const data = await getSurveysPaginated(filters);
 
   return <SurveysClient initialData={data} initialFilters={filters} />;
 }

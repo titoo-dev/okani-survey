@@ -5,6 +5,8 @@ import prisma from "@/lib/prisma";
 export type DashboardFilters = {
   city?: string;
   stage?: string;
+  page?: number;
+  limit?: number;
 };
 
 export type CityStats = {
@@ -222,5 +224,70 @@ export async function getSurveyById(id: string) {
   });
 
   return survey;
+}
+
+export type PaginatedSurveysData = {
+  surveys: Array<{
+    id: string;
+    email: string;
+    depositCity: string;
+    stageReached: string;
+    createdAt: Date;
+  }>;
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+};
+
+export async function getSurveysPaginated(
+  filters: DashboardFilters = {}
+): Promise<PaginatedSurveysData> {
+  const { city, stage, page = 1, limit = 10 } = filters;
+
+  // Build where clause
+  const where: Record<string, unknown> = {};
+  if (city) {
+    where.depositCity = city;
+  }
+  if (stage) {
+    where.stageReached = stage;
+  }
+
+  // Get total count for pagination
+  const total = await prisma.survey.count({ where });
+
+  // Calculate pagination
+  const totalPages = Math.ceil(total / limit);
+  const skip = (page - 1) * limit;
+
+  // Get paginated surveys
+  const surveys = await prisma.survey.findMany({
+    where,
+    select: {
+      id: true,
+      email: true,
+      depositCity: true,
+      stageReached: true,
+      createdAt: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    skip,
+    take: limit,
+  });
+
+  return {
+    surveys,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages,
+    },
+  };
 }
 

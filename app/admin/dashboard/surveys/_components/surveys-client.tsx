@@ -17,10 +17,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { Download, Filter, X, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import type { DashboardData, DashboardFilters } from "@/app/actions/dashboard";
+import type { PaginatedSurveysData, DashboardFilters } from "@/app/actions/dashboard";
 import { exportSurveysToCSV } from "@/app/actions/dashboard";
 import { toast } from "sonner";
 
@@ -36,7 +53,7 @@ const STAGES = [
 ];
 
 type SurveysClientProps = {
-  initialData: DashboardData;
+  initialData: PaginatedSurveysData;
   initialFilters: DashboardFilters;
 };
 
@@ -51,11 +68,13 @@ export function SurveysClient({
   const [searchQuery, setSearchQuery] = useState("");
 
   const [filters, setFilters] = useState<DashboardFilters>(initialFilters);
+  const currentPage = initialFilters.page || 1;
 
   const handleFilterChange = (key: keyof DashboardFilters, value: string) => {
     const newFilters = {
       ...filters,
       [key]: value === "all" ? undefined : value,
+      page: 1, // Reset to first page when filter changes
     };
     setFilters(newFilters);
 
@@ -66,12 +85,21 @@ export function SurveysClient({
       } else {
         params.set(key, value);
       }
+      params.set("page", "1");
+      router.push(`/admin/dashboard/surveys?${params.toString()}`);
+    });
+  };
+
+  const handlePageChange = (page: number) => {
+    startTransition(() => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", page.toString());
       router.push(`/admin/dashboard/surveys?${params.toString()}`);
     });
   };
 
   const handleClearFilters = () => {
-    setFilters({});
+    setFilters({ page: 1 });
     setSearchQuery("");
     startTransition(() => {
       router.push("/admin/dashboard/surveys");
@@ -105,8 +133,8 @@ export function SurveysClient({
 
   const hasActiveFilters = filters.city || filters.stage || searchQuery;
 
-  // Filter surveys based on search query
-  const filteredSurveys = initialData.recentSurveys.filter((survey) => {
+  // Filter surveys based on search query (client-side filtering for search)
+  const filteredSurveys = initialData.surveys.filter((survey) => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
     return (
@@ -116,6 +144,8 @@ export function SurveysClient({
       survey.id.toLowerCase().includes(query)
     );
   });
+
+  const { pagination } = initialData;
 
   const getStageBadgeColor = (stage: string) => {
     switch (stage) {
@@ -244,68 +274,179 @@ export function SurveysClient({
       <Card>
         <CardHeader>
           <CardTitle>
-            Enquêtes ({filteredSurveys.length})
+            Enquêtes ({pagination.total})
           </CardTitle>
           <CardDescription>
-            Liste complète des enquêtes soumises
+            Liste complète des enquêtes soumises - Page {currentPage} sur {pagination.totalPages}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="pb-3 text-left font-medium">ID</th>
-                  <th className="pb-3 text-left font-medium">Email</th>
-                  <th className="pb-3 text-left font-medium">Ville</th>
-                  <th className="pb-3 text-left font-medium">Étape</th>
-                  <th className="pb-3 text-left font-medium">Date</th>
-                </tr>
-              </thead>
-              <tbody>
+        <CardContent className="space-y-4">
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[100px]">ID</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Ville</TableHead>
+                  <TableHead>Étape</TableHead>
+                  <TableHead className="text-right">Date</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {filteredSurveys.length === 0 ? (
-                  <tr>
-                    <td colSpan={5} className="py-8 text-center text-muted-foreground">
+                  <TableRow>
+                    <TableCell colSpan={5} className="h-24 text-center">
                       Aucune enquête trouvée
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ) : (
                   filteredSurveys.map((survey) => (
-                    <tr 
-                      key={survey.id} 
-                      className="border-b transition-colors hover:bg-muted/50 cursor-pointer"
+                    <TableRow
+                      key={survey.id}
+                      className="cursor-pointer"
                       onClick={() => router.push(`/admin/dashboard/surveys/${survey.id}`)}
                     >
-                      <td className="py-3 font-mono text-xs text-muted-foreground">
+                      <TableCell className="font-mono text-xs text-muted-foreground">
                         {survey.id.slice(0, 8)}...
-                      </td>
-                      <td className="py-3">{survey.email}</td>
-                      <td className="py-3">
+                      </TableCell>
+                      <TableCell className="font-medium">{survey.email}</TableCell>
+                      <TableCell>
                         <Badge variant="outline" className="font-normal">
                           {survey.depositCity}
                         </Badge>
-                      </td>
-                      <td className="py-3">
-                        <Badge 
-                          variant="outline" 
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="outline"
                           className={getStageBadgeColor(survey.stageReached)}
                         >
                           {survey.stageReached}
                         </Badge>
-                      </td>
-                      <td className="py-3 text-muted-foreground">
+                      </TableCell>
+                      <TableCell className="text-right text-muted-foreground">
                         {new Date(survey.createdAt).toLocaleDateString("fr-FR", {
                           year: "numeric",
                           month: "short",
                           day: "numeric",
                         })}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))
                 )}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
+
+          {/* Pagination */}
+          {pagination.totalPages > 1 && (
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-muted-foreground">
+                Affichage de {((currentPage - 1) * pagination.limit) + 1} à{" "}
+                {Math.min(currentPage * pagination.limit, pagination.total)} sur{" "}
+                {pagination.total} résultats
+              </p>
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage > 1) {
+                          handlePageChange(currentPage - 1);
+                        }
+                      }}
+                      className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
+                    />
+                  </PaginationItem>
+
+                  {/* First page */}
+                  {currentPage > 2 && (
+                    <>
+                      <PaginationItem>
+                        <PaginationLink
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(1);
+                          }}
+                        >
+                          1
+                        </PaginationLink>
+                      </PaginationItem>
+                      {currentPage > 3 && (
+                        <PaginationItem>
+                          <PaginationEllipsis />
+                        </PaginationItem>
+                      )}
+                    </>
+                  )}
+
+                  {/* Current page and neighbors */}
+                  {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+                    .filter(
+                      (page) =>
+                        page === currentPage ||
+                        page === currentPage - 1 ||
+                        page === currentPage + 1
+                    )
+                    .map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          href="#"
+                          isActive={page === currentPage}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(page);
+                          }}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+
+                  {/* Last page */}
+                  {currentPage < pagination.totalPages - 1 && (
+                    <>
+                      {currentPage < pagination.totalPages - 2 && (
+                        <PaginationItem>
+                          <PaginationEllipsis />
+                        </PaginationItem>
+                      )}
+                      <PaginationItem>
+                        <PaginationLink
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handlePageChange(pagination.totalPages);
+                          }}
+                        >
+                          {pagination.totalPages}
+                        </PaginationLink>
+                      </PaginationItem>
+                    </>
+                  )}
+
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (currentPage < pagination.totalPages) {
+                          handlePageChange(currentPage + 1);
+                        }
+                      }}
+                      className={
+                        currentPage === pagination.totalPages
+                          ? "pointer-events-none opacity-50"
+                          : ""
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
