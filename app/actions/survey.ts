@@ -3,6 +3,7 @@
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { surveyFormSchema } from "@/lib/schema";
+import { sendSurveyConfirmationEmail } from "@/lib/email/send-email";
 
 export type SurveySubmitState = {
   success: boolean;
@@ -81,9 +82,18 @@ export async function submitSurvey(
     const preparedData = prepareSurveyData(validatedData);
 
     // Create survey in database
-    await prisma.survey.create({
+    const survey = await prisma.survey.create({
       data: preparedData,
     });
+
+    // Send confirmation email with survey details
+    try {
+      await sendSurveyConfirmationEmail(survey);
+    } catch (emailError) {
+      console.error("Error sending confirmation email:", emailError);
+      // Don't fail the survey submission if email fails
+      // The survey is already saved successfully
+    }
 
     return {
       success: true,

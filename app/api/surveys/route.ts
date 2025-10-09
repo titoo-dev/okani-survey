@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { surveyFormSchema } from "@/lib/schema";
+import { sendSurveyConfirmationEmail } from "@/lib/email/send-email";
 
 /**
  * Generate a unique dossier ID in the format DOSS-YYYY-XXX
@@ -162,6 +163,15 @@ export async function POST(request: Request) {
     const survey = await prisma.survey.create({
       data: preparedData,
     });
+
+    // Send confirmation email with survey details
+    try {
+      await sendSurveyConfirmationEmail(survey);
+    } catch (emailError) {
+      console.error("Error sending confirmation email:", emailError);
+      // Don't fail the survey creation if email fails
+      // The survey is already saved successfully
+    }
 
     // Parse back to return with arrays
     const parsedSurvey = parseSurveyData(survey);

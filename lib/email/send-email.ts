@@ -9,6 +9,7 @@
  */
 
 import { z } from "zod";
+import type { Survey } from "@/lib/generated/prisma";
 import type { SurveyNotificationInfo } from "./types";
 import {
   verificationTemplate,
@@ -163,22 +164,21 @@ export const sendPasswordResetEmail = async (
 };
 
 /**
- * Send a survey confirmation email
+ * Send a survey confirmation email with survey details
  */
 export const sendSurveyConfirmationEmail = async (
-  email: string,
-  userName: string,
-  dossierId?: string
+  survey: Survey
 ): Promise<BrevoResponse> => {
-  const template = surveyConfirmationTemplate(userName, dossierId);
+  const template = surveyConfirmationTemplate(survey);
   
   return sendEmailByApi({
-    to: email,
+    to: survey.email,
     subject: template.subject,
     template: template.htmlContent,
     context: {
-      userName,
-      dossierId: dossierId || "",
+      email: survey.email,
+      dossierId: survey.dossierId || "",
+      stageReached: survey.stageReached,
     },
   });
 };
