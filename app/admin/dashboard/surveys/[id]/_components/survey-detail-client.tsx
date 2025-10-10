@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -11,7 +12,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Calendar, Mail, MapPin, User } from "lucide-react";
+import { StarRating } from "@/components/ui/star-rating";
+import { ArrowLeft, Calendar, Mail, MapPin, User, CheckCircle2, XCircle, MinusCircle } from "lucide-react";
 import type { Survey } from "@/lib/generated/prisma";
 
 type SurveyDetailClientProps = {
@@ -92,14 +94,51 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
   };
 
   const formatBoolean = (value: boolean | null | undefined) => {
-    if (value === null || value === undefined) return "N/A";
-    return value ? "Oui" : "Non";
+    if (value === null || value === undefined) {
+      return (
+        <Badge variant="outline" className="bg-muted/30 text-muted-foreground border-muted">
+          <MinusCircle className="h-3 w-3" />
+          N/A
+        </Badge>
+      );
+    }
+    return value ? (
+      <Badge variant="outline" className="bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20">
+        <CheckCircle2 className="h-3 w-3" />
+        Oui
+      </Badge>
+    ) : (
+      <Badge variant="outline" className="bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20">
+        <XCircle className="h-3 w-3" />
+        Non
+      </Badge>
+    );
   };
 
   const formatValue = (value: string | boolean | null | undefined) => {
     if (value === null || value === undefined || value === "") return "N/A";
     if (typeof value === "boolean") return formatBoolean(value);
     return value;
+  };
+
+  const formatDate = (dateString: string | null | undefined) => {
+    if (!dateString) return "N/A";
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch {
+      return dateString;
+    }
+  };
+
+  const isSatisfactionField = (value: string | number | null | undefined): boolean => {
+    if (value === null || value === undefined) return false;
+    const num = typeof value === "string" ? parseInt(value, 10) : value;
+    return !isNaN(num) && num >= 1 && num <= 5;
   };
 
   return (
@@ -176,15 +215,15 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
               <User className="h-4 w-4 text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium">Type d'utilisateur</p>
-                <p className="text-sm text-muted-foreground">
+                <Badge variant="outline" className="bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20 mt-1">
                   {survey.userType}
-                </p>
+                </Badge>
               </div>
             </div>
           </div>
           <Separator />
           <div className="grid gap-4 md:grid-cols-2">
-            <InfoItem label="N° de dossier" value={survey.dossierId} />
+            <InfoItem label="N° de dossier" value={<span className="font-mono text-xs">{survey.dossierId}</span>} />
             <InfoItem
               label="Ville de régularisation"
               value={survey.regularizationCity}
@@ -192,7 +231,11 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
             <InfoItem label="Ville de résidence" value={survey.residenceCity} />
             <InfoItem label="Entité juridique" value={survey.legalEntity} />
             <InfoItem label="Nationalité" value={survey.nationality} />
-            <InfoItem label="Étape atteinte" value={survey.stageReached} />
+            <InfoItem label="Étape atteinte" value={
+              <Badge variant="outline" className={getStageBadgeColor(survey.stageReached)}>
+                {survey.stageReached}
+              </Badge>
+            } />
           </div>
         </CardContent>
       </Card>
@@ -267,9 +310,9 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
                 label="Reçu obtenu"
                 value={formatBoolean(survey.enqueteHasReceipt)}
               />
-              <InfoItem
+              <InfoItemSatisfaction
                 label="Satisfaction"
-                value={formatValue(survey.enqueteSatisfaction)}
+                value={survey.enqueteSatisfaction}
               />
             </div>
           </CardContent>
@@ -304,9 +347,9 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
                 label="Reçu obtenu"
                 value={formatBoolean(survey.etatLieuxHasReceipt)}
               />
-              <InfoItem
+              <InfoItemSatisfaction
                 label="Satisfaction"
-                value={formatValue(survey.etatLieuxSatisfaction)}
+                value={survey.etatLieuxSatisfaction}
               />
             </div>
           </CardContent>
@@ -353,9 +396,9 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
                 label="Reçu obtenu"
                 value={formatBoolean(survey.affichageHasReceipt)}
               />
-              <InfoItem
+              <InfoItemSatisfaction
                 label="Satisfaction"
-                value={formatValue(survey.affichageSatisfaction)}
+                value={survey.affichageSatisfaction}
               />
             </div>
           </CardContent>
@@ -390,9 +433,9 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
                 label="Reçu obtenu"
                 value={formatBoolean(survey.bornageHasReceipt)}
               />
-              <InfoItem
+              <InfoItemSatisfaction
                 label="Satisfaction"
-                value={formatValue(survey.bornageSatisfaction)}
+                value={survey.bornageSatisfaction}
               />
             </div>
           </CardContent>
@@ -427,9 +470,9 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
                 label="Reçu obtenu"
                 value={formatBoolean(survey.evaluationHasReceipt)}
               />
-              <InfoItem
+              <InfoItemSatisfaction
                 label="Satisfaction"
-                value={formatValue(survey.evaluationSatisfaction)}
+                value={survey.evaluationSatisfaction}
               />
             </div>
           </CardContent>
@@ -476,9 +519,9 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
                 label="Titre de propriété"
                 value={formatBoolean(survey.hasTitrePropriete)}
               />
-              <InfoItem
+              <InfoItemSatisfaction
                 label="Satisfaction"
-                value={formatValue(survey.decisionSatisfaction)}
+                value={survey.decisionSatisfaction}
               />
             </div>
           </CardContent>
@@ -504,9 +547,9 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
                 label="Favoritisme"
                 value={formatBoolean(survey.hasFavoritism)}
               />
-              <InfoItem
+              <InfoItemSatisfaction
                 label="Confiance en la transparence"
-                value={formatValue(survey.trustTransparency)}
+                value={survey.trustTransparency}
               />
             </div>
           </CardContent>
@@ -530,7 +573,7 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
               />
               <InfoItem
                 label="Date d'opposition"
-                value={formatValue(survey.oppositionDate)}
+                value={formatDate(survey.oppositionDate)}
               />
               <InfoItem
                 label="Nature de l'opposition"
@@ -590,9 +633,9 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
                   value={survey.litigeCauseOther}
                 />
               )}
-              <InfoItem
+              <InfoItemSatisfaction
                 label="Satisfaction"
-                value={formatValue(survey.litigeSatisfaction)}
+                value={survey.litigeSatisfaction}
               />
               <InfoItem
                 label="Issue du litige"
@@ -637,15 +680,15 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
               />
               <InfoItem
                 label="Date de transmission"
-                value={formatValue(survey.transmissionDate)}
+                value={formatDate(survey.transmissionDate)}
               />
               <InfoItem
                 label="Coût total"
                 value={formatValue(survey.totalCost)}
               />
-              <InfoItem
+              <InfoItemSatisfaction
                 label="Satisfaction globale"
-                value={formatValue(survey.globalSatisfaction)}
+                value={survey.globalSatisfaction}
               />
             </div>
             {survey.generalSuggestions && (
@@ -666,11 +709,27 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
   );
 }
 
-function InfoItem({ label, value }: { label: string; value: string }) {
+function InfoItem({ label, value }: { label: string; value: string | React.ReactNode }) {
   return (
     <div>
       <p className="text-sm font-medium text-muted-foreground">{label}</p>
-      <p className="text-sm mt-1">{value}</p>
+      <div className="text-sm mt-1">{value}</div>
+    </div>
+  );
+}
+
+function InfoItemSatisfaction({ label, value }: { label: string; value: string | number | null | undefined }) {
+  const numValue = typeof value === "string" ? parseInt(value, 10) : value;
+  const isValidSatisfaction = numValue !== null && numValue !== undefined && !isNaN(numValue) && numValue >= 0 && numValue <= 5;
+
+  return (
+    <div className="col-span-2">
+      <p className="text-sm font-medium text-muted-foreground mb-2">{label}</p>
+      {isValidSatisfaction ? (
+        <StarRating value={numValue} onChange={() => {}} max={5} readonly />
+      ) : (
+        <span className="text-sm text-muted-foreground">N/A</span>
+      )}
     </div>
   );
 }
