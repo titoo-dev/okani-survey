@@ -52,23 +52,23 @@ const STAGES = [
 ];
 
 const COLORS = {
-  chart1: "hsl(var(--chart-1))",
-  chart2: "hsl(var(--chart-2))",
-  chart3: "hsl(var(--chart-3))",
-  chart4: "hsl(var(--chart-4))",
-  chart5: "hsl(var(--chart-5))",
-  statInfo: "hsl(var(--stat-info))",
-  statSuccess: "hsl(var(--stat-success))",
-  statWarning: "hsl(var(--stat-warning))",
+  chart1: "var(--chart-1)",
+  chart2: "var(--chart-2)",
+  chart3: "var(--chart-3)",
+  chart4: "var(--chart-4)",
+  chart5: "var(--chart-5)",
+  statInfo: "var(--stat-info)",
+  statSuccess: "var(--stat-success)",
+  statWarning: "var(--stat-warning)",
 };
 
 const PIE_COLORS = [
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
-  "hsl(var(--stat-warning))",
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+  "var(--chart-5)",
+  "var(--stat-warning)",
 ];
 
 type StatisticsClientProps = {
@@ -270,15 +270,15 @@ export function StatisticsClient({
               config={{
                 Libreville: {
                   label: "Libreville",
-                  color: "hsl(var(--chart-1))",
+                  color: "var(--chart-1)",
                 },
                 Lambaréné: {
                   label: "Lambaréné",
-                  color: "hsl(var(--chart-2))",
+                  color: "var(--chart-2)",
                 },
                 Mouila: {
                   label: "Mouila",
-                  color: "hsl(var(--chart-3))",
+                  color: "var(--chart-3)",
                 },
               }}
               className="h-[300px]"
@@ -322,27 +322,27 @@ export function StatisticsClient({
               config={{
                 "Dépôt de dossier": {
                   label: "Dépôt",
-                  color: "hsl(var(--chart-1))",
+                  color: "var(--chart-1)",
                 },
                 "Enquête foncière": {
                   label: "Enquête",
-                  color: "hsl(var(--chart-2))",
+                  color: "var(--chart-2)",
                 },
                 "Avis d'affichage": {
                   label: "Affichage",
-                  color: "hsl(var(--chart-3))",
+                  color: "var(--chart-3)",
                 },
                 "PV et plan de bornage": {
                   label: "Bornage",
-                  color: "hsl(var(--chart-4))",
+                  color: "var(--chart-4)",
                 },
                 "Rapport d'évaluation": {
                   label: "Évaluation",
-                  color: "hsl(var(--chart-5))",
+                  color: "var(--chart-5)",
                 },
                 "Décision": {
                   label: "Décision",
-                  color: "hsl(var(--stat-warning))",
+                  color: "var(--stat-warning)",
                 },
               }}
               className="h-[300px]"
@@ -394,7 +394,7 @@ export function StatisticsClient({
             config={{
               average: {
                 label: "moyenne",
-                color: "hsl(var(--stat-success))",
+                color: "var(--stat-success)",
               },
             }}
             className="h-[300px]"
@@ -425,7 +425,7 @@ export function StatisticsClient({
                   fill: COLORS.statSuccess, 
                   strokeWidth: 2, 
                   r: 5,
-                  stroke: "hsl(var(--background))"
+                  stroke: "var(--background)"
                 }}
                 activeDot={{ r: 7 }}
                 fill="url(#colorAverage)"
