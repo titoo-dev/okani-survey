@@ -59,6 +59,21 @@ export function StageSelectionForm({ stages }: StageSelectionFormProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
+  const [hasSavedData, setHasSavedData] = useState(false);
+
+  // Load saved data from localStorage on mount
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("userEmail");
+    const savedStageReached = localStorage.getItem("stageReached");
+
+    if (savedEmail && savedStageReached) {
+      setEmail(savedEmail);
+      setStageReached(savedStageReached);
+      setHasFiledAtAnuttc(true);
+      setHasSavedData(true);
+    }
+  }, []);
+
   const [state, formAction] = useActionState<StageSelectionState, FormData>(
     validateStageSelection,
     { success: false },
@@ -66,7 +81,10 @@ export function StageSelectionForm({ stages }: StageSelectionFormProps) {
 
   useEffect(() => {
     if (state.success && state.data) {
-      // Store in sessionStorage
+      // Store in localStorage for persistence across sessions
+      localStorage.setItem("stageReached", state.data.stageReached);
+      localStorage.setItem("userEmail", state.data.email);
+      // Also store in sessionStorage for immediate access
       sessionStorage.setItem("stageReached", state.data.stageReached);
       sessionStorage.setItem("userEmail", state.data.email);
       // Navigate to survey page
@@ -139,6 +157,34 @@ export function StageSelectionForm({ stages }: StageSelectionFormProps) {
           </div>
         </div>
       </div>
+
+      {hasSavedData && (
+        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <svg
+              className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <div className="text-sm">
+              <p className="font-semibold text-blue-900 mb-1">
+                Enquête en cours détectée
+              </p>
+              <p className="text-blue-700">
+                Nous avons retrouvé vos informations précédentes. Vous pouvez
+                continuer votre enquête là où vous vous êtes arrêté en cliquant
+                sur "Continuer vers l'enquête".
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Card className="shadow-lg">
         <CardHeader>
