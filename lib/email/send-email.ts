@@ -91,7 +91,7 @@ export const sendEmailByApi = async ({
   const htmlContent = loadTemplate(template, context);
 
   const payload = {
-    sender: { email: 'ezangoapp@gmail.com' },
+    sender: { email: 'support@okanisurvey.com' },
     to: [{ email: to }],
     subject,
     htmlContent,
