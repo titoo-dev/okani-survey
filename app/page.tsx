@@ -85,7 +85,9 @@ export default function Home() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
-                    href="#"
+                    href="https://apps.apple.com/us/app/okany-survey/id6753790114"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-lg bg-black px-4 py-2.5 text-white transition-opacity hover:opacity-80"
                   >
                     <svg
@@ -102,7 +104,8 @@ export default function Home() {
                   </a>
 
                   <a
-                    href="#"
+                    href="/api/download/apk"
+                    download="okany-survey.apk"
                     className="inline-flex items-center gap-2 rounded-lg bg-black px-4 py-2.5 text-white transition-opacity hover:opacity-80"
                   >
                     <svg
