@@ -44,12 +44,12 @@ const VerifyEmailPage = () => {
               <p>
                 Besoin d'aide ? Contactez-nous via WhatsApp au{" "}
                 <a
-                  href="https://wa.me/24176000000"
+                  href="https://wa.me/24165164085"
                   className="text-primary hover:underline font-medium"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  +241 76 00 00 00
+                  +241 65 16 40 85
                 </a>
               </p>
             </div>

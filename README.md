@@ -260,5 +260,4 @@ This project is proprietary and confidential.
 ## Support
 
 For technical support, contact:
-- WhatsApp: +241 76 00 00 00
-- WhatsApp: +241 66 00 00 00
+- WhatsApp: +241 65 16 40 85

@@ -75,24 +75,14 @@ export default function AlreadySubmittedPage() {
                     <p className="text-xs sm:text-sm text-muted-foreground">
                       Notre équipe est disponible pour vous aider
                     </p>
-                    <div className="flex flex-col gap-2 pt-1">
-                      <a
-                        href="https://wa.me/24176000000"
-                        className="text-primary hover:underline font-medium text-sm"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        +241 76 00 00 00
-                      </a>
-                      <a
-                        href="https://wa.me/24166000000"
-                        className="text-primary hover:underline font-medium text-sm"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        +241 66 00 00 00
-                      </a>
-                    </div>
+                    <a
+                      href="https://wa.me/24165164085"
+                      className="text-primary hover:underline font-medium text-sm"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      +241 65 16 40 85
+                    </a>
                   </div>
                 </div>
               </div>

@@ -376,22 +376,14 @@ export function StageSelectionForm({ stages }: StageSelectionFormProps) {
                 <p className="font-semibold text-foreground">
                   Support technique WhatsApp
                 </p>
-                <div className="flex flex-col gap-1 mt-2">
+                <div className="mt-2">
                   <a
-                    href="https://wa.me/24176000000"
+                    href="https://wa.me/24165164085"
                     className="text-primary hover:underline"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    +241 76 00 00 00
-                  </a>
-                  <a
-                    href="https://wa.me/24166000000"
-                    className="text-primary hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    +241 66 00 00 00
+                    +241 65 16 40 85
                   </a>
                 </div>
               </div>

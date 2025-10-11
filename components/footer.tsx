@@ -24,26 +24,15 @@ export const Footer = () => {
             <p className="text-sm font-medium text-foreground mb-3">
               Support technique WhatsApp
             </p>
-            <div className="flex flex-col gap-2">
-              <a
-                href="https://wa.me/24176000000"
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Phone className="w-4 h-4 text-green-500 group-hover:scale-110 transition-transform" />
-                <span>+241 76 00 00 00</span>
-              </a>
-              <a
-                href="https://wa.me/24166000000"
-                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Phone className="w-4 h-4 text-green-500 group-hover:scale-110 transition-transform" />
-                <span>+241 66 00 00 00</span>
-              </a>
-            </div>
+            <a
+              href="https://wa.me/24165164085"
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Phone className="w-4 h-4 text-green-500 group-hover:scale-110 transition-transform" />
+              <span>+241 65 16 40 85</span>
+            </a>
           </div>
         </div>
         <div className="mt-8 md:order-1 md:mt-0">
