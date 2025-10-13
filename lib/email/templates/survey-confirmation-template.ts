@@ -379,6 +379,9 @@ export const surveyConfirmationTemplate = (
             <p>
               <strong>WhatsApp :</strong> <a href="https://wa.me/24165164085">+241 65 16 40 85</a>
             </p>
+            <p style="margin-top: 15px;">
+              <a href="${process.env.NEXT_PUBLIC_URL || "https://okanisurvey.com"}" style="color: #10b981; font-weight: 600;">Visiter notre site web</a>
+            </p>
             <p class="footer-copyright">
               © ${new Date().getFullYear()} OKANI Survey - Direction Générale du Contrôle Budgétaire et Financier<br>
               Tous droits réservés.
@@ -512,6 +515,8 @@ Vos réponses aideront la DGCBF à améliorer la qualité des services fonciers 
 Votre opinion compte et contribue à l'amélioration continue des services publics.
 
 Besoin d'aide ? Contactez-nous via WhatsApp au +241 65 16 40 85.
+
+Visitez notre site : ${process.env.NEXT_PUBLIC_URL || "https://okanisurvey.com"}
 
 © 2024 OKANI Survey - DGCBF. Tous droits réservés.
   `,

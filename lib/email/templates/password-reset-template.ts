@@ -58,6 +58,9 @@ export const passwordResetTemplate = (
             <p>
               WhatsApp: <a href="https://wa.me/24165164085">+241 65 16 40 85</a>
             </p>
+            <p style="margin-top: 15px;">
+              <a href="${process.env.NEXT_PUBLIC_URL || "https://okanisurvey.com"}" style="color: #667eea; font-weight: 600;">Visiter notre site web</a>
+            </p>
             <p style="margin-top: 20px; font-size: 12px; color: #999;">
               © 2024 OKANI Survey - DGCBF. Tous droits réservés.
             </p>
@@ -80,6 +83,8 @@ Ce lien est valable pendant 1 heure.
 Si vous n'avez pas demandé cette réinitialisation, veuillez ignorer cet email et votre mot de passe restera inchangé.
 
 Besoin d'aide ? Contactez-nous via WhatsApp au +241 65 16 40 85.
+
+Visitez notre site : ${process.env.NEXT_PUBLIC_URL || "https://okanisurvey.com"}
 
 © 2024 OKANI Survey - DGCBF. Tous droits réservés.
   `,

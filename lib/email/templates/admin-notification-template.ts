@@ -73,6 +73,9 @@ export const adminNotificationTemplate = (
             </div>
           </div>
           <div class="footer">
+            <p style="margin: 0 0 10px 0;">
+              <a href="${process.env.NEXT_PUBLIC_URL || "https://okanisurvey.com"}" style="color: #3b82f6; font-weight: 600; text-decoration: none;">Accéder au tableau de bord</a>
+            </p>
             <p style="margin: 0; font-size: 12px; color: #999;">
               © 2024 OKANI Survey - DGCBF. Tous droits réservés.
             </p>
@@ -92,6 +95,8 @@ Détails de la soumission :
 - Étape atteinte : ${surveyInfo.stageReached}
 ${surveyInfo.dossierId ? `- Numéro de dossier : ${surveyInfo.dossierId}` : ""}
 - Date de soumission : ${surveyInfo.submittedAt.toLocaleDateString("fr-FR")}
+
+Accéder au tableau de bord : ${process.env.NEXT_PUBLIC_URL || "https://okanisurvey.com"}
 
 © 2024 OKANI Survey - DGCBF. Tous droits réservés.
   `,
