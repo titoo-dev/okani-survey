@@ -69,12 +69,14 @@ export const surveyFormSchema = z
     bornageSatisfaction: z.array(z.number()).optional(),
 
     evaluationPriceUnderstanding: z.boolean().optional(),
+    evaluationAmountPaid: z.string().optional(),
     evaluationPaymentMode: z.string().optional(),
     evaluationOtherPaymentMode: z.string().optional(),
     evaluationHasReceipt: z.boolean().optional(),
     evaluationSatisfaction: z.array(z.number()).optional(),
 
     decisionDelay: z.string().optional(),
+    decisionAmountPaid: z.string().optional(),
     decisionPaymentMode: z.string().optional(),
     decisionOtherPaymentMode: z.string().optional(),
     decisionHasReceipt: z.boolean().optional(),

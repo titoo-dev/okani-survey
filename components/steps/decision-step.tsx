@@ -22,6 +22,7 @@ type DescriptorGroups = Record<string, Descriptor[]>;
 
 type DecisionData = {
   decisionDelay: string;
+  decisionAmountPaid: string;
   decisionPaymentMode: string;
   decisionOtherPaymentMode: string;
   decisionHasReceipt: boolean | undefined;
@@ -57,6 +58,17 @@ export function DecisionStep({
           placeholder="Nombre de jours"
           value={formData.decisionDelay}
           onChange={(e) => updateFormData({ decisionDelay: e.target.value })}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="decisionAmountPaid">Combien avez-vous payé ?*</Label>
+        <Input
+          id="decisionAmountPaid"
+          type="number"
+          placeholder="Montant en FCFA"
+          value={formData.decisionAmountPaid}
+          onChange={(e) => updateFormData({ decisionAmountPaid: e.target.value })}
         />
       </div>
 
@@ -231,6 +243,7 @@ export function validateDecisionStep(
   formData: Pick<
     DecisionData,
     | "decisionDelay"
+    | "decisionAmountPaid"
     | "decisionPaymentMode"
     | "decisionOtherPaymentMode"
     | "decisionHasReceipt"
@@ -242,6 +255,7 @@ export function validateDecisionStep(
 ): boolean {
   const baseValidation = !!(
     formData.decisionDelay &&
+    formData.decisionAmountPaid &&
     formData.decisionPaymentMode &&
     formData.decisionHasReceipt !== undefined &&
     formData.wasTransmitted !== undefined &&

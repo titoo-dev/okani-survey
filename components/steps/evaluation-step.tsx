@@ -55,6 +55,7 @@ type EvaluationData = {
   bornageHasReceipt: boolean | undefined;
   bornageSatisfaction: number[];
   evaluationPriceUnderstanding: boolean | undefined;
+  evaluationAmountPaid: string;
   evaluationPaymentMode: string;
   evaluationOtherPaymentMode: string;
   evaluationHasReceipt: boolean | undefined;
@@ -681,6 +682,17 @@ export function EvaluationStep({
       </div>
 
       <div className="space-y-2">
+        <Label htmlFor="evaluationAmountPaid">Combien cette prestation vous a coûté ?*</Label>
+        <Input
+          id="evaluationAmountPaid"
+          type="number"
+          placeholder="Montant en FCFA"
+          value={formData.evaluationAmountPaid}
+          onChange={(e) => updateFormData({ evaluationAmountPaid: e.target.value })}
+        />
+      </div>
+
+      <div className="space-y-2">
         <Label>Mode de paiement*</Label>
         <Select
           value={formData.evaluationPaymentMode}
@@ -835,6 +847,7 @@ export function validateEvaluationStep(
   if (stepKey === "evaluation") {
     return !!(
       formData.evaluationPriceUnderstanding !== undefined &&
+      formData.evaluationAmountPaid &&
       formData.evaluationPaymentMode &&
       formData.evaluationHasReceipt !== undefined &&
       formData.evaluationSatisfaction?.[0] &&

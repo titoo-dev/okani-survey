@@ -40,11 +40,13 @@ export type SurveyFormData = {
   bornageHasReceipt: boolean | undefined;
   bornageSatisfaction: number[];
   evaluationPriceUnderstanding: boolean | undefined;
+  evaluationAmountPaid: string;
   evaluationPaymentMode: string;
   evaluationOtherPaymentMode: string;
   evaluationHasReceipt: boolean | undefined;
   evaluationSatisfaction: number[];
   decisionDelay: string;
+  decisionAmountPaid: string;
   decisionPaymentMode: string;
   decisionOtherPaymentMode: string;
   decisionHasReceipt: boolean | undefined;
