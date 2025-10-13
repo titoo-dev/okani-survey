@@ -658,7 +658,7 @@ export function EvaluationStep({
   const renderEvaluationStepContent = () => (
     <>
       <div className="space-y-2">
-        <Label>Compréhension du calcul du prix*</Label>
+        <Label>Compréhension du calcul du prix d'évaluation de votre bien*</Label>
         <RadioGroup
           value={formData.evaluationPriceUnderstanding?.toString()}
           onValueChange={(value) =>
