@@ -1,6 +1,6 @@
 # Okani Survey - Enquête de Satisfaction ANUTTC
 
-A comprehensive survey application for collecting user feedback on land regularization procedures managed by ANUTTC (Gabon).
+A comprehensive survey application for collecting user feedback on land regularization procedures managed by ANUTTC (Gabon)
 
 ## Features
 
