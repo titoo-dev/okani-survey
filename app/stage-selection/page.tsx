@@ -12,6 +12,8 @@ export default async function StageSelectionPage() {
   // Fetch stages from database
   const { data: stages } = await getDescriptors("stage");
 
+  console.log('STAGES', stages);
+
   return (
     <main className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 max-w-3xl">
