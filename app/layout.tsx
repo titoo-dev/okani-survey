@@ -4,7 +4,8 @@ import "./globals.css";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { Toaster } from "@/components/ui/toaster";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
+import { AnalyticsProvider } from "@/components/analytics-provider";
 
 
 const geistSans = Geist({
@@ -33,10 +34,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar />
-        {children}
-        <Footer />
-        <Toaster />
+        <AnalyticsProvider>
+          <Navbar />
+          {children}
+          <Footer />
+          <Toaster />
+        </AnalyticsProvider>
         <Analytics mode="production" />
       </body>
     </html>

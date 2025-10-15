@@ -321,3 +321,39 @@ export const surveyFormSchema = z
 
 export type StageSelectionData = z.infer<typeof stageSelectionSchema>;
 export type SurveyFormData = z.infer<typeof surveyFormSchema>;
+
+// Analytics schemas
+export const analyticsEventSchema = z.object({
+  event: z.string().min(1, "Event name is required"),
+  page: z.string().optional(),
+  referrer: z.string().optional(),
+  userAgent: z.string().optional(),
+  ipAddress: z.string().optional(),
+  country: z.string().optional(),
+  city: z.string().optional(),
+  device: z.enum(["desktop", "mobile", "tablet"]).optional(),
+  browser: z.string().optional(),
+  os: z.string().optional(),
+  sessionId: z.string().optional(),
+  userId: z.string().optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
+});
+
+export const analyticsSessionSchema = z.object({
+  sessionId: z.string().min(1, "Session ID is required"),
+  userId: z.string().optional(),
+  ipAddress: z.string().optional(),
+  userAgent: z.string().optional(),
+  country: z.string().optional(),
+  city: z.string().optional(),
+  device: z.enum(["desktop", "mobile", "tablet"]).optional(),
+  browser: z.string().optional(),
+  os: z.string().optional(),
+  referrer: z.string().optional(),
+  duration: z.number().optional(),
+  pageViews: z.number().default(0),
+  events: z.number().default(0),
+});
+
+export type AnalyticsEventData = z.infer<typeof analyticsEventSchema>;
+export type AnalyticsSessionData = z.infer<typeof analyticsSessionSchema>;

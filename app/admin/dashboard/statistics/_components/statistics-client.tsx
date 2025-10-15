@@ -37,7 +37,7 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import { Filter, X, BarChart3, Users, FileText } from "lucide-react";
+import { Filter, X, BarChart3, Users, FileText, Eye, TrendingUp } from "lucide-react";
 import type { DashboardData, DashboardFilters } from "@/app/actions/dashboard";
 
 const CITIES = ["Libreville", "Lambaréné", "Mouila"];
@@ -198,7 +198,7 @@ export function StatisticsClient({
       </Card>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -250,6 +250,25 @@ export function StatisticsClient({
             </div>
             <p className="text-xs text-muted-foreground">
               Étapes différentes
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Visites aujourd'hui
+            </CardTitle>
+            <div className="rounded-full p-2">
+              <Eye className="h-4 w-4" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {initialData.dailyVisits[initialData.dailyVisits.length - 1]?.visits || 0}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Visiteurs uniques: {initialData.dailyVisits[initialData.dailyVisits.length - 1]?.uniqueVisitors || 0}
             </p>
           </CardContent>
         </Card>
@@ -429,6 +448,70 @@ export function StatisticsClient({
                 }}
                 activeDot={{ r: 7 }}
                 fill="url(#colorAverage)"
+              />
+            </LineChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+
+      {/* Daily Visits Chart */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Visites journalières</CardTitle>
+          <CardDescription>
+            Évolution des visites et visiteurs uniques sur les 30 derniers jours
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer
+            config={{
+              visits: {
+                label: "Visites",
+                color: "var(--chart-1)",
+              },
+              uniqueVisitors: {
+                label: "Visiteurs uniques",
+                color: "var(--chart-2)",
+              },
+            }}
+            className="h-[300px]"
+          >
+            <LineChart data={initialData.dailyVisits}>
+              <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+              <XAxis
+                dataKey="date"
+                tick={{ fontSize: 10 }}
+                tickFormatter={(value) => {
+                  const date = new Date(value);
+                  return `${date.getDate()}/${date.getMonth() + 1}`;
+                }}
+              />
+              <YAxis />
+              <ChartTooltip 
+                content={<ChartTooltipContent />}
+                labelFormatter={(value) => {
+                  const date = new Date(value);
+                  return date.toLocaleDateString('fr-FR');
+                }}
+              />
+              <ChartLegend content={<ChartLegendContent />} />
+              <Line
+                type="monotone"
+                dataKey="visits"
+                stroke={COLORS.chart1}
+                strokeWidth={2}
+                dot={{ fill: COLORS.chart1, strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6 }}
+                name="Visites"
+              />
+              <Line
+                type="monotone"
+                dataKey="uniqueVisitors"
+                stroke={COLORS.chart2}
+                strokeWidth={2}
+                dot={{ fill: COLORS.chart2, strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6 }}
+                name="Visiteurs uniques"
               />
             </LineChart>
           </ChartContainer>

@@ -182,3 +182,50 @@ model Descriptor {
   @@unique([type, value])
   @@map("descriptor")
 }
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  event     String   // 'page_view', 'survey_started', 'survey_completed', etc.
+  page      String?  // URL path
+  referrer  String?  // Referrer URL
+  userAgent String?  // User agent string
+  ipAddress String?  // IP address
+  country   String?  // Country code
+  city      String?  // City name
+  device    String?  // 'desktop', 'mobile', 'tablet'
+  browser   String?  // Browser name
+  os        String?  // Operating system
+  sessionId String?  // Session identifier
+  userId    String?  // User ID if authenticated
+  metadata  Json?    // Additional event data
+  createdAt DateTime @default(now())
+
+  @@index([event])
+  @@index([page])
+  @@index([createdAt])
+  @@index([sessionId])
+  @@map("analytics_event")
+}
+
+model AnalyticsSession {
+  id        String   @id @default(cuid())
+  sessionId String  @unique
+  userId    String? // User ID if authenticated
+  ipAddress String?
+  userAgent String?
+  country   String?
+  city      String?
+  device    String?
+  browser   String?
+  os        String?
+  referrer  String?
+  startedAt DateTime @default(now())
+  endedAt   DateTime?
+  duration  Int?     // Duration in seconds
+  pageViews Int      @default(0)
+  events    Int      @default(0)
+
+  @@index([sessionId])
+  @@index([startedAt])
+  @@map("analytics_session")
+}

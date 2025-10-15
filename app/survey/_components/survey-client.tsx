@@ -38,6 +38,7 @@ import {
 import { submitSurvey } from "@/app/actions/survey";
 import { getStageLabel } from "@/lib/descriptors";
 import { StepIndicator } from "@/components/step-indicator";
+import { useAnalytics } from "@/hooks/use-analytics";
 import {
   DecisionStep,
   validateDecisionStep,
@@ -84,6 +85,7 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { trackSurveyStarted, trackSurveyCompleted, trackSurveyAbandoned } = useAnalytics();
   const [currentStep, setCurrentStep] = useState(0);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -178,19 +180,41 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
       return;
     }
 
+    // Track survey started
+    trackSurveyStarted();
+
+    // Track survey abandonment on page unload
+    const handleBeforeUnload = () => {
+      trackSurveyAbandoned();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
     const savedFormData = localStorage.getItem("surveyFormData");
     const savedCurrentStep = localStorage.getItem("surveyCurrentStep");
+    
+    // Get stageReached from localStorage/sessionStorage
+    const stageReached =
+      localStorage.getItem("stageReached") ||
+      sessionStorage.getItem("stageReached");
 
     if (savedFormData) {
       try {
         const parsedData = JSON.parse(savedFormData);
-        setFormData({ ...parsedData, stageReached });
+        setFormData({ ...parsedData, stageReached: stageReached || "" });
       } catch (error) {
         console.error("Error loading saved form data:", error);
-        setFormData((prev) => ({ ...prev, stageReached }));
+        setFormData((prev) => ({ ...prev, stageReached: stageReached || "" }));
       }
     } else {
-      setFormData((prev) => ({ ...prev, stageReached }));
+      setFormData((prev) => ({ ...prev, stageReached: stageReached || "" }));
     }
 
     if (savedCurrentStep) {
@@ -476,6 +500,9 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
             duration: 5000,
           },
         );
+
+        // Track survey completion
+        trackSurveyCompleted();
 
         // Clear local storage and session storage
         localStorage.removeItem("surveyFormData");
