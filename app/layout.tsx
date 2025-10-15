@@ -37,7 +37,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <Toaster />
-        <Analytics/>
+        <Analytics mode="production" />
       </body>
     </html>
   );
