@@ -39,6 +39,7 @@ import {
 } from "recharts";
 import { Filter, X, BarChart3, Users, FileText, Eye, TrendingUp } from "lucide-react";
 import type { DashboardData, DashboardFilters } from "@/app/actions/dashboard";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const CITIES = ["Libreville", "Lambaréné", "Mouila"];
 const STAGES = [
@@ -264,12 +265,26 @@ export function StatisticsClient({
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {initialData.dailyVisits[initialData.dailyVisits.length - 1]?.visits || 0}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Visiteurs uniques: {initialData.dailyVisits[initialData.dailyVisits.length - 1]?.uniqueVisitors || 0}
-            </p>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="text-2xl font-bold cursor-help">
+                  {initialData.dailyVisits[initialData.dailyVisits.length - 1]?.uniqueVisitors || 0}
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Nombre de visiteurs uniques aujourd'hui</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <p className="text-xs text-muted-foreground cursor-help">
+                  Total de visites: {initialData.dailyVisits[initialData.dailyVisits.length - 1]?.visits || 0}
+                </p>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Nombre total de visites sur le site aujourd'hui (incluant les visites répétées)</p>
+              </TooltipContent>
+            </Tooltip>
           </CardContent>
         </Card>
       </div>
