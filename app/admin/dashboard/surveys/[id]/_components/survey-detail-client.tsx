@@ -718,15 +718,38 @@ function InfoItem({ label, value }: { label: string; value: string | React.React
   );
 }
 
-function InfoItemSatisfaction({ label, value }: { label: string; value: string | number | null | undefined }) {
-  const numValue = typeof value === "string" ? parseInt(value, 10) : value;
-  const isValidSatisfaction = numValue !== null && numValue !== undefined && !isNaN(numValue) && numValue >= 0 && numValue <= 5;
+function InfoItemSatisfaction({ label, value }: { label: string; value: string | number | string[] | number[] | null | undefined }) {
+  // Parse the value to extract a number
+  let numValue: number | null = null;
+  
+  if (value !== null && value !== undefined) {
+    if (typeof value === 'number') {
+      numValue = value;
+    } else if (typeof value === 'string') {
+      // Try to parse string as JSON array first
+      try {
+        const parsed = JSON.parse(value);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          numValue = Number(parsed[0]);
+        } else {
+          numValue = Number(value);
+        }
+      } catch {
+        // If JSON parse fails, try direct number conversion
+        numValue = Number(value);
+      }
+    } else if (Array.isArray(value) && value.length > 0) {
+      numValue = Number(value[0]);
+    }
+  }
+  
+  const isValidSatisfaction = numValue !== null && !isNaN(numValue) && numValue >= 0 && numValue <= 5;
 
   return (
     <div className="col-span-2">
       <p className="text-sm font-medium text-muted-foreground mb-2">{label}</p>
       {isValidSatisfaction ? (
-        <StarRating value={numValue} onChange={() => {}} max={5} readonly />
+        <StarRating value={numValue || 0} onChange={() => {}} max={5} readonly />
       ) : (
         <span className="text-sm text-muted-foreground">N/A</span>
       )}
