@@ -2,6 +2,31 @@
 
 import prisma from "@/lib/prisma";
 
+// Normalize city names to handle variations in spelling, case, and accents
+function normalizeCityName(cityName: string): string {
+  if (!cityName) return cityName;
+  
+  // Convert to lowercase and trim whitespace
+  const normalized = cityName.toLowerCase().trim();
+  
+  // Handle common variations
+  const cityMappings: Record<string, string> = {
+    'libreville': 'Libreville',
+    'libreville ': 'Libreville',
+    'libreville  ': 'Libreville',
+    'lambaréné': 'Lambaréné',
+    'lambaréné ': 'Lambaréné',
+    'lambarene': 'Lambaréné',
+    'lambarene ': 'Lambaréné',
+    'mouila': 'Mouila',
+    'mouila ': 'Mouila',
+    'mouïla': 'Mouila',
+    'mouïla ': 'Mouila',
+  };
+  
+  return cityMappings[normalized] || cityName;
+}
+
 export type DashboardFilters = {
   city?: string;
   stage?: string;
@@ -78,9 +103,18 @@ export async function getDashboardStats(
     },
   });
 
-  const citiesStats: CityStats[] = citiesStatsRaw.map((item) => ({
-    city: item.depositCity,
-    count: item._count.id,
+  // Normalize city names and group them
+  const cityCounts = new Map<string, number>();
+  
+  citiesStatsRaw.forEach((item) => {
+    const normalizedCity = normalizeCityName(item.depositCity);
+    const currentCount = cityCounts.get(normalizedCity) || 0;
+    cityCounts.set(normalizedCity, currentCount + item._count.id);
+  });
+
+  const citiesStats: CityStats[] = Array.from(cityCounts.entries()).map(([city, count]) => ({
+    city,
+    count,
   }));
 
   // Get stats by stage
