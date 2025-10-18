@@ -221,6 +221,38 @@ export function StatisticsClient({
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Enquêtes finalisées
+            </CardTitle>
+            <div className="rounded-full p-2">
+              <TrendingUp className="h-4 w-4" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {initialData.statusStats.find(s => s.status === "SENT")?.count || 0}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Enquêtes en cours
+            </CardTitle>
+            <div className="rounded-full p-2">
+              <Users className="h-4 w-4" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {initialData.statusStats.find(s => s.status === "PENDING")?.count || 0}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Villes</CardTitle>
             <div className="rounded-full p-2">
               <BarChart3 className="h-4 w-4" />
@@ -291,6 +323,65 @@ export function StatisticsClient({
 
       {/* Charts */}
       <div className="grid gap-6 md:grid-cols-2">
+        {/* Status Chart */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Répartition par statut</CardTitle>
+            <CardDescription>
+              Distribution des enquêtes selon leur statut
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer
+              config={{
+                SENT: {
+                  label: "Finalisées",
+                  color: "var(--stat-success)",
+                },
+                PENDING: {
+                  label: "En cours",
+                  color: "var(--stat-warning)",
+                },
+              }}
+              className="h-[300px]"
+            >
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={initialData.statusStats}
+                    dataKey="count"
+                    nameKey="status"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={90}
+                    innerRadius={50}
+                    paddingAngle={2}
+                    label={(entry) => `${entry.count}`}
+                  >
+                    {initialData.statusStats.map((entry, index) => (
+                      <Cell
+                        key={`cell-${entry.status}`}
+                        fill={
+                          entry.status === "SENT" ? COLORS.statSuccess :
+                          entry.status === "PENDING" ? COLORS.statWarning :
+                          COLORS.chart1
+                        }
+                      />
+                    ))}
+                  </Pie>
+                  <ChartTooltip 
+                    content={<ChartTooltipContent hideLabel />} 
+                  />
+                  <ChartLegend 
+                    content={<ChartLegendContent />}
+                    verticalAlign="bottom"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
         {/* Cities Chart */}
         <Card>
           <CardHeader>

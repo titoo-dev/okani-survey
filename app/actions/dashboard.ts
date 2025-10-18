@@ -31,10 +31,16 @@ export type DailyVisits = {
   uniqueVisitors: number;
 };
 
+export type StatusStats = {
+  status: string;
+  count: number;
+};
+
 export type DashboardData = {
   totalSurveys: number;
   citiesStats: CityStats[];
   stagesStats: StageStats[];
+  statusStats: StatusStats[];
   satisfactionByStage: SatisfactionStats[];
   recentSurveys: Array<{
     id: string;
@@ -88,6 +94,20 @@ export async function getDashboardStats(
 
   const stagesStats: StageStats[] = stagesStatsRaw.map((item) => ({
     stage: item.stageReached,
+    count: item._count.id,
+  }));
+
+  // Get stats by status
+  const statusStatsRaw = await prisma.survey.groupBy({
+    by: ["status"],
+    where,
+    _count: {
+      id: true,
+    },
+  });
+
+  const statusStats: StatusStats[] = statusStatsRaw.map((item) => ({
+    status: item.status || "SENT", // Default to SENT for existing surveys without status
     count: item._count.id,
   }));
 
@@ -170,6 +190,7 @@ export async function getDashboardStats(
     totalSurveys,
     citiesStats,
     stagesStats,
+    statusStats,
     satisfactionByStage,
     recentSurveys,
     dailyVisits,
@@ -243,6 +264,7 @@ export type PaginatedSurveysData = {
     email: string;
     depositCity: string;
     stageReached: string;
+    status: string | null;
     createdAt: Date;
   }>;
   pagination: {
@@ -282,6 +304,7 @@ export async function getSurveysPaginated(
       email: true,
       depositCity: true,
       stageReached: true,
+      status: true,
       createdAt: true,
     },
     orderBy: {

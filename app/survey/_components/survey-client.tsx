@@ -169,6 +169,28 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
     generalSuggestions: "",
   });
 
+  const updateSurveyStep = async (stepKey: string) => {
+    try {
+      const email = localStorage.getItem("userEmail") || sessionStorage.getItem("userEmail");
+      if (!email) return;
+
+      const response = await fetch("/api/surveys/update-step", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          currentStep: stepKey,
+        }),
+      });
+
+      if (!response.ok) {
+        console.error("Failed to update survey step");
+      }
+    } catch (error) {
+      console.error("Error updating survey step:", error);
+    }
+  };
+
   useEffect(() => {
     // Try to get stageReached from localStorage first, then sessionStorage
     const stageReached =
@@ -182,6 +204,12 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
 
     // Track survey started
     trackSurveyStarted();
+
+    // Initialize survey step tracking
+    const email = localStorage.getItem("userEmail") || sessionStorage.getItem("userEmail");
+    if (email) {
+      updateSurveyStep("profile"); // Initialize with profile step
+    }
 
     // Track survey abandonment on page unload
     const handleBeforeUnload = () => {
@@ -431,7 +459,15 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
   const handleNext = () => {
     startTransition(() => {
       if (currentStep < steps.length - 1) {
-        setCurrentStep(currentStep + 1);
+        const nextStep = currentStep + 1;
+        setCurrentStep(nextStep);
+        
+        // Update survey step in database
+        const currentStepKey = steps[nextStep]?.key;
+        if (currentStepKey) {
+          updateSurveyStep(currentStepKey);
+        }
+        
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     });
@@ -440,7 +476,15 @@ export function SurveyClient({ descriptors }: SurveyClientProps) {
   const handlePrevious = () => {
     startTransition(() => {
       if (currentStep > 0) {
-        setCurrentStep(currentStep - 1);
+        const prevStep = currentStep - 1;
+        setCurrentStep(prevStep);
+        
+        // Update survey step in database
+        const currentStepKey = steps[prevStep]?.key;
+        if (currentStepKey) {
+          updateSurveyStep(currentStepKey);
+        }
+        
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     });

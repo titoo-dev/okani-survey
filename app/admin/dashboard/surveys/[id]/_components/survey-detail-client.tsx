@@ -135,10 +135,16 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
     }
   };
 
-  const isSatisfactionField = (value: string | number | null | undefined): boolean => {
-    if (value === null || value === undefined) return false;
-    const num = typeof value === "string" ? parseInt(value, 10) : value;
-    return !isNaN(num) && num >= 1 && num <= 5;
+
+  const getStatusBadgeText = (status: string | null | undefined) => {
+    switch (status) {
+      case "SENT":
+        return "Soumis";
+      case "PENDING":
+        return "En cours";
+      default:
+        return "Soumis";
+    }
   };
 
   return (
@@ -217,6 +223,28 @@ export function SurveyDetailClient({ survey }: SurveyDetailClientProps) {
                 <p className="text-sm font-medium">Type d'utilisateur</p>
                 <Badge variant="outline" className="bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20 mt-1">
                   {survey.userType}
+                </Badge>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="h-4 w-4 text-muted-foreground flex items-center justify-center">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Statut</p>
+                <Badge 
+                  variant="outline" 
+                  className={
+                    survey.status === "SENT" 
+                      ? "bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20 mt-1"
+                      : survey.status === "PENDING"
+                      ? "bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-500/20 mt-1"
+                      : "bg-muted text-muted-foreground mt-1"
+                  }
+                >
+                  {getStatusBadgeText(survey.status)}
                 </Badge>
               </div>
             </div>

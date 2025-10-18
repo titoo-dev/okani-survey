@@ -78,6 +78,7 @@ model Survey {
 
   email       String
   stageReached String
+  status      String?
 
   dossierId            String
   depositCity          String

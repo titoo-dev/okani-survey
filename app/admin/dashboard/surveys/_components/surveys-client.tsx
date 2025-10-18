@@ -166,6 +166,28 @@ export function SurveysClient({
     }
   };
 
+  const getStatusBadgeColor = (status: string | null | undefined) => {
+    switch (status) {
+      case "SENT":
+        return "bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20";
+      case "PENDING":
+        return "bg-orange-500/10 text-orange-700 dark:text-orange-400 border-orange-500/20";
+      default:
+        return "bg-muted text-muted-foreground";
+    }
+  };
+
+  const getStatusBadgeText = (status: string | null | undefined) => {
+    switch (status) {
+      case "SENT":
+        return "Soumis";
+      case "PENDING":
+        return "En cours";
+      default:
+        return "Soumis";
+    }
+  };
+
   return (
     <div className="flex-1 space-y-6 p-6">
       {/* Header */}
@@ -289,13 +311,14 @@ export function SurveysClient({
                   <TableHead>Email</TableHead>
                   <TableHead>Ville</TableHead>
                   <TableHead>Étape</TableHead>
+                  <TableHead>Statut</TableHead>
                   <TableHead className="text-right">Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredSurveys.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="h-24 text-center">
+                    <TableCell colSpan={6} className="h-24 text-center">
                       Aucune enquête trouvée
                     </TableCell>
                   </TableRow>
@@ -321,6 +344,14 @@ export function SurveysClient({
                           className={getStageBadgeColor(survey.stageReached)}
                         >
                           {survey.stageReached}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="outline"
+                          className={getStatusBadgeColor(survey.status)}
+                        >
+                          {getStatusBadgeText(survey.status)}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right text-muted-foreground">

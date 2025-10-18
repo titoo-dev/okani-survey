@@ -73,18 +73,41 @@ export async function submitSurvey(
     // Validate form data
     const validatedData = surveyFormSchema.parse(formData);
 
-    // Generate dossierId if not provided
-    if (!validatedData.dossierId) {
-      validatedData.dossierId = await generateDossierId();
-    }
+    // Check if survey already exists for this email
+    const existingSurvey = await prisma.survey.findFirst({
+      where: { email: validatedData.email },
+      orderBy: { createdAt: 'desc' }, // Get the most recent survey
+    });
 
     // Prepare data for database (convert arrays to JSON strings)
     const preparedData = prepareSurveyData(validatedData);
 
-    // Create survey in database
-    const survey = await prisma.survey.create({
-      data: preparedData,
-    });
+    let survey;
+
+    if (existingSurvey) {
+      // Update existing survey with status SENT
+      survey = await prisma.survey.update({
+        where: { id: existingSurvey.id },
+        data: {
+          ...preparedData,
+          status: "SENT",
+          updatedAt: new Date(),
+        },
+      });
+    } else {
+      // Generate dossierId if not provided
+      if (!validatedData.dossierId) {
+        validatedData.dossierId = await generateDossierId();
+      }
+
+      // Create new survey with status SENT
+      survey = await prisma.survey.create({
+        data: {
+          ...preparedData,
+          status: "SENT",
+        },
+      });
+    }
 
     // Send confirmation email with survey details
     try {
