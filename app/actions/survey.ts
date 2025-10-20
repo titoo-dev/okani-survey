@@ -95,10 +95,10 @@ export async function submitSurvey(
         },
       });
     } else {
-      // Generate dossierId if not provided
-      if (!validatedData.dossierId) {
-        validatedData.dossierId = await generateDossierId();
-      }
+    // Generate dossierId if not provided or if it's a temporary one
+    if (!validatedData.dossierId || validatedData.dossierId.startsWith("TEMP-")) {
+      validatedData.dossierId = await generateDossierId();
+    }
 
       // Create new survey with status SENT
       survey = await prisma.survey.create({

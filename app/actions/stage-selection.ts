@@ -91,6 +91,7 @@ export async function checkEmailSubmission(email: string) {
           equals: email,
           mode: "insensitive",
         },
+        status: "SENT", // Only check for SENT surveys
       },
       orderBy: {
         createdAt: "desc",
@@ -100,6 +101,7 @@ export async function checkEmailSubmission(email: string) {
         dossierId: true,
         createdAt: true,
         stageReached: true,
+        status: true,
       },
     });
 
@@ -155,6 +157,49 @@ export async function validateStageSelection(
         errors: ["Cette adresse email a déjà soumis une enquête."],
         alreadySubmitted: true,
       };
+    }
+
+    // Create or update a PENDING survey record
+    const existingSurvey = await prisma.survey.findFirst({
+      where: { email: validatedData.email },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (existingSurvey && existingSurvey.status === "SENT") {
+      return {
+        success: false,
+        errors: ["Cette adresse email a déjà soumis une enquête."],
+        alreadySubmitted: true,
+      };
+    }
+
+    // Create a new PENDING survey or update existing one
+    if (existingSurvey && existingSurvey.status === "PENDING") {
+      // Update existing PENDING survey
+      await prisma.survey.update({
+        where: { id: existingSurvey.id },
+        data: {
+          stageReached: validatedData.stageReached,
+          updatedAt: new Date(),
+        },
+      });
+    } else {
+      // Create new PENDING survey
+      await prisma.survey.create({
+        data: {
+          email: validatedData.email,
+          stageReached: validatedData.stageReached,
+          status: "PENDING",
+          // Set default values for required fields
+          dossierId: `TEMP-${Date.now()}`,
+          depositCity: "Libreville", // Default value, will be updated in survey
+          regularizationCity: "Libreville",
+          residenceCity: "Libreville",
+          userType: "Personne physique",
+          legalEntity: "Personne physique",
+          nationality: "Gabonaise",
+        },
+      });
     }
 
     return {
