@@ -171,7 +171,7 @@ pnpm run db:studio
 
 The application uses two main models:
 
-1. **Survey** - Stores all survey responses with comprehensive fields for each process stage
+1. **Survey** - Stores all survey responses with comprehensive fields for each process
 2. **Descriptor** - Manages dropdown options and form field values
 
 See `prisma/schema.prisma` for the complete schema.
