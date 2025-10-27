@@ -495,13 +495,20 @@ export function StatisticsClient({
                   <ChartTooltip 
                     content={<ChartTooltipContent hideLabel />} 
                   />
-                  <ChartLegend 
-                    content={<ChartLegendContent />}
-                    verticalAlign="bottom"
-                  />
                 </PieChart>
               </ResponsiveContainer>
             </ChartContainer>
+            <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
+              {initialData.stagesStats.map((entry, index) => (
+                <div key={entry.stage} className="flex items-center gap-1.5">
+                  <div 
+                    className="h-2 w-2 shrink-0 rounded-[2px]"
+                    style={{ backgroundColor: PIE_COLORS[index % PIE_COLORS.length] }}
+                  />
+                  <span>{entry.stage}: {entry.count}</span>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
