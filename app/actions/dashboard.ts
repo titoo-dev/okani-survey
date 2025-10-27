@@ -140,9 +140,17 @@ export async function getDashboardStats(
     },
   });
 
-  const statusStats: StatusStats[] = statusStatsRaw.map((item) => ({
-    status: item.status || "SENT", // Default to SENT for existing surveys without status
-    count: item._count.id,
+  const statusCounts = new Map<string, number>();
+  
+  statusStatsRaw.forEach((item) => {
+    const status = item.status || "SENT";
+    const currentCount = statusCounts.get(status) || 0;
+    statusCounts.set(status, currentCount + item._count.id);
+  });
+
+  const statusStats: StatusStats[] = Array.from(statusCounts.entries()).map(([status, count]) => ({
+    status,
+    count,
   }));
 
   // Calculate satisfaction by stage
@@ -183,12 +191,23 @@ export async function getDashboardStats(
     );
 
     const scores = relevantData
-      .map((item) => {
+      .flatMap((item) => {
         const field = fields[0];
         const value = item[field as keyof typeof item];
-        return value ? Number.parseFloat(value as string) : null;
-      })
-      .filter((score): score is number => score !== null && !Number.isNaN(score));
+        if (!value) return [];
+        
+        try {
+          const parsed = JSON.parse(value as string);
+          if (Array.isArray(parsed)) {
+            return parsed.filter((v: unknown) => typeof v === 'number' && !Number.isNaN(v));
+          }
+          const num = Number.parseFloat(value as string);
+          return Number.isNaN(num) ? [] : [num];
+        } catch {
+          const num = Number.parseFloat(value as string);
+          return Number.isNaN(num) ? [] : [num];
+        }
+      });
 
     const average = scores.length > 0 
       ? scores.reduce((sum, score) => sum + score, 0) / scores.length 
@@ -197,7 +216,7 @@ export async function getDashboardStats(
     return {
       stage,
       average: Math.round(average * 10) / 10,
-      count: scores.length,
+      count: relevantData.length,
     };
   });
 
