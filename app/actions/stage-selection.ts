@@ -210,6 +210,8 @@ export async function validateStageSelection(
       },
     };
   } catch (error) {
+
+    console.error("Error validating stage selection:", error);
     if (error instanceof z.ZodError) {
       return {
         success: false,

@@ -50,6 +50,11 @@ export type SatisfactionStats = {
   count: number;
 };
 
+export type DepotEvaluationStats = {
+  evaluation: string;
+  count: number;
+};
+
 export type DailyVisits = {
   date: string;
   visits: number;
@@ -67,6 +72,7 @@ export type DashboardData = {
   stagesStats: StageStats[];
   statusStats: StatusStats[];
   satisfactionByStage: SatisfactionStats[];
+  depotEvaluationStats: DepotEvaluationStats[];
   recentSurveys: Array<{
     id: string;
     email: string;
@@ -158,7 +164,6 @@ export async function getDashboardStats(
     where,
     select: {
       stageReached: true,
-      depotEvaluation: true,
       enqueteSatisfaction: true,
       etatLieuxSatisfaction: true,
       affichageSatisfaction: true,
@@ -169,43 +174,52 @@ export async function getDashboardStats(
     },
   });
 
-  // Map stage names to satisfaction fields
-  const stageToSatisfactionField: Record<string, string[]> = {
-    "Dépôt de dossier": ["depotEvaluation"],
-    "Enquête foncière": ["enqueteSatisfaction"],
-    "État des lieux": ["etatLieuxSatisfaction"],
-    "Avis d'affichage": ["affichageSatisfaction"],
-    "PV et plan de bornage": ["bornageSatisfaction"],
-    "Rapport d'évaluation": ["evaluationSatisfaction"],
-    Décision: ["decisionSatisfaction"],
+  const stageToSatisfactionField: Record<string, { field: string, maxScale: number }> = {
+    "Enquête foncière": { field: "enqueteSatisfaction", maxScale: 5 },
+    "État des lieux": { field: "etatLieuxSatisfaction", maxScale: 5 },
+    "Avis d'affichage": { field: "affichageSatisfaction", maxScale: 5 },
+    "PV et plan de bornage": { field: "bornageSatisfaction", maxScale: 5 },
+    "Rapport d'évaluation": { field: "evaluationSatisfaction", maxScale: 5 },
+    "Décision": { field: "decisionSatisfaction", maxScale: 10 },
   };
 
   const satisfactionByStage: SatisfactionStats[] = Object.entries(
     stageToSatisfactionField
-  ).map(([stage, fields]) => {
-    const relevantData = satisfactionData.filter((item) =>
-      fields.some((field) => {
+  ).map(([stageName, config]) => {
+    const { field, maxScale } = config;
+    const scores = satisfactionData
+      .filter((item) => {
         const value = item[field as keyof typeof item];
         return value !== null && value !== undefined;
       })
-    );
-
-    const scores = relevantData
       .flatMap((item) => {
-        const field = fields[0];
         const value = item[field as keyof typeof item];
         if (!value) return [];
         
         try {
           const parsed = JSON.parse(value as string);
           if (Array.isArray(parsed)) {
-            return parsed.filter((v: unknown) => typeof v === 'number' && !Number.isNaN(v));
+            const numbers = parsed.filter((v: unknown) => typeof v === 'number' && !Number.isNaN(v));
+            if (numbers.length > 0) {
+              const avg = numbers.reduce((sum: number, v: number) => sum + v, 0) / numbers.length;
+              const normalized = (avg / maxScale) * 5;
+              return [normalized];
+            }
+            return [];
           }
           const num = Number.parseFloat(value as string);
-          return Number.isNaN(num) ? [] : [num];
+          if (!Number.isNaN(num)) {
+            const normalized = (num / maxScale) * 5;
+            return [normalized];
+          }
+          return [];
         } catch {
           const num = Number.parseFloat(value as string);
-          return Number.isNaN(num) ? [] : [num];
+          if (!Number.isNaN(num)) {
+            const normalized = (num / maxScale) * 5;
+            return [normalized];
+          }
+          return [];
         }
       });
 
@@ -214,11 +228,46 @@ export async function getDashboardStats(
       : 0;
 
     return {
-      stage,
+      stage: stageName,
       average: Math.round(average * 10) / 10,
-      count: relevantData.length,
+      count: scores.length,
     };
   });
+
+  // Calculate depot evaluation distribution
+  const depotEvaluationData = await prisma.survey.groupBy({
+    by: ["depotEvaluation"],
+    where: {
+      ...where,
+      depotEvaluation: {
+        not: null,
+      },
+    },
+    _count: {
+      id: true,
+    },
+  });
+
+  const evaluationOrder = ["excellent", "tres-bien", "bien", "assez-bien", "passable", "mediocre"];
+  const evaluationLabels: Record<string, string> = {
+    "excellent": "Excellent",
+    "tres-bien": "Très bien",
+    "bien": "Bien",
+    "assez-bien": "Assez bien",
+    "passable": "Passable",
+    "mediocre": "Médiocre",
+  };
+
+  const depotEvaluationStats: DepotEvaluationStats[] = depotEvaluationData
+    .map((item) => ({
+      evaluation: evaluationLabels[item.depotEvaluation || ""] || item.depotEvaluation || "",
+      count: item._count.id,
+    }))
+    .sort((a, b) => {
+      const aIndex = evaluationOrder.indexOf(Object.keys(evaluationLabels).find(key => evaluationLabels[key] === a.evaluation) || "");
+      const bIndex = evaluationOrder.indexOf(Object.keys(evaluationLabels).find(key => evaluationLabels[key] === b.evaluation) || "");
+      return aIndex - bIndex;
+    });
 
   // Get recent surveys
   const recentSurveys = await prisma.survey.findMany({
@@ -245,6 +294,7 @@ export async function getDashboardStats(
     stagesStats,
     statusStats,
     satisfactionByStage,
+    depotEvaluationStats,
     recentSurveys,
     dailyVisits,
   };

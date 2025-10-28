@@ -321,6 +321,73 @@ export function StatisticsClient({
         </Card>
       </div>
 
+      {/* Depot Evaluation Chart - Full Width */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Évaluation de l'accueil au dépôt de dossier</CardTitle>
+          <CardDescription>
+            Comment les usagers évaluent l'accueil à l'ANUTTC lors du dépôt de dossier
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer
+            config={{
+              Excellent: {
+                label: "Excellent",
+                color: "hsl(142, 76%, 36%)",
+              },
+              "Très bien": {
+                label: "Très bien",
+                color: "hsl(142, 71%, 45%)",
+              },
+              Bien: {
+                label: "Bien",
+                color: "hsl(142, 71%, 55%)",
+              },
+              "Assez bien": {
+                label: "Assez bien",
+                color: "hsl(45, 93%, 47%)",
+              },
+              Passable: {
+                label: "Passable",
+                color: "hsl(27, 96%, 61%)",
+              },
+              Médiocre: {
+                label: "Médiocre",
+                color: "hsl(0, 84%, 60%)",
+              },
+            }}
+            className="h-[300px]"
+          >
+            <BarChart data={initialData.depotEvaluationStats}>
+              <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+              <XAxis
+                dataKey="evaluation"
+                tick={{ fontSize: 12 }}
+                tickMargin={10}
+              />
+              <YAxis />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <Bar dataKey="count" radius={[8, 8, 0, 0]}>
+                {initialData.depotEvaluationStats.map((entry) => (
+                  <Cell 
+                    key={`cell-${entry.evaluation}`}
+                    fill={
+                      entry.evaluation === "Excellent" ? "hsl(142, 76%, 36%)" :
+                      entry.evaluation === "Très bien" ? "hsl(142, 71%, 45%)" :
+                      entry.evaluation === "Bien" ? "hsl(142, 71%, 55%)" :
+                      entry.evaluation === "Assez bien" ? "hsl(45, 93%, 47%)" :
+                      entry.evaluation === "Passable" ? "hsl(27, 96%, 61%)" :
+                      "hsl(0, 84%, 60%)"
+                    }
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+
       {/* Charts */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Status Chart */}
@@ -518,7 +585,7 @@ export function StatisticsClient({
         <CardHeader>
           <CardTitle>Satisfaction par étape</CardTitle>
           <CardDescription>
-            Score de satisfaction moyen pour chaque étape (sur 5)
+            Score de satisfaction moyen pour chaque étape (sur 5). Note : l'étape "Dépôt de dossier" n'apparaît pas car elle collecte une évaluation qualitative, non numérique.
           </CardDescription>
         </CardHeader>
         <CardContent>
