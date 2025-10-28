@@ -27,7 +27,7 @@ A comprehensive survey application for collecting user feedback on land regulari
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 20+ 
 - PostgreSQL database
 - pnpm (recommended) or npm
 
